@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Globe, Brain, Smartphone, Zap, Database, Shield, Cpu, Cloud, Lock, BarChart3, Users, GitBranch } from "lucide-react";
+import { Globe, Brain, Smartphone, Zap, Database, Shield, Cpu, Cloud, Lock, BarChart3, Users, GitBranch, Code, ArrowRight } from "lucide-react";
 
 const services = [
   {
@@ -86,8 +86,8 @@ const Services = () => {
           </h2>
           
           <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            We help startups go from idea to market with MVPs that actually work. Fast development, 
-            real validation, and smart scaling - all designed for the startup journey.
+            We help startups and businesses build custom websites and web applications that work perfectly for their needs. 
+            From MVPs to full-scale web solutions - fast development, real validation, and smart scaling.
           </p>
         </div>
 
@@ -133,6 +133,54 @@ const Services = () => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Additional Services Section */}
+        <div className="mb-16">
+          <div className="text-center mb-8">
+            <h3 className="text-2xl font-bold mb-4">Custom Website Development Services</h3>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Need a custom website built according to your specific requirements? We create websites tailored to your business needs.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
+            <a href="/services/web-development" className="group">
+              <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-gray-200">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                    <Globe className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg group-hover:text-brand-purple transition-colors">Custom Web Development</h4>
+                    <p className="text-sm text-muted-foreground">Professional web development services</p>
+                  </div>
+                </div>
+                <p className="text-muted-foreground mb-4">Build custom websites and web applications using modern technologies and best practices.</p>
+                <div className="flex items-center text-brand-purple font-medium">
+                  Learn More <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </a>
+            
+            <a href="/services/custom-websites" className="group">
+              <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-gray-200">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center">
+                    <Code className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg group-hover:text-brand-purple transition-colors">Website Builder Service</h4>
+                    <p className="text-sm text-muted-foreground">Get websites built according to your requirements</p>
+                  </div>
+                </div>
+                <p className="text-muted-foreground mb-4">Tell us what you need and we'll create a website that perfectly fits your business requirements.</p>
+                <div className="flex items-center text-brand-purple font-medium">
+                  Learn More <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </a>
+          </div>
         </div>
 
         {/* Services Grid - Browser Style Cards */}

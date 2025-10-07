@@ -79,11 +79,29 @@ const Contact = () => {
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
+    
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to submit form');
+      }
+
       setIsSuccess(true);
-    }, 2000);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      // You could add error state handling here
+      alert('There was an error submitting your form. Please try again or contact us directly at antatechh@gmail.com');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const renderStepContent = () => {

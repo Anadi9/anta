@@ -23,7 +23,7 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [theme, setThemeState] = useState<Theme>('light');
+  const [theme, setThemeState] = useState<Theme>('dark');
   const [mounted, setMounted] = useState(false);
 
   // Handle hydration
@@ -33,6 +33,9 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     const savedTheme = localStorage.getItem('theme') as Theme;
     if (savedTheme) {
       setThemeState(savedTheme);
+    } else {
+      // Default to dark mode if no saved preference
+      setThemeState('dark');
     }
   }, []);
 
@@ -80,8 +83,8 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     const handleChange = (e: MediaQueryListEvent) => {
       // Only update if user hasn't set a preference
       if (!localStorage.getItem('theme')) {
-        // Still default to light mode even if system changes
-        setThemeState('light');
+        // Default to dark mode even if system changes
+        setThemeState('dark');
       }
     };
 

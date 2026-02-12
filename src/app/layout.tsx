@@ -57,6 +57,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                const savedTheme = localStorage.getItem('theme');
+                const theme = savedTheme || 'dark';
+                document.documentElement.classList.add(theme);
+              })();
+            `,
+          }}
+        />
         <link rel="icon" href="/assets/favicon.png" type="image/png" />
         <link
           rel="preload"

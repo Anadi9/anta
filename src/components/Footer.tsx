@@ -1,6 +1,6 @@
 'use client'
 
-import { Mail, Github, Linkedin, Twitter, ArrowUpRight } from "lucide-react";
+import { Mail, Phone, Github, Linkedin, Twitter, ArrowUpRight } from "lucide-react";
 const antaLogo = "/anta-logo.png";
 
 const Footer = () => {
@@ -51,9 +51,15 @@ const Footer = () => {
 
 
             {/* Contact */}
-            <div className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
-              <Mail className="w-4 h-4" />
-              <a href="mailto:hello@anta.dev" className="hover:underline">hello@anta.dev</a>
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <Mail className="w-4 h-4" />
+                <a href="mailto:hello@anta.com" className="hover:underline">hello@anta.com</a>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <Phone className="w-4 h-4" />
+                <a href="tel:+13135289034" className="hover:underline">+1 (313) 528-9034</a>
+              </div>
             </div>
           </div>
 
@@ -70,7 +76,7 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             {/* Copyright */}
             <div className="text-sm text-muted-foreground">
-              © 2024 ANTA. All rights reserved.
+              © 2026 ANTA. All rights reserved.
             </div>
 
 

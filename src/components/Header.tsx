@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from "@/components/ui/button";
-import { Menu, X, Code2, Sun, Moon, Settings, Info, DollarSign, MessageCircle } from "lucide-react";
+import { Menu, X, Code2, Sun, Moon, Settings, Info, DollarSign, MessageCircle, Briefcase } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -42,6 +42,7 @@ const Header = () => {
 
   const navigation = [
     { name: "Services", href: "#services", icon: Settings, sectionId: "services" },
+    { name: "Portfolio", href: "/portfolio", icon: Briefcase },
     { name: "About", href: "/about", icon: Info },
     // { name: "Pricing", href: "#pricing", icon: DollarSign, sectionId: "pricing" },
     { name: "Contact", href: "#contact", icon: MessageCircle, sectionId: "contact" }

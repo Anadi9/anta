@@ -17,42 +17,55 @@ const About = () => {
       <div className="absolute inset-0 opacity-3">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgb(59,130,246)_1px,transparent_0)] bg-[length:32px_32px]"></div>
       </div>
-      
+
       <div className="max-w-[1400px] mx-auto relative z-10">
-        {/* Hero Section with Image */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-32">
-          <div className="space-y-8">
-            <div className="flex items-center gap-4 text-lg text-brand-purple font-medium">
-              <div className="w-3 h-3 bg-brand-purple rounded-full animate-pulse"></div>
-              <span>Digital Product Experts</span>
-            </div>
-            
-            <h1 className="text-6xl md:text-8xl font-bold font-righteous leading-tight">
-              <span className="block text-foreground">Building</span>
-              <span className="block bg-gradient-brand bg-clip-text text-transparent">
-                Digital Solutions
-              </span>
-              <span className="block text-brand-purple text-4xl md:text-5xl font-normal">
-                That Actually Work
-              </span>
-            </h1>
-            
-            <p className="text-2xl text-muted-foreground leading-relaxed max-w-2xl">
-              We're a team of experienced developers and designers who specialize in creating 
-              digital products that solve real problems. From web applications to mobile apps, 
-              we focus on building solutions that are both functional and beautiful.
-            </p>
+        {/* Hero Section with Background Image */}
+        <div className="relative rounded-3xl overflow-hidden shadow-2xl mb-32 min-h-[600px] md:min-h-[700px]">
+          {/* Background Image */}
+          <div className="absolute inset-0">
+            <img
+              src="/images/expert-bg.jpg"
+              alt="Expert team background"
+              className="w-full h-full object-cover"
+            />
+            {/* Gradient Overlay for better text readability */}
+            <div className="absolute inset-0 bg-gradient-to-br from-background/70 via-background/50 to-background/60"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-purple/20 via-transparent to-transparent"></div>
           </div>
-          
-          <div className="relative">
-            <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl">
-              <img 
-              src="/images/about-us.png" 
-                alt="Team collaboration" 
-                className="w-full h-full object-cover"
-              />
+
+          {/* Content Overlay with Glassmorphism */}
+          <div className="relative z-10 h-full min-h-[600px] md:min-h-[700px] flex items-center">
+            <div className="container mx-auto sm:px-2 md:px-16 py-4">
+              <div className="max-w-3xl">
+                <div className="mb-8">
+                  <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold font-righteous leading-tight">
+                    <span className="block text-white">Building</span>
+                    <span className="bg-gradient-brand bg-clip-text text-transparent">
+                      Digital Solutions
+                    </span>
+                    <span className="block text-brand-purple font-normal text-3xl md:text-4xl lg:text-5xl">
+                      That Actually Work
+                    </span>
+                  </h1>
+                </div>
+
+                {/* Glassmorphism Card for Content */}
+                <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-3xl p-8 md:p-12 shadow-2xl hover:bg-white/15 hover:border-white/30 transition-all duration-500 group">
+                  <div className="space-y-8">
+
+                    <p className="text-xl md:text-2xl text-white/90 leading-relaxed max-w-2xl drop-shadow-md">
+                      We're a team of experienced developers and designers who specialize in creating
+                      digital products that solve real problems. From web applications to mobile apps,
+                      we focus on building solutions that are both functional and beautiful.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Decorative Elements */}
+                <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-brand-purple/30 to-brand-pink/30 rounded-2xl shadow-xl backdrop-blur-sm border border-white/20 hidden md:block"></div>
+                <div className="absolute top-8 right-8 w-16 h-16 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-xl shadow-lg backdrop-blur-sm border border-white/20 hidden lg:block animate-pulse"></div>
+              </div>
             </div>
-            <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-gradient-to-br from-brand-purple to-brand-pink rounded-2xl shadow-xl"></div>
           </div>
         </div>
 
@@ -66,14 +79,14 @@ const About = () => {
               We use the latest tools and technologies to build modern, scalable solutions.
             </p>
           </div>
-          
+
           {/* Full Width Tech Stack Visualization */}
           <div className="relative w-full">
             {/* Full Width Transparent Container */}
             <div className="relative w-full h-[500px] bg-white/10 backdrop-blur-sm border border-white/20 rounded-3xl overflow-hidden">
               {/* Background Pattern */}
               <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/5 via-transparent to-blue-500/5"></div>
-              
+
               {/* Technology Icons Grid */}
               <div className="absolute inset-0 p-8">
                 <div className="grid grid-cols-5 md:grid-cols-8 lg:grid-cols-10 gap-4 h-full">
@@ -88,7 +101,7 @@ const About = () => {
                     { name: "Angular", icon: "https://img.icons8.com/color/48/angularjs.png", delay: 0.7 },
                     { name: "Svelte", icon: "https://img.icons8.com/color/48/svelte.png", delay: 0.8 },
                     { name: "Nuxt.js", icon: "https://img.icons8.com/color/48/nuxt-js.png", delay: 0.9 },
-                    
+
                     { name: "Node.js", icon: "https://img.icons8.com/color/48/nodejs.png", delay: 1.0 },
                     { name: "Python", icon: "https://img.icons8.com/color/48/python.png", delay: 1.1 },
                     { name: "PostgreSQL", icon: "https://img.icons8.com/color/48/postgreesql.png", delay: 1.2 },
@@ -99,7 +112,7 @@ const About = () => {
                     { name: "Flask", icon: "https://img.icons8.com/color/48/flask.png", delay: 1.7 },
                     { name: "Redis", icon: "https://img.icons8.com/color/48/redis.png", delay: 1.8 },
                     { name: "MySQL", icon: "https://img.icons8.com/color/48/mysql.png", delay: 1.9 },
-                    
+
                     { name: "AWS", icon: "https://img.icons8.com/color/48/amazon-web-services.png", delay: 2.0 },
                     { name: "Docker", icon: "https://img.icons8.com/color/48/docker.png", delay: 2.1 },
                     { name: "Kubernetes", icon: "https://img.icons8.com/color/48/kubernetes.png", delay: 2.2 },
@@ -117,9 +130,9 @@ const About = () => {
                     >
                       {/* Tech Icon Card */}
                       <div className="w-16 h-16 rounded-2xl bg-white/80 backdrop-blur-md border border-white/40 shadow-lg hover:shadow-xl transition-all duration-500 hover:scale-110 group-hover:-translate-y-2 flex items-center justify-center">
-                        <img 
-                          src={tech.icon} 
-                          alt={tech.name} 
+                        <img
+                          src={tech.icon}
+                          alt={tech.name}
                           className="w-10 h-10 object-contain"
                         />
                       </div>
@@ -127,7 +140,7 @@ const About = () => {
                   ))}
                 </div>
               </div>
-              
+
               {/* Decorative Elements */}
               <div className="absolute top-4 right-4 w-16 h-16 bg-gradient-to-br from-brand-purple/20 to-brand-pink/20 rounded-2xl backdrop-blur-sm animate-pulse"></div>
               <div className="absolute bottom-4 left-4 w-12 h-12 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-xl backdrop-blur-sm animate-pulse delay-1000"></div>
@@ -146,19 +159,19 @@ const About = () => {
               We bring together technical skills and creative thinking to deliver exceptional results.
             </p>
           </div>
-          
+
           {/* Fullscreen Image with Overlay */}
           <div className="relative h-[700px] rounded-3xl overflow-hidden shadow-2xl">
             {/* Background Image */}
-            <img 
-              src="/images/3d-expert.jpg" 
-              alt="3D expert background" 
+            <img
+              src="/images/3d-expert.jpg"
+              alt="3D expert background"
               className="w-full h-full object-cover"
             />
-            
+
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/40 via-transparent to-blue-500/30"></div>
-            
+
             {/* Expertise Cards - Positioned on Right Side */}
             <div className="absolute inset-0 flex items-center justify-start p-8">
               <div className="w-full max-w-md space-y-4">
@@ -185,7 +198,7 @@ const About = () => {
                 ))}
               </div>
             </div>
-            
+
             {/* Left Side Content */}
             <div className="absolute inset-0 flex items-center justify-end p-8">
               <div className="max-w-lg">
@@ -194,13 +207,13 @@ const About = () => {
                     Building the Future
                   </h3>
                   <p className="text-lg text-white/90 leading-relaxed">
-                    Our expertise spans across modern technologies and methodologies, 
+                    Our expertise spans across modern technologies and methodologies,
                     enabling us to deliver exceptional digital solutions that drive real results.
                   </p>
                 </div>
               </div>
             </div>
-  
+
           </div>
         </div>
 

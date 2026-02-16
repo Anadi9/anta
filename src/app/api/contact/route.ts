@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { createSupabaseServerClient } from '@/lib/supabase';
 
 export async function POST(request: NextRequest) {
+  let dbSaveSuccess = false;
+  let emailSendSuccess = false;
+  let dbError: Error | null = null;
+  let emailError: Error | null = null;
+
   try {
     const body = await request.json();
     const { name, email, startupName, phone, idea, description, budget, timeline } = body;
@@ -12,6 +18,37 @@ export async function POST(request: NextRequest) {
         { error: 'Missing required fields: name, email, idea, and description are required' },
         { status: 400 }
       );
+    }
+
+    // Save to Supabase database first (ensures data persistence)
+    try {
+      const supabase = createSupabaseServerClient();
+      const { data, error: dbErrorResponse } = await supabase
+        .from('contact_submissions')
+        .insert([
+          {
+            name,
+            email,
+            startup_name: startupName || null,
+            phone: phone || null,
+            idea,
+            description,
+            budget: budget || null,
+            timeline: timeline || null,
+          },
+        ])
+        .select();
+
+      if (dbErrorResponse) {
+        throw dbErrorResponse;
+      }
+
+      dbSaveSuccess = true;
+      console.log('Contact form submission saved to database:', data?.[0]?.id);
+    } catch (error) {
+      dbError = error instanceof Error ? error : new Error(String(error));
+      console.error('Error saving to database:', dbError);
+      // Continue with email sending even if database save fails
     }
 
     // Create transporter using Gmail SMTP
@@ -112,30 +149,62 @@ export async function POST(request: NextRequest) {
     `;
 
     // Send email to business
-    await transporter.sendMail({
-      from: `"Anta Contact Form" <${process.env.GMAIL_USER}>`,
-      to: 'antatechh@gmail.com',
-      subject: `New Lead: ${idea} - ${name}`,
-      html: businessEmailContent,
-    });
+    try {
+      await transporter.sendMail({
+        from: `"Anta Contact Form" <${process.env.GMAIL_USER}>`,
+        to: 'antatechh@gmail.com',
+        subject: `New Lead: ${idea} - ${name}`,
+        html: businessEmailContent,
+      });
 
-    // Send confirmation email to client
-    await transporter.sendMail({
-      from: `"Anta Team" <${process.env.GMAIL_USER}>`,
-      to: email,
-      subject: 'Thank you for sharing your idea with Anta!',
-      html: clientEmailContent,
-    });
+      // Send confirmation email to client
+      await transporter.sendMail({
+        from: `"Anta Team" <${process.env.GMAIL_USER}>`,
+        to: email,
+        subject: 'Thank you for sharing your idea with Anta!',
+        html: clientEmailContent,
+      });
 
+      emailSendSuccess = true;
+      console.log('Emails sent successfully');
+    } catch (error) {
+      emailError = error instanceof Error ? error : new Error(String(error));
+      console.error('Error sending email:', emailError);
+      // Continue even if email sending fails
+    }
+
+    // Return success if either database save OR email sending succeeded
+    if (dbSaveSuccess || emailSendSuccess) {
+      const messages = [];
+      if (dbSaveSuccess) messages.push('Data saved to database');
+      if (emailSendSuccess) messages.push('Emails sent successfully');
+      if (!dbSaveSuccess) messages.push('Database save failed (check logs)');
+      if (!emailSendSuccess) messages.push('Email sending failed (check logs)');
+
+      return NextResponse.json(
+        {
+          message: messages.join(', '),
+          saved: dbSaveSuccess,
+          emailSent: emailSendSuccess,
+        },
+        { status: 200 }
+      );
+    }
+
+    // Both failed
     return NextResponse.json(
-      { message: 'Email sent successfully' },
-      { status: 200 }
+      {
+        error: 'Failed to save data and send emails',
+        dbError: dbError?.message,
+        emailError: emailError?.message,
+      },
+      { status: 500 }
     );
 
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('Unexpected error in contact API:', error);
     return NextResponse.json(
-      { error: 'Failed to send email' },
+      { error: 'An unexpected error occurred' },
       { status: 500 }
     );
   }

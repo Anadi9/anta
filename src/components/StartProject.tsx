@@ -4,7 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect } from "react";
-import { Check, Plus, ArrowRight, Award, Shield, Clock, Users, Rocket, ArrowLeft, Sparkles, Zap, Target, Brain, Code, Palette, Database, Smartphone, Globe, ChevronRight, ChevronLeft, Star, Heart, TrendingUp, ShoppingCart } from "lucide-react";
+import { Check, Plus, ArrowRight, Award, Shield, Clock, Users, Rocket, ArrowLeft, Sparkles, Zap, Target, Brain, Code, Palette, Database, Smartphone, Globe, ChevronRight, ChevronLeft, Star, Heart, TrendingUp, ShoppingCart, CheckCircle, Loader2, Mail } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const StartProject = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -23,6 +24,9 @@ const StartProject = () => {
     goals: [] as string[]
   });
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const { toast } = useToast();
 
   const services = [
     { name: "Web Application", icon: Globe, color: "blue", description: "Modern web apps" },
@@ -76,6 +80,9 @@ const StartProject = () => {
   };
 
   const nextStep = () => {
+    if (!validateStep(currentStep)) {
+      return;
+    }
     setIsAnimating(true);
     setTimeout(() => {
       setCurrentStep(prev => Math.min(prev + 1, steps.length - 1));
@@ -94,6 +101,198 @@ const StartProject = () => {
   const updateFormData = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
+
+  const validateStep = (step: number): boolean => {
+    switch (step) {
+      case 0:
+        if (formData.services.length === 0) {
+          toast({
+            title: "Selection Required",
+            description: "Please select at least one service to continue.",
+            variant: "destructive",
+          });
+          return false;
+        }
+        return true;
+      case 1:
+        if (!formData.firstName || !formData.lastName || !formData.email || !formData.company || !formData.title) {
+          toast({
+            title: "Missing Information",
+            description: "Please fill in all required fields (marked with *) to continue.",
+            variant: "destructive",
+          });
+          return false;
+        }
+        // Basic email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+          toast({
+            title: "Invalid Email",
+            description: "Please enter a valid email address.",
+            variant: "destructive",
+          });
+          return false;
+        }
+        return true;
+      case 2:
+        if (!formData.budget || !formData.timeline || !formData.description) {
+          toast({
+            title: "Missing Information",
+            description: "Please fill in all required fields to continue.",
+            variant: "destructive",
+          });
+          return false;
+        }
+        return true;
+      default:
+        return true;
+    }
+  };
+
+  const validateForm = (): boolean => {
+    if (formData.services.length === 0) {
+      toast({
+        title: "Selection Required",
+        description: "Please select at least one service.",
+        variant: "destructive",
+      });
+      return false;
+    }
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.company || !formData.title) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required contact information.",
+        variant: "destructive",
+      });
+      return false;
+    }
+    if (!formData.budget || !formData.timeline || !formData.description) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required project specifications.",
+        variant: "destructive",
+      });
+      return false;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      const response = await fetch('/api/project', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to submit form');
+      }
+
+      const result = await response.json();
+      setIsSuccess(true);
+      
+      toast({
+        title: "Success!",
+        description: "Your project submission has been received. We'll be in touch soon!",
+      });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast({
+        title: "Submission Failed",
+        description: error instanceof Error ? error.message : 'There was an error submitting your form. Please try again or contact us directly at antatechh@gmail.com',
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const resetForm = () => {
+    setIsSuccess(false);
+    setCurrentStep(0);
+    setFormData({
+      services: [],
+      budget: "",
+      timeline: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      company: "",
+      title: "",
+      description: "",
+      experience: "",
+      goals: []
+    });
+  };
+
+  if (isSuccess) {
+    return (
+      <section id="start-project" className="py-20 px-6 relative overflow-hidden bg-gradient-to-br from-background via-background to-muted/20">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgb(59,130,246)_1px,transparent_0)] bg-[length:48px_48px] animate-pulse"></div>
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-purple/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-brand-pink/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        </div>
+        
+        <div className="max-w-4xl mx-auto relative z-10 text-center">
+          <div className="space-y-8">
+            <div className="w-32 h-32 mx-auto bg-gradient-to-br from-brand-purple to-brand-pink rounded-full flex items-center justify-center">
+              <CheckCircle className="w-16 h-16 text-white" />
+            </div>
+            <div className="space-y-4">
+              <h2 className="text-5xl font-bold font-righteous">
+                <span className="block text-foreground">Project Submission</span>
+                <span className="block bg-gradient-brand bg-clip-text text-transparent">
+                  Successful!
+                </span>
+              </h2>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                Thank you for your detailed project submission. Our team has received your information and will review it carefully. We'll be in touch within 24 hours to discuss next steps.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button
+                size="lg"
+                className="bg-brand-purple hover:bg-brand-purple/90 text-white"
+                onClick={resetForm}
+              >
+                Submit Another Project
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-brand-purple text-brand-purple hover:bg-brand-purple hover:text-white"
+                onClick={() => window.location.href = 'mailto:antatechh@gmail.com'}
+              >
+                <Mail className="mr-2 w-5 h-5" />
+                Contact Us Directly
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="start-project" className="py-20 px-6 relative overflow-hidden bg-gradient-to-br from-background via-background to-muted/20">
@@ -242,7 +441,7 @@ const StartProject = () => {
                     <div className="space-y-6">
                       <div>
                         <label className="block text-foreground text-sm font-medium mb-3">
-                          Phone Number *
+                          Phone Number
                         </label>
                         <Input
                           type="tel"
@@ -446,10 +645,21 @@ const StartProject = () => {
                 </Button>
               ) : (
                 <Button
-                  className="flex items-center space-x-2 px-8 py-3 rounded-xl bg-brand-purple hover:bg-brand-purple/90 shadow-lg"
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
+                  className="flex items-center space-x-2 px-8 py-3 rounded-xl bg-brand-purple hover:bg-brand-purple/90 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Rocket className="w-4 h-4" />
-                  <span>Start Development Process</span>
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>Submitting...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Rocket className="w-4 h-4" />
+                      <span>Start Development Process</span>
+                    </>
+                  )}
                 </Button>
               )}
             </div>

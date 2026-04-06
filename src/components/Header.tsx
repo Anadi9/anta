@@ -111,7 +111,7 @@ const Header = () => {
                 className="px-6 bg-brand-navy hover:bg-brand-navy/90 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200"
               >
                 <Code2 className="w-4 h-4 mr-2" />
-                Build MVP
+                Get MVP Strategy
               </Button>
             </Link>
           </div>
@@ -179,7 +179,7 @@ const Header = () => {
                   className="w-full bg-brand-navy hover:bg-brand-navy/90 text-white border-0"
                 >
                   <Code2 className="w-4 h-4 mr-2" />
-                  Build MVP
+                  Get MVP Strategy
                 </Button>
               </Link>
             </div>

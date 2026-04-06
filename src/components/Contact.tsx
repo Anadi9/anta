@@ -7,8 +7,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Mail, MessageCircle, Calendar, ArrowRight, Clock, Shield, Award, Users, Globe, Phone, MapPin, Send, Sparkles, Zap, Target, Brain, Rocket, CheckCircle, Loader2 } from "lucide-react";
 import antaLogo from "@/assets/anta-logo.png";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Contact = () => {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -54,7 +56,7 @@ const Contact = () => {
     },
     {
       id: 'submit',
-      title: 'Start the Conversation',
+      title: 'Get your MVP plan',
       subtitle: 'Ready to explore possibilities?',
       icon: Zap,
       color: 'from-indigo-500 to-purple-500'
@@ -360,10 +362,10 @@ const Contact = () => {
                 variant="outline"
                 size="lg"
                 className="border-brand-purple text-brand-purple hover:bg-brand-purple hover:text-white"
-                onClick={() => window.location.href = 'mailto:hello@anta.dev'}
+                onClick={() => router.push('/start-project')}
               >
-                <Mail className="mr-2 w-5 h-5" />
-                Contact Us Directly
+                <Rocket className="mr-2 w-5 h-5" />
+                Start Your Project
               </Button>
             </div>
           </div>
@@ -498,12 +500,12 @@ const Contact = () => {
                         {isSubmitting ? (
                           <>
                             <Loader2 className="mr-2 w-5 h-5 animate-spin" />
-                            Launching...
+                            Sending...
                           </>
                         ) : (
                           <>
                             <Rocket className="mr-2 w-5 h-5" />
-                            Start the Conversation
+                            Get My MVP Plan
                           </>
                         )}
                       </Button>

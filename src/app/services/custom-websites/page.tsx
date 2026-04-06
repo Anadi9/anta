@@ -69,24 +69,28 @@ const customWebsiteTypes = [
 const processSteps = [
   {
     step: "01",
-    title: "Requirements Analysis",
-    description: "We discuss your needs, goals, and vision for the website."
+    title: "Understand & Validate",
+    description:
+      "Align on the problem, success metrics, and what must be true before we write production code.",
   },
   {
-    step: "02", 
-    title: "Design & Planning",
-    description: "Create wireframes, mockups, and detailed project specifications."
+    step: "02",
+    title: "Build MVP",
+    description:
+      "Ship a lean, testable product with the architecture and instrumentation to learn quickly.",
   },
   {
     step: "03",
-    title: "Development",
-    description: "Build your website using modern technologies and best practices."
+    title: "Launch & Learn",
+    description:
+      "Put the product in front of real users, capture feedback, and double down on what works.",
   },
   {
     step: "04",
-    title: "Testing & Launch",
-    description: "Thorough testing, optimization, and deployment to your hosting."
-  }
+    title: "Scale What Works",
+    description:
+      "Harden the winning flows, automate operations, and grow the system without rework.",
+  },
 ];
 
 export default function CustomWebsitesPage() {

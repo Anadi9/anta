@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Code, Database, Bot, Sparkles, Cpu, Layers, GitBranch, Zap, Award, Rocket } from "lucide-react";
+import { ArrowRight, Code, Cpu, GitBranch, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Terminal from "./ui/terminal";
 
@@ -26,24 +26,17 @@ const Hero = () => {
                 <div className="space-y-8">
                   <div className="flex items-center gap-4 text-lg text-brand-purple font-medium mb-6">
                     <div className="w-3 h-3 bg-brand-purple rounded-full animate-pulse"></div>
-                    <span><span className="font-[700] text-[20px]">A</span>utomating <span className="font-[700] text-[20px]">N</span>ext-Gen <span className="font-[700] text-[20px]">T</span>imeless <span className="font-[700] text-[20px]">A</span>rchitecture</span>
+                    <span className="text-base md:text-lg">AI-powered product studio · Fast validation · Scalable systems</span>
                   </div>
 
-                  <h1 className="text-7xl md:text-9xl font-bold tracking-tight font-righteous leading-tight">
-                    <span className="block text-foreground">
-                      Launch
-                    </span>
-                    <span className="block bg-gradient-brand bg-clip-text text-transparent">
-                      Fast
-                    </span>
-                    <span className="block text-brand-purple text-4xl md:text-7xl font-normal">
-                      Scale Smart
+                  <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight font-righteous leading-[1.1] max-w-3xl">
+                    <span className="bg-gradient-brand bg-clip-text text-transparent">
+                      Turn Ideas Into Revenue-Generating Products — Fast.
                     </span>
                   </h1>
 
-                  <p className="text-2xl text-muted-foreground leading-relaxed max-w-2xl">
-                    We help startups build MVPs that validate ideas and scale into enterprise-grade solutions.
-                    From prototype to production, we're your technical co-founders.
+                  <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-2xl">
+                    We design and build AI-powered MVPs that validate your idea, attract real users, and scale into high-performance systems — without wasting months on the wrong product.
                   </p>
                 </div>
 
@@ -78,7 +71,7 @@ const Hero = () => {
                 className="text-lg px-12 py-6 bg-brand-navy hover:bg-brand-navy/90 text-white border-0 group shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
                 onClick={() => router.push('/start-project')}
               >
-                Build Your MVP
+                Get Your MVP Strategy
                 <ArrowRight className="ml-3 w-5 h-5 transition-transform group-hover:translate-x-1" />
               </Button>
               <Button
@@ -88,7 +81,7 @@ const Hero = () => {
                 onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 <Code className="w-5 h-5 mr-3" />
-                First Consultation Free
+                See How We Build
               </Button>
             </div>
           </div>

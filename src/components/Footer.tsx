@@ -16,7 +16,7 @@ const Footer = () => {
           {/* Brand Section */}
           <div className="flex-1 max-w-md">
             <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-              Building tomorrow's startups today. We craft MVPs that validate ideas and scale into enterprise solutions.
+              ANTA is an AI-powered product studio: MVPs built to validate demand, systems designed for revenue, and architecture that scales when you are ready.
             </p>
             {/* Social Links */}
             <div className="flex items-center gap-6 mb-6">

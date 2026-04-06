@@ -196,7 +196,7 @@ const generateBrandPreview = async (inputs: BrandInputs): Promise<BrandJSON> => 
     "Trustworthy / Corporate": {
       heroTitle: `${companyName} - Trusted Solutions`,
       heroSubtitle: `Professional ${inputs.niche} services you can rely on`,
-      ctaText: inputs.ctaText || "Contact Us",
+      ctaText: inputs.ctaText || "Get Your MVP Strategy",
       stats: [
         { number: "500+", label: "Enterprise Clients" },
         { number: "99.99%", label: "Reliability" },

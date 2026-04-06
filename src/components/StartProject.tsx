@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect } from "react";
-import { Check, Plus, ArrowRight, Award, Shield, Clock, Users, Rocket, ArrowLeft, Sparkles, Zap, Target, Brain, Code, Palette, Database, Smartphone, Globe, ChevronRight, ChevronLeft, Star, Heart, TrendingUp, ShoppingCart, CheckCircle, Loader2, Mail } from "lucide-react";
+import { Check, Plus, ArrowRight, Award, Shield, Clock, Users, Rocket, ArrowLeft, Sparkles, Zap, Target, Brain, Code, Palette, Database, Smartphone, Globe, ChevronRight, ChevronLeft, Star, Heart, TrendingUp, ShoppingCart, CheckCircle, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const StartProject = () => {
@@ -282,10 +282,12 @@ const StartProject = () => {
                 variant="outline"
                 size="lg"
                 className="border-brand-purple text-brand-purple hover:bg-brand-purple hover:text-white"
-                onClick={() => window.location.href = 'mailto:antatechh@gmail.com'}
+                onClick={() => {
+                  window.location.href = '/start-project';
+                }}
               >
-                <Mail className="mr-2 w-5 h-5" />
-                Contact Us Directly
+                <Rocket className="mr-2 w-5 h-5" />
+                Start Your Project
               </Button>
             </div>
           </div>
@@ -652,12 +654,12 @@ const StartProject = () => {
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      <span>Submitting...</span>
+                      <span>Sending...</span>
                     </>
                   ) : (
                     <>
                       <Rocket className="w-4 h-4" />
-                      <span>Start Development Process</span>
+                      <span>Get My MVP Plan</span>
                     </>
                   )}
                 </Button>

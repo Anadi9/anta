@@ -8,9 +8,11 @@ import PerformanceMonitor from '@/components/PerformanceMonitor'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Custom Website Development Services - Professional Web Solutions',
-  description: 'Get custom websites built according to your requirements. Professional web development, UI/UX design, and digital solutions. Contact us for your next project.',
-  keywords: 'custom website development, web development services, website design, custom web solutions, professional web developer, build website, web development company, custom website builder, website creation, web design services',
+  title: 'ANTA — AI Product Studio for MVPs & Revenue Systems',
+  description:
+    'We design and ship AI-powered MVPs that validate demand, attract users, and scale into high-performance systems — for founders who need speed and clarity.',
+  keywords:
+    'AI product studio, MVP development, validation, revenue systems, automation, Next.js, React, founders, product studio',
   authors: [{ name: 'ANTA' }],
   creator: 'ANTA',
   publisher: 'ANTA',
@@ -29,22 +31,24 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://www.theanta.com',
-    siteName: 'ANTA - Custom Website Development Services',
-    title: 'Custom Website Development Services - Professional Web Solutions',
-    description: 'Get custom websites built according to your requirements. Professional web development, UI/UX design, and digital solutions. Contact us for your next project.',
+    siteName: 'ANTA — AI Product Studio',
+    title: 'ANTA — AI Product Studio for MVPs & Revenue Systems',
+    description:
+      'AI-powered MVPs, validation, and scalable systems — built for founders who need to move fast without building the wrong product.',
     images: [
       {
         url: '/images/hero-bg.jpg',
         width: 1200,
         height: 630,
-        alt: 'Custom Website Development Services - Professional Web Solutions',
+        alt: 'ANTA — AI product studio for MVPs and revenue systems',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Custom Website Development Services - Professional Web Solutions',
-    description: 'Get custom websites built according to your requirements. Professional web development, UI/UX design, and digital solutions. Contact us for your next project.',
+    title: 'ANTA — AI Product Studio for MVPs & Revenue Systems',
+    description:
+      'AI-powered MVPs, validation, and scalable systems — built for founders who need to move fast without building the wrong product.',
     images: ['/images/hero-bg.jpg'],
   },
 }

@@ -2,12 +2,12 @@ import { Badge } from "@/components/ui/badge";
 import { Shield, Zap, Database, Cpu, Brain, Cloud, Lock } from "lucide-react";
 
 const expertise = [
-  { icon: Brain, title: "Product Strategy", description: "Define clear roadmaps" },
-  { icon: Zap, title: "Rapid Development", description: "Build fast, iterate faster" },
-  { icon: Database, title: "Data Solutions", description: "Analytics and insights" },
-  { icon: Cpu, title: "Modern Architecture", description: "Scalable and maintainable" },
-  { icon: Cloud, title: "Cloud Deployment", description: "Reliable and cost-effective" },
-  { icon: Shield, title: "Security First", description: "Built-in protection" }
+  { icon: Brain, title: "Product strategy", description: "What to build — and what to defer — for revenue and learning" },
+  { icon: Zap, title: "Rapid execution", description: "MVPs and iterations on timelines founders can plan around" },
+  { icon: Database, title: "Data & insight", description: "Instrumentation that answers business questions, not vanity charts" },
+  { icon: Cpu, title: "Systems architecture", description: "Patterns that scale when traction proves the bet" },
+  { icon: Cloud, title: "Cloud & delivery", description: "Deploy and operate without enterprise overhead" },
+  { icon: Shield, title: "Security & trust", description: "Right-sized controls for stage and risk" }
 ];
 
 const About = () => {
@@ -39,12 +39,12 @@ const About = () => {
               <div className="max-w-3xl">
                 <div className="mb-8">
                   <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold font-righteous leading-tight">
-                    <span className="block text-white">Building</span>
+                    <span className="block text-white">Product</span>
                     <span className="bg-gradient-brand bg-clip-text text-transparent">
-                      Digital Solutions
+                      Studio
                     </span>
                     <span className="block text-brand-purple font-normal text-3xl md:text-4xl lg:text-5xl">
-                      That Actually Work
+                      for serious founders
                     </span>
                   </h1>
                 </div>
@@ -54,9 +54,7 @@ const About = () => {
                   <div className="space-y-8">
 
                     <p className="text-xl md:text-2xl text-white/90 leading-relaxed max-w-2xl drop-shadow-md">
-                      We're a team of experienced developers and designers who specialize in creating
-                      digital products that solve real problems. From web applications to mobile apps,
-                      we focus on building solutions that are both functional and beautiful.
+                      We partner with founders to turn ideas into validated, revenue-generating products using AI and scalable system design — so you ship what the market rewards, not what felt good in a slide deck.
                     </p>
                   </div>
                 </div>
@@ -76,7 +74,7 @@ const About = () => {
               <span className="bg-gradient-brand bg-clip-text text-transparent">Technology Stack</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              We use the latest tools and technologies to build modern, scalable solutions.
+              A stack chosen for speed, maintainability, and scale — so your MVP can grow into a real business without a rewrite.
             </p>
           </div>
 
@@ -156,7 +154,7 @@ const About = () => {
               <span className="bg-gradient-brand bg-clip-text text-transparent">Our Expertise</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              We bring together technical skills and creative thinking to deliver exceptional results.
+              From validation to revenue systems — execution, product judgment, and technical depth in one team.
             </p>
           </div>
 
@@ -204,11 +202,10 @@ const About = () => {
               <div className="max-w-lg">
                 <div className="p-4 rounded-2xl bg-black/60 backdrop-blur-md border border-white/20 mt-80">
                   <h3 className="text-3xl font-bold text-[#C20566] mb-2">
-                    Building the Future
+                    Outcomes over output
                   </h3>
                   <p className="text-lg text-white/90 leading-relaxed">
-                    Our expertise spans across modern technologies and methodologies,
-                    enabling us to deliver exceptional digital solutions that drive real results.
+                    We measure success by learning velocity, revenue signals, and systems you can scale — not feature counts or vanity launches.
                   </p>
                 </div>
               </div>

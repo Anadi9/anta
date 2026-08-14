@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas" />
+<title>ANTA — Section concepts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #E9E7E0; color: #16171A; font-family: 'Space Grotesk', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #C20A62; text-decoration: none; }
+  a:hover { color: #8E0847; }
+  @keyframes ck-blink { 0%, 48% { opacity: 1; } 49%, 100% { opacity: 0; } }
+  @keyframes ck-pulse { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
+  @keyframes ck-sweep { 0% { transform: translateX(-100%); } 100% { transform: translateX(400%); } }
+</style>
+</helmet>
+
+<section style="padding: 56px clamp(20px, 4vw, 64px) 96px;">
+
+  <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px; max-width: 1160px; margin: 0 0 40px;">
+    <div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #C20A62; margin-bottom: 14px;">Turn 1 &nbsp;/&nbsp; four directions</div>
+      <h1 style="margin: 0; font-size: 34px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 700;">&ldquo;What we build &mdash; and how it actually runs.&rdquo;</h1>
+    </div>
+    <p style="margin: 0; max-width: 40ch; font-size: 13.5px; line-height: 1.7; color: #5F5D57; text-wrap: pretty;">Same content, four different arguments: the run, the drawing, the handoffs, or the hours. Each shows the ops-reporting workflow so you can compare like for like. Reference them as <a href="#1a">1a</a>&ndash;<a href="#1d">1d</a>.</p>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 44px;">
+
+    <!-- ============ 1a — RUN LOG ============ -->
+    <div id="1a" style="flex: 1 1 1120px; max-width: 1160px;">
+      <div style="display: flex; align-items: baseline; gap: 14px; margin-bottom: 14px;">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; background: #16171A; color: #F7F6F3; padding: 5px 9px;">1a</span>
+        <span style="font-size: 17px; font-weight: 600; letter-spacing: -0.015em;">Run log</span>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7C7A73;">the proof, not the picture &mdash; a real execution trace</span>
+      </div>
+
+      <div style="background: #0B0C0E; color: #F5F4F1; border: 1px solid #16171A;">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 26px; padding: 46px 44px 34px;">
+          <div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #FF3585; margin-bottom: 14px;">Built on</div>
+            <h2 style="margin: 0; font-size: 38px; line-height: 1.08; letter-spacing: -0.03em; font-weight: 700; max-width: 18ch; color: #F7F6F3;">What we build &mdash; and how it actually runs.</h2>
+          </div>
+          <p style="margin: 0; max-width: 32ch; font-size: 13.5px; line-height: 1.7; color: #8E8C86; text-wrap: pretty;">Every system we ship writes a trace like this one, every morning, whether anyone is watching or not.</p>
+        </div>
+
+        <div style="margin: 0 44px 44px; border: 1px solid rgba(245,244,241,0.16); background: rgba(255,255,255,0.02);">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 18px; border-bottom: 1px solid rgba(245,244,241,0.14); font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: #7C7A75;">
+            <span style="display: flex; align-items: center; gap: 10px;"><span style="width: 7px; height: 7px; background: #FF3585; animation: ck-pulse 2.2s ease-in-out infinite;"></span>ops-reporting.run</span>
+            <span>cron 07:45 &nbsp;&middot;&nbsp; run #1,284</span>
+          </div>
+
+          <div style="padding: 16px 18px 20px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 2.1; color: #A9A7A1;">
+            <div style="display: grid; grid-template-columns: 78px 20px 78px 1fr 92px 66px; gap: 0 14px; align-items: baseline;">
+              <span style="color: #57554F;">07:45:00</span><span style="color: #7C7A75;">&#9656;</span><span style="color: #F5F4F1;">pull</span><span>orders, refunds, and churn</span><span style="color: #6E6C68;">mongodb</span><span style="color: #57554F; text-align: right;">412ms</span>
+              <span style="color: #57554F;">07:45:00</span><span style="color: #7C7A75;">&#9656;</span><span style="color: #F5F4F1;">pull</span><span>sheets + billing export</span><span style="color: #6E6C68;">sheets</span><span style="color: #57554F; text-align: right;">380ms</span>
+              <span style="color: #57554F;">07:45:01</span><span style="color: #FF3585;">&#10003;</span><span style="color: #F5F4F1;">merge</span><span>1,284 rows collapsed into one schema</span><span style="color: #6E6C68;">fastapi</span><span style="color: #57554F; text-align: right;">1.2s</span>
+              <span style="color: #57554F;">07:45:03</span><span style="color: #FF3585;">&#10003;</span><span style="color: #F5F4F1;">narrate</span><span>weekly summary drafted, numbers cited</span><span style="color: #6E6C68;">claude</span><span style="color: #57554F; text-align: right;">3.4s</span>
+              <span style="color: #57554F;">07:45:06</span><span style="color: #FF3585;">!</span><span style="color: #FF3585;">variance</span><span style="color: #FFB8D6;">refunds +18% against target &mdash; flagged</span><span style="color: #6E6C68;">python</span><span style="color: #57554F; text-align: right;">40ms</span>
+              <span style="color: #57554F;">07:45:06</span><span style="color: #7C7A75;">&rarr;</span><span style="color: #F5F4F1;">post</span><span>#ops-daily, two owners tagged</span><span style="color: #6E6C68;">slack</span><span style="color: #57554F; text-align: right;">210ms</span>
+              <span style="color: #57554F;">07:45:06</span><span style="color: #7C7A75;">&rarr;</span><span style="color: #F5F4F1;">alert</span><span>refunds owner pinged directly</span><span style="color: #6E6C68;">slack</span><span style="color: #57554F; text-align: right;">190ms</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(245,244,241,0.12); color: #F5F4F1;">
+              <span style="color: #FF3585;">&#10003;</span><span>run complete in 7.1s</span><span style="color: #57554F;">&middot;</span><span style="color: #7C7A75;">human time 0m</span><span style="color: #57554F;">&middot;</span><span style="color: #7C7A75;">replaced 6h 10m/week</span>
+              <span style="width: 8px; height: 15px; background: #FF3585; animation: ck-blink 1.1s steps(1) infinite;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #7C7A73; margin-top: 10px;">Motion: lines type in on scroll, one every ~250ms &nbsp;&middot;&nbsp; five tabs above the log switch workflows</div>
+    </div>
+
+    <!-- ============ 1b — SCHEMATIC SHEET ============ -->
+    <div id="1b" style="flex: 1 1 1120px; max-width: 1160px;">
+      <div style="display: flex; align-items: baseline; gap: 14px; margin-bottom: 14px;">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; background: #16171A; color: #F7F6F3; padding: 5px 9px;">1b</span>
+        <span style="font-size: 17px; font-weight: 600; letter-spacing: -0.015em;">Schematic sheet</span>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7C7A73;">engineering drawing &mdash; hairlines, callouts, a parts list</span>
+      </div>
+
+      <div style="background: #F4F2EC; border: 1px solid #16171A; background-image: linear-gradient(rgba(22,23,26,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(22,23,26,0.05) 1px, transparent 1px); background-size: 26px 26px;">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px; padding: 40px 40px 30px; border-bottom: 1px solid #16171A;">
+          <div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #C20A62; margin-bottom: 14px;">Built on</div>
+            <h2 style="margin: 0; font-size: 38px; line-height: 1.08; letter-spacing: -0.03em; font-weight: 700; max-width: 18ch;">What we build &mdash; and how it actually runs.</h2>
+          </div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #5F5D57; text-align: right; line-height: 2;">
+            <div>Sheet 03 of 05</div>
+            <div>Ops reporting</div>
+            <div style="color: #C20A62;">Rev 2.1 &middot; shipped</div>
+          </div>
+        </div>
+
+        <div style="padding: 46px 40px 34px;">
+          <div style="display: flex; align-items: stretch; gap: 0;">
+
+            <div style="flex: 1 1 0; min-width: 0;">
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #C20A62;">01</div>
+              <div style="border: 1px solid #16171A; background: #FBFAF7; padding: 14px 15px; margin-top: 8px;">
+                <div style="font-size: 14px; font-weight: 600; letter-spacing: -0.01em;">Ingest</div>
+                <div style="font-size: 11.5px; line-height: 1.5; color: #5F5D57; margin-top: 5px;">Database, sheets, and billing on one clock</div>
+              </div>
+            </div>
+            <div style="flex: 0 0 46px; display: flex; align-items: center;"><span style="display: block; width: 100%; height: 1px; background: #16171A;"></span></div>
+
+            <div style="flex: 1 1 0; min-width: 0;">
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #C20A62;">02</div>
+              <div style="border: 1px solid #16171A; background: #FBFAF7; padding: 14px 15px; margin-top: 8px;">
+                <div style="font-size: 14px; font-weight: 600; letter-spacing: -0.01em;">Normalize</div>
+                <div style="font-size: 11.5px; line-height: 1.5; color: #5F5D57; margin-top: 5px;">One schema, deduped and typed</div>
+              </div>
+            </div>
+            <div style="flex: 0 0 46px; display: flex; align-items: center;"><span style="display: block; width: 100%; height: 1px; background: #16171A;"></span></div>
+
+            <div style="flex: 1 1 0; min-width: 0;">
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #C20A62;">03</div>
+              <div style="border: 1px solid #16171A; background: #FBFAF7; padding: 14px 15px; margin-top: 8px;">
+                <div style="font-size: 14px; font-weight: 600; letter-spacing: -0.01em;">Summarize</div>
+                <div style="font-size: 11.5px; line-height: 1.5; color: #5F5D57; margin-top: 5px;">Claude writes the narrative, not the numbers</div>
+              </div>
+            </div>
+            <div style="flex: 0 0 46px; display: flex; align-items: center;"><span style="display: block; width: 100%; height: 1px; background: #16171A;"></span></div>
+
+            <div style="flex: 1 1 0; min-width: 0;">
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #C20A62;">04</div>
+              <div style="border: 1px solid #C20A62; border-left-width: 3px; background: #FBFAF7; padding: 14px 15px; margin-top: 8px;">
+                <div style="font-size: 14px; font-weight: 600; letter-spacing: -0.01em;">Variance gate</div>
+                <div style="font-size: 11.5px; line-height: 1.5; color: #5F5D57; margin-top: 5px;">Anything off pace against target</div>
+              </div>
+            </div>
+            <div style="flex: 0 0 46px; display: flex; align-items: center;"><span style="display: block; width: 100%; height: 1px; background: #16171A;"></span></div>
+
+            <div style="flex: 1 1 0; min-width: 0;">
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #C20A62;">05</div>
+              <div style="border: 1px solid #16171A; background: #FBFAF7; padding: 14px 15px; margin-top: 8px;">
+                <div style="font-size: 14px; font-weight: 600; letter-spacing: -0.01em;">Digest &amp; alert</div>
+                <div style="font-size: 11.5px; line-height: 1.5; color: #5F5D57; margin-top: 5px;">One Slack post; owners pinged only on a flag</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 40px; border-top: 1px solid #16171A;">
+            <div style="display: grid; grid-template-columns: 60px 1.4fr 1fr 1fr 90px; gap: 0 20px; padding: 11px 2px; border-bottom: 1px solid rgba(22,23,26,0.25); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #5F5D57;">
+              <span>No.</span><span>Operation</span><span>Runs on</span><span>Failure mode</span><span style="text-align: right;">Latency</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 60px 1.4fr 1fr 1fr 90px; gap: 0 20px; padding: 11px 2px; border-bottom: 1px solid rgba(22,23,26,0.14); font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #2C2B27;">
+              <span style="color: #C20A62;">01</span><span>Ingest</span><span style="color: #5F5D57;">MongoDB &middot; Sheets</span><span style="color: #5F5D57;">retry &times;3, then hold</span><span style="text-align: right; color: #5F5D57;">0.8s</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 60px 1.4fr 1fr 1fr 90px; gap: 0 20px; padding: 11px 2px; border-bottom: 1px solid rgba(22,23,26,0.14); font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #2C2B27;">
+              <span style="color: #C20A62;">02</span><span>Normalize</span><span style="color: #5F5D57;">FastAPI &middot; Python</span><span style="color: #5F5D57;">bad row quarantined</span><span style="text-align: right; color: #5F5D57;">1.2s</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 60px 1.4fr 1fr 1fr 90px; gap: 0 20px; padding: 11px 2px; border-bottom: 1px solid rgba(22,23,26,0.14); font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #2C2B27;">
+              <span style="color: #C20A62;">03</span><span>Summarize</span><span style="color: #5F5D57;">Claude</span><span style="color: #5F5D57;">falls back to raw table</span><span style="text-align: right; color: #5F5D57;">3.4s</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 60px 1.4fr 1fr 1fr 90px; gap: 0 20px; padding: 11px 2px; border-bottom: 1px solid rgba(22,23,26,0.14); font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #2C2B27;">
+              <span style="color: #C20A62;">04</span><span>Variance gate</span><span style="color: #5F5D57;">Python</span><span style="color: #5F5D57;">defaults to no alert</span><span style="text-align: right; color: #5F5D57;">40ms</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 60px 1.4fr 1fr 1fr 90px; gap: 0 20px; padding: 11px 2px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #2C2B27;">
+              <span style="color: #C20A62;">05</span><span>Digest &amp; alert</span><span style="color: #5F5D57;">Slack &middot; Mail</span><span style="color: #5F5D57;">queued, never dropped</span><span style="text-align: right; color: #5F5D57;">0.4s</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #7C7A73; margin-top: 10px;">Motion: none &mdash; static and precise &nbsp;&middot;&nbsp; sheet number cycles through the five workflows</div>
+    </div>
+
+    <!-- ============ 1c — SWIMLANES ============ -->
+    <div id="1c" style="flex: 1 1 1120px; max-width: 1160px;">
+      <div style="display: flex; align-items: baseline; gap: 14px; margin-bottom: 14px;">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; background: #16171A; color: #F7F6F3; padding: 5px 9px;">1c</span>
+        <span style="font-size: 17px; font-weight: 600; letter-spacing: -0.015em;">System swimlanes</span>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7C7A73;">who does what &mdash; the handoffs between your tools</span>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #16171A;">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px; padding: 40px 40px 30px;">
+          <div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #C20A62; margin-bottom: 14px;">Built on</div>
+            <h2 style="margin: 0; font-size: 38px; line-height: 1.08; letter-spacing: -0.03em; font-weight: 700; max-width: 18ch;">What we build &mdash; and how it actually runs.</h2>
+          </div>
+          <p style="margin: 0; max-width: 30ch; font-size: 13.5px; line-height: 1.7; color: #5F5D57; text-wrap: pretty;">The tools you already pay for, doing the passing. We only build the parts that are missing.</p>
+        </div>
+
+        <div style="display: flex; border-top: 1px solid #E0DCD3;">
+          <div style="flex: 0 0 168px; border-right: 1px solid #E0DCD3;">
+            <div style="height: 42px; border-bottom: 1px solid #E0DCD3; display: flex; align-items: center; padding: 0 16px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #94918A;">Lane</div>
+            <div style="height: 82px; border-bottom: 1px solid #F0EDE6; display: flex; align-items: center; padding: 0 16px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #2C2B27;">MongoDB</div>
+            <div style="height: 82px; border-bottom: 1px solid #F0EDE6; display: flex; align-items: center; padding: 0 16px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #2C2B27;">Sheets</div>
+            <div style="height: 82px; border-bottom: 1px solid #F0EDE6; display: flex; align-items: center; padding: 0 16px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #2C2B27;">FastAPI</div>
+            <div style="height: 82px; border-bottom: 1px solid #F0EDE6; display: flex; align-items: center; padding: 0 16px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #C20A62;">Claude</div>
+            <div style="height: 82px; display: flex; align-items: center; padding: 0 16px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #2C2B27;">Slack</div>
+          </div>
+
+          <div style="flex: 1 1 auto; min-width: 0;">
+            <div style="display: grid; grid-template-columns: repeat(6, 1fr); height: 42px; border-bottom: 1px solid #E0DCD3; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #94918A;">
+              <span style="display: flex; align-items: center; padding-left: 14px; border-left: 1px solid #F0EDE6;">07:45:00</span>
+              <span style="display: flex; align-items: center; padding-left: 14px; border-left: 1px solid #F0EDE6;">:01</span>
+              <span style="display: flex; align-items: center; padding-left: 14px; border-left: 1px solid #F0EDE6;">:03</span>
+              <span style="display: flex; align-items: center; padding-left: 14px; border-left: 1px solid #F0EDE6;">:06</span>
+              <span style="display: flex; align-items: center; padding-left: 14px; border-left: 1px solid #F0EDE6;">:06</span>
+              <span style="display: flex; align-items: center; padding-left: 14px; border-left: 1px solid #F0EDE6;">:07</span>
+            </div>
+
+            <div style="position: relative; height: 410px;">
+              <svg viewBox="0 0 600 500" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%;">
+                <path d="M 94 50 L 100 50 L 100 250 L 106 250" fill="none" stroke="#C20A62" stroke-width="1" vector-effect="non-scaling-stroke"></path>
+                <path d="M 94 150 L 100 150 L 100 250 L 106 250" fill="none" stroke="#C20A62" stroke-width="1" vector-effect="non-scaling-stroke"></path>
+                <path d="M 194 250 L 200 250 L 200 350 L 206 350" fill="none" stroke="#C20A62" stroke-width="1" vector-effect="non-scaling-stroke"></path>
+                <path d="M 294 350 L 300 350 L 300 250 L 306 250" fill="none" stroke="#C20A62" stroke-width="1" vector-effect="non-scaling-stroke"></path>
+                <path d="M 394 250 L 400 250 L 400 450 L 406 450" fill="none" stroke="#C20A62" stroke-width="1" vector-effect="non-scaling-stroke"></path>
+                <path d="M 494 450 L 506 450" fill="none" stroke="#C20A62" stroke-width="1" vector-effect="non-scaling-stroke"></path>
+              </svg>
+
+              <div style="position: absolute; inset: 0; display: grid; grid-template-columns: repeat(6, 1fr); grid-template-rows: repeat(5, 1fr);">
+                <div style="grid-column: 1; grid-row: 1; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 2; grid-row: 1; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 3; grid-row: 1; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 4; grid-row: 1; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 5; grid-row: 1; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 6; grid-row: 1; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 1; grid-row: 2; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 2; grid-row: 2; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 3; grid-row: 2; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 4; grid-row: 2; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 5; grid-row: 2; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 6; grid-row: 2; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 1; grid-row: 3; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 2; grid-row: 3; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 3; grid-row: 3; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 4; grid-row: 3; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 5; grid-row: 3; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 6; grid-row: 3; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 1; grid-row: 4; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 2; grid-row: 4; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 3; grid-row: 4; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 4; grid-row: 4; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 5; grid-row: 4; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 6; grid-row: 4; border-left: 1px solid #F0EDE6; border-bottom: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 1; grid-row: 5; border-left: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 2; grid-row: 5; border-left: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 3; grid-row: 5; border-left: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 4; grid-row: 5; border-left: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 5; grid-row: 5; border-left: 1px solid #F0EDE6;"></div>
+                <div style="grid-column: 6; grid-row: 5; border-left: 1px solid #F0EDE6;"></div>
+              </div>
+
+              <div style="position: absolute; inset: 0; display: grid; grid-template-columns: repeat(6, 1fr); grid-template-rows: repeat(5, 1fr);">
+                <div style="grid-column: 1; grid-row: 1; align-self: center; margin: 0 8px; border: 1px solid #16171A; background: #FFFFFF; padding: 9px 11px;">
+                  <div style="font-size: 12.5px; font-weight: 600; letter-spacing: -0.01em;">Pull orders</div>
+                  <div style="font-size: 10.5px; line-height: 1.4; color: #7C7A73; margin-top: 3px;">refunds &amp; churn</div>
+                </div>
+                <div style="grid-column: 1; grid-row: 2; align-self: center; margin: 0 8px; border: 1px solid #16171A; background: #FFFFFF; padding: 9px 11px;">
+                  <div style="font-size: 12.5px; font-weight: 600; letter-spacing: -0.01em;">Pull billing</div>
+                  <div style="font-size: 10.5px; line-height: 1.4; color: #7C7A73; margin-top: 3px;">kept by hand</div>
+                </div>
+                <div style="grid-column: 2; grid-row: 3; align-self: center; margin: 0 8px; border: 1px solid #16171A; background: #FFFFFF; padding: 9px 11px;">
+                  <div style="font-size: 12.5px; font-weight: 600; letter-spacing: -0.01em;">Normalize</div>
+                  <div style="font-size: 10.5px; line-height: 1.4; color: #7C7A73; margin-top: 3px;">1,284 rows</div>
+                </div>
+                <div style="grid-column: 3; grid-row: 4; align-self: center; margin: 0 8px; border: 1px solid #C20A62; background: #FFFFFF; padding: 9px 11px; box-shadow: 0 10px 26px -18px rgba(194,10,98,0.9);">
+                  <div style="font-size: 12.5px; font-weight: 600; letter-spacing: -0.01em;">Summarize</div>
+                  <div style="font-size: 10.5px; line-height: 1.4; color: #7C7A73; margin-top: 3px;">narrative, cited</div>
+                </div>
+                <div style="grid-column: 4; grid-row: 3; align-self: center; margin: 0 8px; border: 1px solid #C20A62; border-left-width: 3px; background: #FFFFFF; padding: 9px 11px;">
+                  <div style="font-size: 12.5px; font-weight: 600; letter-spacing: -0.01em;">Variance gate</div>
+                  <div style="font-size: 10.5px; line-height: 1.4; color: #7C7A73; margin-top: 3px;">off pace?</div>
+                </div>
+                <div style="grid-column: 5; grid-row: 5; align-self: center; margin: 0 8px; border: 1px solid #16171A; background: #FFFFFF; padding: 9px 11px;">
+                  <div style="font-size: 12.5px; font-weight: 600; letter-spacing: -0.01em;">Digest</div>
+                  <div style="font-size: 10.5px; line-height: 1.4; color: #7C7A73; margin-top: 3px;">#ops-daily</div>
+                </div>
+                <div style="grid-column: 6; grid-row: 5; align-self: center; margin: 0 8px; border: 1px solid #16171A; background: #FFFFFF; padding: 9px 11px;">
+                  <div style="font-size: 12.5px; font-weight: 600; letter-spacing: -0.01em;">Alert owner</div>
+                  <div style="font-size: 10.5px; line-height: 1.4; color: #7C7A73; margin-top: 3px;">only on a flag</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 18px; padding: 14px 40px; border-top: 1px solid #E0DCD3; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #94918A;">
+          <span>5 systems &middot; 7 handoffs &middot; 0 people</span>
+          <span style="margin-left: auto; color: #C20A62;">6 hrs/week back to the team</span>
+        </div>
+      </div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #7C7A73; margin-top: 10px;">Motion: a token slides lane to lane along the connectors &nbsp;&middot;&nbsp; lanes re-label per workflow</div>
+    </div>
+
+    <!-- ============ 1d — THE LEDGER ============ -->
+    <div id="1d" style="flex: 1 1 1120px; max-width: 1160px;">
+      <div style="display: flex; align-items: baseline; gap: 14px; margin-bottom: 14px;">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; background: #16171A; color: #F7F6F3; padding: 5px 9px;">1d</span>
+        <span style="font-size: 17px; font-weight: 600; letter-spacing: -0.015em;">The ledger</span>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7C7A73;">hours, not architecture &mdash; what the flow deletes</span>
+      </div>
+
+      <div style="background: #F7F6F3; border: 1px solid #16171A;">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px; padding: 40px 40px 30px;">
+          <div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #C20A62; margin-bottom: 14px;">Built on</div>
+            <h2 style="margin: 0; font-size: 38px; line-height: 1.08; letter-spacing: -0.03em; font-weight: 700; max-width: 18ch;">What we build &mdash; and how it actually runs.</h2>
+          </div>
+          <p style="margin: 0; max-width: 30ch; font-size: 13.5px; line-height: 1.7; color: #5F5D57; text-wrap: pretty;">Ops reporting, before and after. The diagram is the boring part; this is the part you feel.</p>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; border-top: 1px solid #16171A;">
+          <div style="flex: 1 1 460px; min-width: 0; padding: 30px 40px 34px; border-right: 1px solid #E0DCD3;">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #94918A; padding-bottom: 14px; border-bottom: 1px solid #E0DCD3;">
+              <span>Before &mdash; every weekday, by hand</span><span>74 min</span>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+              <div style="display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid #EAE7DF; font-size: 13.5px; color: #94918A; text-decoration: line-through;"><span>Export orders and refunds from the database</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px;">12 min</span></div>
+              <div style="display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid #EAE7DF; font-size: 13.5px; color: #94918A; text-decoration: line-through;"><span>Chase the billing sheet someone forgot to update</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px;">9 min</span></div>
+              <div style="display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid #EAE7DF; font-size: 13.5px; color: #94918A; text-decoration: line-through;"><span>Paste both into the master tab, fix the columns</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px;">15 min</span></div>
+              <div style="display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid #EAE7DF; font-size: 13.5px; color: #94918A; text-decoration: line-through;"><span>Eyeball it for anything that looks wrong</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px;">14 min</span></div>
+              <div style="display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid #EAE7DF; font-size: 13.5px; color: #94918A; text-decoration: line-through;"><span>Write the summary post nobody has time to write</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px;">18 min</span></div>
+              <div style="display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; font-size: 13.5px; color: #94918A; text-decoration: line-through;"><span>Chase the one owner who needs to know</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px;">6 min</span></div>
+            </div>
+          </div>
+
+          <div style="flex: 1 1 460px; min-width: 0; padding: 30px 40px 34px; background: #FFFFFF; position: relative; overflow: hidden;">
+            <div aria-hidden="true" style="position: absolute; top: 0; left: 0; width: 24%; height: 2px; background: linear-gradient(to right, transparent, #C20A62, transparent); animation: ck-sweep 5.5s linear infinite;"></div>
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #C20A62; padding-bottom: 14px; border-bottom: 1px solid #E0DCD3;">
+              <span>After &mdash; 07:45, unattended</span><span>7.1 sec</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid #EAE7DF; font-size: 13.5px; color: #16171A;"><span>One Slack digest, written and cited</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #5F5D57;">auto</span></div>
+            <div style="display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid #EAE7DF; font-size: 13.5px; color: #16171A;"><span>Refunds owner pinged &mdash; only because it was off pace</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #5F5D57;">auto</span></div>
+            <div style="display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; font-size: 13.5px; color: #16171A;"><span>Everything else stayed quiet</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #5F5D57;">auto</span></div>
+
+            <div style="display: flex; align-items: flex-end; gap: 18px; margin-top: 30px; padding-top: 24px; border-top: 1px solid #16171A;">
+              <div style="font-size: 62px; line-height: 0.9; font-weight: 700; letter-spacing: -0.04em; color: #C20A62;">6 hrs</div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.7; color: #5F5D57; padding-bottom: 4px;">back to the team,<br />every week</div>
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 26px;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; border: 1px solid #E0DCD3; color: #5F5D57; padding: 5px 8px;">MongoDB</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; border: 1px solid #E0DCD3; color: #5F5D57; padding: 5px 8px;">Sheets</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; border: 1px solid #E0DCD3; color: #5F5D57; padding: 5px 8px;">FastAPI</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; border: 1px solid #C20A62; color: #16171A; padding: 5px 8px;">Claude</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; border: 1px solid #E0DCD3; color: #5F5D57; padding: 5px 8px;">Slack</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #7C7A73; margin-top: 10px;">Motion: the left column strikes through row by row as the right column fills &nbsp;&middot;&nbsp; five tabs switch the ledger</div>
+    </div>
+
+  </div>
+</section>
+</x-dc>
+</body>
+</html>

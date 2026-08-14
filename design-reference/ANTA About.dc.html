@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>About — ANTA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/motion@11.11.17/dist/motion.js"></script>
+<style>
+  html { scroll-behavior: smooth; background: #F7F6F3; }
+  body { margin: 0; background: #F7F6F3; color: #16171A; font-family: 'Space Grotesk', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  ::selection { background: var(--acc, #C20A62); color: #F7F6F3; }
+  a { color: #16171A; text-decoration: none; }
+  a:hover { color: var(--acc, #C20A62); }
+  :focus-visible { outline: 2px solid var(--acc, #C20A62); outline-offset: 3px; }
+  @keyframes anta-breathe { 0%, 100% { opacity: .28 } 50% { opacity: 1 } }
+  @keyframes anta-pulse-bar { 0% { transform: scaleX(0); } 100% { transform: scaleX(1); } }
+  @keyframes anta-blink { 0%, 100% { opacity: 1 } 50% { opacity: .25 } }
+  details > summary { list-style: none; }
+  details > summary::-webkit-details-marker { display: none; }
+</style>
+<script>
+(function waitForCurve() {
+  var root = document.getElementById('ab-chart');
+  if (!root || !window.gsap || !document.getElementById('ab-curve-canvas')) { setTimeout(waitForCurve, 120); return; }
+  (function () {
+  var canvas = document.getElementById('ab-curve-canvas');
+  var ctx = canvas.getContext('2d');
+  var W, H, dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var ACC = [194, 10, 98];
+  function size() {
+    var r = root.getBoundingClientRect();
+    W = r.width; H = r.height;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  size();
+  window.addEventListener('resize', size);
+  function curvePt(t) {
+    var sx = W / 1200, sy = H / 300;
+    var P = [[30,246],[504,180],[792,42],[1164,15]];
+    var u = 1 - t;
+    var x = u*u*u*P[0][0] + 3*u*u*t*P[1][0] + 3*u*t*t*P[2][0] + t*t*t*P[3][0];
+    var y = u*u*u*P[0][1] + 3*u*u*t*P[1][1] + 3*u*t*t*P[2][1] + t*t*t*P[3][1];
+    return [x * sx, y * sy];
+  }
+  var motes = [];
+  for (var i = 0; i < 46; i++) motes.push({ u: Math.random(), speed: 0.06 + Math.random() * 0.09, r: 1 + Math.random() * 2.2, phase: Math.random() * Math.PI * 2 });
+  var t0 = performance.now();
+  function frame(now) {
+    var t = (now - t0) / 1000;
+    ctx.clearRect(0, 0, W, H);
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    for (var i = 0; i < motes.length; i++) {
+      var m = motes[i];
+      var u = (m.u + t * m.speed) % 1;
+      var p = curvePt(u);
+      var flick = 0.55 + 0.45 * Math.sin(t * 2.4 + m.phase);
+      var glow = ctx.createRadialGradient(p[0], p[1], 0, p[0], p[1], m.r * 9);
+      glow.addColorStop(0, 'rgba(' + ACC[0] + ',' + ACC[1] + ',' + ACC[2] + ',' + (0.55 * flick) + ')');
+      glow.addColorStop(1, 'rgba(' + ACC[0] + ',' + ACC[1] + ',' + ACC[2] + ',0)');
+      ctx.fillStyle = glow;
+      ctx.beginPath(); ctx.arc(p[0], p[1], m.r * 9, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = 'rgba(255,235,244,' + (0.85 * flick) + ')';
+      ctx.beginPath(); ctx.arc(p[0], p[1], m.r, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.restore();
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  var tl = gsap.timeline({ delay: 0.15 });
+  tl.from('#ab-eyebrow', { opacity: 0, y: 8, duration: 0.5 })
+    .from('#ab-h1', { opacity: 0, y: 22, duration: 0.7, ease: 'power3.out' }, '-=0.2')
+    .from('#ab-p', { opacity: 0, y: 14, duration: 0.6 }, '-=0.35')
+    .to('#ab-path', { strokeDashoffset: 0, duration: 2.2, ease: 'power2.inOut' }, '-=0.1')
+    .to('#ab-marker', { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(3)' }, '-=0.5')
+    .from('#ab-labels .ab-label', { opacity: 0, y: 10, duration: 0.45, stagger: 0.08 }, '-=0.2')
+    .add(function () {
+      gsap.to('#ab-ring', { scale: 2.4, opacity: 0, duration: 1.8, ease: 'power1.out', repeat: -1, repeatDelay: 0.4 });
+    });
+  gsap.to('#ab-glowfield', { opacity: 0.9, duration: 4, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+  if (window.Motion && window.Motion.animate) {
+    document.querySelectorAll('.ab-stagecard').forEach(function (el) {
+      el.addEventListener('mouseenter', function () { window.Motion.animate(el, { y: -6, borderColor: 'rgba(194,10,98,0.6)' }, { duration: 0.35, easing: [0.2, 0.8, 0.2, 1] }); });
+      el.addEventListener('mouseleave', function () { window.Motion.animate(el, { y: 0, borderColor: 'rgba(255,255,255,0.08)' }, { duration: 0.4, easing: [0.2, 0.8, 0.2, 1] }); });
+    });
+  }
+  })();
+})();
+</script>
+</helmet>
+
+<div style="position: relative; background: #F7F6F3; min-height: 100vh; overflow-x: hidden;">
+
+  <div aria-hidden="true" style="position: fixed; inset: 0; pointer-events: none; z-index: 0; background-image: repeating-linear-gradient(118deg, var(--tex, rgba(22,23,26,0.032)) 0 1px, transparent 1px 13px); mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.35) 42%, transparent 78%);"></div>
+  <div aria-hidden="true" style="position: fixed; top: -22vh; right: -12vw; width: 62vw; height: 62vw; pointer-events: none; z-index: 0; opacity: .1; background: radial-gradient(circle, var(--acc, #C20A62) 0%, transparent 62%);"></div>
+
+  <!-- ============ NAV ============ -->
+  <header data-screen-label="Nav" ref="{{ setNavRef }}" style="position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: rgba(247,246,243,0.86); backdrop-filter: blur(14px); border-bottom: 1px solid #E0DCD3;">
+    <nav style="max-width: 1280px; margin: 0 auto; padding: 0 clamp(18px, 4vw, 56px); height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 20px;">
+      <a href="ANTA%20Site.dc.html" style="display: flex; align-items: center; gap: 11px; flex-shrink: 0;">
+        <img src="assets/anta-mark.png" alt="ANTA" style="height: 26px; width: auto; display: block;" />
+        <span style="font-weight: 700; font-size: 19px; letter-spacing: 0.16em; line-height: 1;">ANTA</span>
+        <sc-if value="{{ midNav }}" hint-placeholder-val="{{ true }}">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #7C7A73; text-transform: uppercase; white-space: nowrap;">ai&nbsp;dev&nbsp;studio</span>
+        </sc-if>
+      </a>
+      <div style="display: flex; align-items: center; gap: clamp(14px, 2.4vw, 34px); min-width: 0; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; letter-spacing: 0.09em; text-transform: uppercase;">
+        <sc-if value="{{ wideNav }}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; align-items: center; gap: clamp(14px, 2.4vw, 34px);">
+            <a href="ANTA%20Work.dc.html" style="color: #56544E; padding: 6px 0; white-space: nowrap;" style-hover="color: #16171A;">Work</a>
+            <a href="ANTA%20Build.dc.html" style="color: #56544E; padding: 6px 0; white-space: nowrap;" style-hover="color: #16171A;">Build</a>
+            <a href="ANTA%20Site.dc.html#tools" style="color: #56544E; padding: 6px 0; white-space: nowrap;" style-hover="color: #16171A;">Tools</a>
+            <a href="ANTA%20Site.dc.html#approach" style="color: #56544E; padding: 6px 0; white-space: nowrap;" style-hover="color: #16171A;">Approach</a>
+            <a href="ANTA%20About.dc.html" style="color: #16171A; padding: 6px 0; white-space: nowrap;">About</a>
+          </div>
+        </sc-if>
+        <a href="#contact" data-magnetic="true" style="background: var(--acc, #C20A62); color: #F7F6F3; padding: 9px 16px; font-weight: 700; letter-spacing: 0.06em; transition: box-shadow .25s ease, transform .18s ease; white-space: nowrap;" style-hover="box-shadow: 0 0 0 1px var(--acc, #C20A62), 0 0 28px rgba(20,22,26,0.16); color: #F7F6F3;">{{ navCta }}</a>
+      </div>
+      <div ref="{{ setNavBarRef }}" aria-hidden="true" style="position: absolute; left: 0; bottom: -1px; height: 2px; width: 0%; background: var(--acc, #C20A62);"></div>
+    </nav>
+  </header>
+
+  <main style="position: relative; z-index: 1; padding-top: 64px;">
+
+    <!-- ============ PAGE HERO — EXISTENCE ============ -->
+    <section data-screen-label="About hero" style="position: relative; background: #0A0A0B; border-bottom: 1px solid #1C1C1E; overflow: hidden;">
+      <div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none; background-image: repeating-linear-gradient(90deg, rgba(245,244,241,0.055) 0 1px, transparent 1px 104px); -webkit-mask-image: linear-gradient(to bottom, #000, transparent 82%); mask-image: linear-gradient(to bottom, #000, transparent 82%);"></div>
+      <div aria-hidden="true" style="position: absolute; top: -34%; left: 6%; width: 46vw; height: 46vw; pointer-events: none; opacity: .14; background: radial-gradient(circle, var(--acc, #C20A62) 0%, transparent 62%);"></div>
+
+      <div style="position: relative; max-width: 1280px; margin: 0 auto; padding: clamp(56px, 8vw, 104px) clamp(18px, 4vw, 56px) 0;">
+        <div style="display: flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #6E6C66; margin-bottom: clamp(26px, 4vw, 44px);">
+          <a href="ANTA%20Site.dc.html" style="color: #6E6C66;" style-hover="color: #F5F4F1;">Home</a>
+          <span style="color: #3A3A3E;">/</span>
+          <span style="color: #F5F4F1;">About</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--acc, #C20A62); margin-bottom: 18px;">
+          <span style="width: 7px; height: 7px; background: var(--acc, #C20A62); animation: anta-breathe 2.4s ease-in-out infinite;"></span>
+          <span>Why&nbsp;ANTA&nbsp;exists</span>
+        </div>
+        <h1 style="margin: 0; font-size: clamp(36px, 6.6vw, 84px); line-height: 0.98; letter-spacing: -0.04em; font-weight: 700; color: #FFFFFF; max-width: 20ch; text-wrap: balance;">The market doesn't wait for you to catch up.</h1>
+        <p style="margin: clamp(20px, 2.6vw, 30px) 0 0; max-width: 56ch; font-size: clamp(15px, 1.5vw, 18px); line-height: 1.7; color: #8B8983; text-wrap: pretty;">Every quarter you spend deciding whether AI applies to you, three competitors already shipped with it. ANTA exists to close that gap before it becomes permanent.</p>
+      </div>
+
+      <div style="position: relative; margin-top: clamp(40px, 6vw, 72px); border-top: 1px solid #1C1C1E;">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 16px clamp(18px, 4vw, 56px); display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: center; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #5E5C57;">
+          <span>automating&nbsp;next&nbsp;time-less&nbsp;architecture</span>
+          <span>detroit,&nbsp;mi&nbsp;·&nbsp;overlaps&nbsp;et</span>
+          <a href="#shift" style="color: var(--acc, #C20A62);">See the shift&nbsp;↓</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ AI REVOLUTION / FOMO ============ -->
+    <section id="shift" data-screen-label="AI revolution" style="position: relative; background: #0A0A0B; border-bottom: 1px solid #1C1C1E; padding: clamp(64px, 9vw, 120px) clamp(18px, 4vw, 56px);">
+      <div style="max-width: 1280px; margin: 0 auto;">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--acc, #C20A62); margin-bottom: 24px;">01&nbsp;/&nbsp;The&nbsp;adoption&nbsp;curve</div>
+        <h2 style="margin: 0 0 20px; font-size: clamp(30px, 5vw, 58px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 700; color: #FFFFFF; max-width: 22ch; text-wrap: balance;">Adopt, or get dragged out by whoever did.</h2>
+        <p style="margin: 0 0 clamp(48px, 6vw, 84px); font-size: clamp(15px, 1.5vw, 18px); line-height: 1.7; color: #8B8983; max-width: 62ch; text-wrap: pretty;">This isn't a hype cycle. It's a market redraw — and it's already three stages in. Here's where most companies actually are, whether they admit it or not.</p>
+
+        <div data-reveal="true" style="position: relative; padding-top: 6px;">
+          <div style="position: relative; height: 3px; background: #1C1C1E; margin: 0 0 clamp(36px, 5vw, 56px);">
+            <div style="position: absolute; inset: 0; width: 78%; background: var(--acc, #C20A62); transform-origin: left; animation: anta-pulse-bar 1.4s cubic-bezier(.2,.8,.2,1) both;"></div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: clamp(20px, 3vw, 32px);">
+            <div style="border-left: 2px solid #2A2A2E; padding-left: 18px;">
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #6E6C66; margin-bottom: 10px;">STAGE&nbsp;01&nbsp;·&nbsp;PAST</div>
+              <div style="font-size: 16px; font-weight: 600; color: #C9C7C1; margin-bottom: 8px;">Denial</div>
+              <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: #6E6C66;">"Our work is too specialized to automate." Everyone said this. Almost no one still does.</p>
+            </div>
+            <div style="border-left: 2px solid #2A2A2E; padding-left: 18px;">
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #6E6C66; margin-bottom: 10px;">STAGE&nbsp;02&nbsp;·&nbsp;PAST</div>
+              <div style="font-size: 16px; font-weight: 600; color: #C9C7C1; margin-bottom: 8px;">Experimentation</div>
+              <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: #6E6C66;">A chatbot pilot. A hackathon prototype. Proof it works, shelved before it shipped.</p>
+            </div>
+            <div style="border-left: 2px solid var(--acc, #C20A62); padding-left: 18px;">
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: var(--acc, #C20A62); margin-bottom: 10px;">STAGE&nbsp;03&nbsp;·&nbsp;NOW</div>
+              <div style="font-size: 16px; font-weight: 700; color: #FFFFFF; margin-bottom: 8px;">Adoption</div>
+              <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: #C9C7C1;">Competitors are shipping AI-native workflows into production. Their cost per unit of output is dropping. Yours isn't.</p>
+            </div>
+            <div style="border-left: 2px solid #2A2A2E; padding-left: 18px;">
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #6E6C66; margin-bottom: 10px;">STAGE&nbsp;04&nbsp;·&nbsp;NEXT</div>
+              <div style="font-size: 16px; font-weight: 600; color: #C9C7C1; margin-bottom: 8px;">Ecosystem lock-in</div>
+              <p style="margin: 0; font-size: 13.5px; line-height: 1.6; color: #6E6C66;">The tooling, the data pipelines, the talent — it consolidates around whoever moved first. Late entrants pay to catch up, not to lead.</p>
+            </div>
+          </div>
+        </div>
+
+        <div data-reveal="true" style="margin-top: clamp(48px, 6vw, 72px); display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: #1C1C1E; border: 1px solid #1C1C1E;">
+          <div style="background: #0A0A0B; padding: 26px 22px;">
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: #FFFFFF; letter-spacing: -0.02em;">Every&nbsp;quarter</div>
+            <div style="margin-top: 8px; font-size: 13px; color: #6E6C66;">the gap between adopters and everyone else compounds, not resets.</div>
+          </div>
+          <div style="background: #0A0A0B; padding: 26px 22px;">
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: #FFFFFF; letter-spacing: -0.02em;">No&nbsp;pause</div>
+            <div style="margin-top: 8px; font-size: 13px; color: #6E6C66;">button. The teams that wait for "the right time" are waiting for permission that never comes.</div>
+          </div>
+          <div style="background: #0A0A0B; padding: 26px 22px;">
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: #FFFFFF; letter-spacing: -0.02em;">One&nbsp;exit</div>
+            <div style="margin-top: 8px; font-size: 13px; color: #6E6C66;">from this curve: build the system now, while it's still a decision and not a rescue.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HOW WE HELP ============ -->
+    <section id="how" data-screen-label="How we help" style="max-width: 1280px; margin: 0 auto; padding: clamp(64px, 9vw, 120px) clamp(18px, 4vw, 56px); border-bottom: 1px solid #E5E2DA;">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--acc, #C20A62); margin-bottom: 24px;">02&nbsp;/&nbsp;How&nbsp;we&nbsp;help</div>
+      <h2 style="margin: 0 0 22px; font-size: clamp(30px, 5vw, 58px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 700; max-width: 20ch; text-wrap: balance;">We build the system you'd build, if you had the time.</h2>
+      <p style="margin: 0 0 clamp(44px, 6vw, 72px); font-size: clamp(15px, 1.5vw, 18px); line-height: 1.7; color: #56544E; max-width: 62ch; text-wrap: pretty;">Custom AI software, workflows, and automation — built into how your team already works, not bolted on top of it.</p>
+      <div data-reveal="true" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1px; background: #E0DCD3; border: 1px solid #E0DCD3;">
+        <div style="background: #F7F6F3; padding: 28px 24px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7C7A73; margin-bottom: 12px;">01</div>
+          <div style="font-size: 17px; font-weight: 600; margin-bottom: 10px;">Custom AI software</div>
+          <p style="margin: 0; font-size: 14px; line-height: 1.65; color: #56544E;">Purpose-built tools and applications, not a wrapper on an off-the-shelf model.</p>
+        </div>
+        <div style="background: #F7F6F3; padding: 28px 24px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7C7A73; margin-bottom: 12px;">02</div>
+          <div style="font-size: 17px; font-weight: 600; margin-bottom: 10px;">Workflow redesign</div>
+          <p style="margin: 0; font-size: 14px; line-height: 1.65; color: #56544E;">We map how work actually moves through your team, then rebuild the slow parts around AI.</p>
+        </div>
+        <div style="background: #F7F6F3; padding: 28px 24px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7C7A73; margin-bottom: 12px;">03</div>
+          <div style="font-size: 17px; font-weight: 600; margin-bottom: 10px;">Automation</div>
+          <p style="margin: 0; font-size: 14px; line-height: 1.65; color: #56544E;">The repetitive, mechanical work your team already agrees shouldn't be manual.</p>
+        </div>
+        <div style="background: #F7F6F3; padding: 28px 24px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7C7A73; margin-bottom: 12px;">04</div>
+          <div style="font-size: 17px; font-weight: 600; margin-bottom: 10px;">Team enablement</div>
+          <p style="margin: 0; font-size: 14px; line-height: 1.65; color: #56544E;">Your people learn the systems as we build them, so you're not dependent on us to run them.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WHY US ============ -->
+    <section id="why-us" data-screen-label="Why us" style="position: relative; background: #0A0A0B; border-bottom: 1px solid #1C1C1E; padding: clamp(64px, 9vw, 120px) clamp(18px, 4vw, 56px); overflow: hidden;">
+      <div aria-hidden="true" style="position: absolute; bottom: -30%; right: -8%; width: 44vw; height: 44vw; pointer-events: none; opacity: .12; background: radial-gradient(circle, var(--acc, #C20A62) 0%, transparent 62%);"></div>
+      <div style="position: relative; max-width: 1280px; margin: 0 auto;">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--acc, #C20A62); margin-bottom: 24px;">03&nbsp;/&nbsp;Why&nbsp;ANTA</div>
+        <h2 style="margin: 0 0 clamp(44px, 6vw, 72px); font-size: clamp(30px, 5vw, 58px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 700; color: #FFFFFF; max-width: 20ch; text-wrap: balance;">One process. No handoffs. No delay.</h2>
+        <div data-reveal="true" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0;">
+          <div style="padding: 0 20px 20px 0; border-bottom: 1px solid #1C1C1E;">
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 30px; font-weight: 700; color: var(--acc, #C20A62); margin-bottom: 10px;">01</div>
+            <div style="font-size: 16px; font-weight: 600; color: #FFFFFF; margin-bottom: 6px;">Design</div>
+            <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #8B8983;">Scope the real bottleneck, not the requested feature.</p>
+          </div>
+          <div style="padding: 0 20px 20px; border-bottom: 1px solid #1C1C1E;">
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 30px; font-weight: 700; color: var(--acc, #C20A62); margin-bottom: 10px;">02</div>
+            <div style="font-size: 16px; font-weight: 600; color: #FFFFFF; margin-bottom: 6px;">Architect</div>
+            <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #8B8983;">A system that still stands after the tooling under it changes twice.</p>
+          </div>
+          <div style="padding: 0 20px 20px; border-bottom: 1px solid #1C1C1E;">
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 30px; font-weight: 700; color: var(--acc, #C20A62); margin-bottom: 10px;">03</div>
+            <div style="font-size: 16px; font-weight: 600; color: #FFFFFF; margin-bottom: 6px;">Build</div>
+            <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #8B8983;">The same team that scoped it writes it. No handoff, no drift.</p>
+          </div>
+          <div style="padding: 0 20px 20px; border-bottom: 1px solid #1C1C1E;">
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 30px; font-weight: 700; color: var(--acc, #C20A62); margin-bottom: 10px;">04</div>
+            <div style="font-size: 16px; font-weight: 600; color: #FFFFFF; margin-bottom: 6px;">Ship</div>
+            <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #8B8983;">First deploy in weeks. Yours from the first commit.</p>
+          </div>
+          <div style="padding: 0 0 20px; border-bottom: 1px solid #1C1C1E;">
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 30px; font-weight: 700; color: var(--acc, #C20A62); margin-bottom: 10px;">05</div>
+            <div style="font-size: 16px; font-weight: 600; color: #FFFFFF; margin-bottom: 6px;">Automate</div>
+            <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #8B8983;">Every deploy feeds the next one. The system keeps compounding after we leave.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section id="faq" data-screen-label="FAQ" style="max-width: 1280px; margin: 0 auto; padding: clamp(64px, 9vw, 120px) clamp(18px, 4vw, 56px); border-bottom: 1px solid #E5E2DA;">
+      <div style="display: flex; flex-wrap: wrap; gap: clamp(32px, 5vw, 80px);">
+        <div style="flex: 0 1 320px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--acc, #C20A62); margin-bottom: 24px;">04&nbsp;/&nbsp;FAQ</div>
+          <h2 style="margin: 0; font-size: clamp(26px, 3.4vw, 40px); line-height: 1.06; letter-spacing: -0.02em; font-weight: 700; max-width: 16ch; text-wrap: balance;">Questions that come up before the first call.</h2>
+        </div>
+        <div data-reveal="true" style="flex: 1 1 460px; min-width: 0; display: flex; flex-direction: column;">
+          <details style="border-top: 1px solid #E0DCD3; padding: 20px 0;">
+            <summary style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 16px; font-weight: 600;">We're not big enough to need this yet.<span style="font-family: 'JetBrains Mono', monospace; color: var(--acc, #C20A62); font-size: 18px;">+</span></summary>
+            <p style="margin: 14px 0 0; font-size: 14.5px; line-height: 1.7; color: #56544E; max-width: 58ch;">Size isn't the trigger — repetition is. If work is repeating manually somewhere in your team, it's already worth automating. Waiting for scale just means automating a bigger mess later.</p>
+          </details>
+          <details style="border-top: 1px solid #E0DCD3; padding: 20px 0;">
+            <summary style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 16px; font-weight: 600;">How is this different from hiring an agency?<span style="font-family: 'JetBrains Mono', monospace; color: var(--acc, #C20A62); font-size: 18px;">+</span></summary>
+            <p style="margin: 14px 0 0; font-size: 14.5px; line-height: 1.7; color: #56544E; max-width: 58ch;">No account manager translating your problem into a statement of work. You talk directly to the people building it, scope moves in days, and the repository is yours from day one.</p>
+          </details>
+          <details style="border-top: 1px solid #E0DCD3; padding: 20px 0;">
+            <summary style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 16px; font-weight: 600;">What if we're locked into legacy tools?<span style="font-family: 'JetBrains Mono', monospace; color: var(--acc, #C20A62); font-size: 18px;">+</span></summary>
+            <p style="margin: 14px 0 0; font-size: 14.5px; line-height: 1.7; color: #56544E; max-width: 58ch;">We build around your existing stack, not against it. Most engagements start by wiring AI into tools you already use — the legacy layer is the constraint, not the blocker.</p>
+          </details>
+          <details style="border-top: 1px solid #E0DCD3; padding: 20px 0;">
+            <summary style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 16px; font-weight: 600;">Will our team actually use it?<span style="font-family: 'JetBrains Mono', monospace; color: var(--acc, #C20A62); font-size: 18px;">+</span></summary>
+            <p style="margin: 14px 0 0; font-size: 14.5px; line-height: 1.7; color: #56544E; max-width: 58ch;">We train your team as we build, not after. Nobody inherits a system they don't understand.</p>
+          </details>
+          <details style="border-top: 1px solid #E0DCD3; border-bottom: 1px solid #E0DCD3; padding: 20px 0;">
+            <summary style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 16px; font-weight: 600;">How fast can we actually start?<span style="font-family: 'JetBrains Mono', monospace; color: var(--acc, #C20A62); font-size: 18px;">+</span></summary>
+            <p style="margin: 14px 0 0; font-size: 14.5px; line-height: 1.7; color: #56544E; max-width: 58ch;">Scope is written in days. First deploy typically lands in weeks, not quarters.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CTA BANNER ============ -->
+    <section id="contact" data-screen-label="CTA banner" style="position: relative; background: #0A0A0B; overflow: hidden;">
+      <div aria-hidden="true" style="position: absolute; top: -30%; left: 50%; transform: translateX(-50%); width: 60vw; height: 60vw; pointer-events: none; opacity: .13; background: radial-gradient(circle, var(--acc, #C20A62) 0%, transparent 62%);"></div>
+      <div data-reveal="true" style="position: relative; max-width: 1280px; margin: 0 auto; padding: clamp(72px, 11vw, 148px) clamp(18px, 4vw, 56px); text-align: center; display: flex; flex-direction: column; align-items: center;">
+        <h2 style="margin: 0 0 22px; font-size: clamp(32px, 5.6vw, 68px); line-height: 1; letter-spacing: -0.035em; font-weight: 700; color: #FFFFFF; max-width: 20ch; text-wrap: balance;">Move before the gap closes.</h2>
+        <p style="margin: 0 0 clamp(30px, 4vw, 44px); font-size: clamp(15px, 1.5vw, 18px); line-height: 1.7; color: #8B8983; max-width: 46ch; text-wrap: pretty;">Send the two-paragraph version of your problem. You'll get a real technical response, not a discovery questionnaire.</p>
+        <a href="mailto:anadi@theanta.com?subject=ANTA%20—%20project%20inquiry" data-magnetic="true" style="display: inline-flex; align-items: center; gap: 12px; background: var(--acc, #C20A62); color: #F7F6F3; padding: 16px 30px; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; transition: box-shadow .25s ease, transform .18s ease;" style-hover="box-shadow: 0 0 0 1px var(--acc, #C20A62), 0 0 34px rgba(194,10,98,0.4);">Start a conversation<span>→</span></a>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer data-screen-label="Footer" style="border-top: 1px solid #E5E2DA; background: #F1EFE9;">
+      <div style="max-width: 1280px; margin: 0 auto; padding: clamp(44px, 6vw, 76px) clamp(18px, 4vw, 56px) clamp(28px, 3.4vw, 40px); display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: clamp(28px, 4vw, 56px); align-items: start;">
+        <div style="grid-column: 1 / -1; max-width: 46ch; display: flex; flex-direction: column; gap: 14px;">
+          <div style="display: flex; align-items: center; gap: 11px;">
+            <img src="assets/anta-mark.png" alt="" style="height: 24px; width: auto; display: block;" />
+            <span style="font-weight: 700; font-size: 17px; letter-spacing: 0.16em;">ANTA</span>
+          </div>
+          <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #56544E; text-wrap: pretty;">We design and build the AI systems your team needs, so you scale without adding headcount.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 11px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #94918A;">Pages</div>
+          <a href="ANTA%20Site.dc.html" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #2C2B27;">Home</a>
+          <a href="ANTA%20Work.dc.html" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #2C2B27;">Work</a>
+          <a href="ANTA%20Build.dc.html" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #2C2B27;">Build</a>
+          <a href="ANTA%20About.dc.html" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #2C2B27;">About</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 11px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #94918A;">On this page</div>
+          <a href="#shift" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #2C2B27;">The shift</a>
+          <a href="#how" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #2C2B27;">How we help</a>
+          <a href="#faq" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #2C2B27;">FAQ</a>
+          <a href="#contact" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #2C2B27;">Contact</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 11px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #94918A;">Direct</div>
+          <a href="mailto:anadi@theanta.com" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--acc, #C20A62);">anadi@theanta.com</a>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7C7A73;">cal.com/anta/intro</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7C7A73;">replies in 24h</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 11px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #94918A;">Studio</div>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7C7A73;">Detroit, MI · U.S.</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7C7A73;">overlaps ET 09:00–17:00</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #7C7A73;">theanta.com</span>
+        </div>
+      </div>
+      <div style="border-top: 1px solid #E0DCD3;">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 18px clamp(18px, 4vw, 56px); display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; color: #7C7A73;">
+          <span>© 2026&nbsp;ANTA&nbsp;·&nbsp;Automating&nbsp;Next&nbsp;Time-less&nbsp;Architecture</span>
+          <span>built,&nbsp;not&nbsp;templated</span>
+        </div>
+      </div>
+    </footer>
+  </main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;accent&quot;: { &quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#C20A62&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;#C20A62&quot;, &quot;#EA0A52&quot;, &quot;#7B0161&quot;], &quot;section&quot;: &quot;Theme&quot; },
+  &quot;gridTexture&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Theme&quot; },
+  &quot;motion&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Theme&quot; }
+}">
+class Component extends DCLogic {
+  state = { wide: true, mid: true };
+
+  setNavRef(el) { if (!el || this.navEl === el) return; this.navEl = el; this.bindScroll(); }
+  setNavBarRef(el) { if (!el) return; this.navBarEl = el; }
+
+  bindScroll() {
+    if (this.scrollBound) return;
+    this.scrollBound = true;
+    this.onScroll = () => {
+      if (this.sraf) return;
+      this.sraf = requestAnimationFrame(() => { this.sraf = null; this.frameScroll(); });
+    };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    window.addEventListener('resize', this.onScroll);
+    this.onScroll();
+  }
+
+  frameScroll() {
+    const y = window.scrollY || window.pageYOffset || 0;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    if (this.navBarEl) this.navBarEl.style.width = (max > 0 ? Math.min(100, (y / max) * 100) : 0) + '%';
+    if (this.navEl) {
+      const dense = y > 48;
+      const nav = this.navEl.querySelector('nav');
+      if (nav) { nav.style.transition = 'height .3s cubic-bezier(.22,1,.36,1)'; nav.style.height = dense ? '54px' : '64px'; }
+      this.navEl.style.transition = 'background .3s ease, box-shadow .3s ease';
+      this.navEl.style.background = dense ? 'rgba(247,246,243,0.95)' : 'rgba(247,246,243,0.86)';
+      this.navEl.style.boxShadow = dense ? '0 14px 34px -30px rgba(22,23,26,0.85)' : 'none';
+    }
+  }
+
+  componentDidMount() {
+    this.mqWide = window.matchMedia('(min-width: 820px)');
+    this.mqMid = window.matchMedia('(min-width: 460px)');
+    this.onMQ = () => this.setState({ wide: this.mqWide.matches, mid: this.mqMid.matches });
+    this.mqWide.addEventListener('change', this.onMQ);
+    this.mqMid.addEventListener('change', this.onMQ);
+    this.onMQ();
+    this.applyTheme();
+    this.scan();
+    this.scanTimer = setInterval(() => this.scan(), 700);
+    setTimeout(() => { clearInterval(this.scanTimer); this.scanTimer = null; }, 14000);
+  }
+
+  componentDidUpdate() { this.applyTheme(); }
+
+  componentWillUnmount() {
+    if (this.mqWide) this.mqWide.removeEventListener('change', this.onMQ);
+    if (this.mqMid) this.mqMid.removeEventListener('change', this.onMQ);
+    if (this.scanTimer) clearInterval(this.scanTimer);
+    if (this.io) this.io.disconnect();
+    if (this.onScroll) { window.removeEventListener('scroll', this.onScroll); window.removeEventListener('resize', this.onScroll); }
+    if (this.sraf) cancelAnimationFrame(this.sraf);
+  }
+
+  applyTheme() {
+    const r = document.documentElement;
+    r.style.setProperty('--acc', this.props.accent || '#C20A62');
+    r.style.setProperty('--tex', (this.props.gridTexture ?? true) ? 'rgba(22,23,26,0.032)' : 'transparent');
+  }
+
+  scan() {
+    if (this.props.motion === false) return;
+    if (!this.io) {
+      this.io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.style.opacity = '1';
+            e.target.style.transform = 'none';
+            this.io.unobserve(e.target);
+          }
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    }
+    document.querySelectorAll('[data-reveal]:not([data-reveal-init])').forEach(el => {
+      el.setAttribute('data-reveal-init', '1');
+      const top = el.getBoundingClientRect().top;
+      if (top > window.innerHeight * 0.88) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(22px)';
+        el.style.transition = 'opacity .75s cubic-bezier(.2,.7,.2,1), transform .75s cubic-bezier(.2,.7,.2,1)';
+      }
+      this.io.observe(el);
+    });
+    document.querySelectorAll('[data-magnetic]:not([data-magnetic-init])').forEach(el => {
+      el.setAttribute('data-magnetic-init', '1');
+      el.addEventListener('mousemove', ev => {
+        const r = el.getBoundingClientRect();
+        const dx = (ev.clientX - (r.left + r.width / 2)) / r.width;
+        const dy = (ev.clientY - (r.top + r.height / 2)) / r.height;
+        el.style.transform = 'translate(' + (dx * 7).toFixed(2) + 'px,' + (dy * 5).toFixed(2) + 'px)';
+      });
+      el.addEventListener('mouseleave', () => { el.style.transform = 'translate(0,0)'; });
+    });
+  }
+
+  renderVals() {
+    const s = this.state;
+    return {
+      setNavRef: el => this.setNavRef(el),
+      setNavBarRef: el => this.setNavBarRef(el),
+      wideNav: s.wide,
+      midNav: s.mid,
+      navCta: s.mid ? 'Start a conversation' : 'Contact'
+    };
+  }
+}
+
+</script>
+</body>
+</html>

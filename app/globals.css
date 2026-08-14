@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+/*
+  Dark Terminal design tokens — pulled directly from
+  components/hero-background/tokens.ts so the background system and the
+  rest of the site share one source of truth. Don't hand-edit hex values
+  in components; add a token here and reference it instead.
+*/
+:root {
+  --color-bg: #0a0508;
+  --color-bg-raised: #14100f;
+  --color-fg: #ffffff;
+  --color-fg-muted: rgba(255, 255, 255, 0.7);
+  --color-fg-faint: rgba(255, 255, 255, 0.45);
+  --color-accent: #ec1a63;
+  --color-accent-hot: #ff3d81;
+  --color-border: rgba(255, 255, 255, 0.12);
+}
+
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-bg-raised: var(--color-bg-raised);
+  --color-fg: var(--color-fg);
+  --color-fg-muted: var(--color-fg-muted);
+  --color-fg-faint: var(--color-fg-faint);
+  --color-accent: var(--color-accent);
+  --color-accent-hot: var(--color-accent-hot);
+  --color-border: var(--color-border);
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-script: var(--font-script);
+  --font-pixel: var(--font-pixel);
+  --font-display: var(--font-display);
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+}
+
+::selection {
+  background: var(--color-accent);
+  color: #fff;
+}

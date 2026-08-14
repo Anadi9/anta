@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/motion@11.11.17/dist/motion.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<style>
+body{margin:0;background:#050506;font-family:'Inter',system-ui,sans-serif}
+.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(255,255,255,.08);scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 20px}
+.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#F5F4F1;color:#0A0A0B;border-radius:4px;text-decoration:none}
+.dv-tname{font:600 13px/1.2 system-ui,sans-serif;color:#F5F4F1}
+.dv-opts{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}
+.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(255,255,255,.1);color:#F5F4F1;border-radius:5px;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.3 system-ui,sans-serif;color:rgba(255,255,255,.5)}
+.dv-card{max-width:100%;background:#0A0A0B;border:1px solid #1C1C1E;border-radius:2px;overflow:hidden}
+.dv-opt:target .dv-oid{background:#C20A62;color:#fff}
+.dv-next{margin:22px 0 0;font:12px/1.5 system-ui,sans-serif;color:rgba(255,255,255,.4)}
+.mono{font-family:'JetBrains Mono',monospace}
+@keyframes o2a-draw{to{stroke-dashoffset:0}}
+@keyframes o2a-breathe{0%,100%{opacity:.6;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}}
+@keyframes o2a-blink{0%,100%{opacity:1}50%{opacity:.25}}
+@keyframes o2a-drift{from{background-position:0 0}to{background-position:38px 38px}}
+@keyframes o2b-spin{from{transform:translateY(-50%) rotate(0deg)}to{transform:translateY(-50%) rotate(360deg)}}
+@keyframes o4c-tide{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+@keyframes o4c-rise{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+</style>
+
+
+</helmet>
+
+<section class="dv-turn" id="t5">
+<div class="dv-thd"><a class="dv-tid" href="#t5">5</a><span class="dv-tname">In the site's voice — spec sheet, readout panel, diagnostic grid (no charts)</span></div>
+<div class="dv-opts">
+
+<div class="dv-opt" id="5a">
+<div class="dv-olabel"><a class="dv-oid" href="#5a">5a</a>Market ledger — the four stages as spec rows, like the toolkit table</div>
+<div class="dv-card" style="width:960px;padding:0;">
+<div id="o5a-root" style="position:relative;background:#0A0A0B;overflow:hidden;padding:64px 56px;">
+<div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;background-image:repeating-linear-gradient(90deg,rgba(245,244,241,.055) 0 1px,transparent 1px 104px);mask-image:linear-gradient(to bottom,transparent,#000 34%,#000 66%,transparent);"></div>
+<div style="position:relative;z-index:2;">
+<div class="mono" style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#F2609B;margin-bottom:18px;">01&nbsp;/&nbsp;The adoption curve</div>
+<div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-end;justify-content:space-between;margin-bottom:44px;">
+<div style="font-size:46px;line-height:1.02;letter-spacing:-.03em;font-weight:700;color:#fff;max-width:20ch;text-wrap:balance;">Adopt, or get dragged out by whoever did.</div>
+<div style="font-size:15px;line-height:1.7;color:#8B8983;max-width:34ch;text-wrap:pretty;">This isn't a hype cycle. It's a market redraw — already three stages in.</div>
+</div>
+
+<div style="border-top:1px solid #26262A;">
+<div class="o5a-row" style="display:flex;flex-wrap:wrap;gap:6px 24px;padding:20px 0 20px 18px;border-bottom:1px solid #26262A;border-left:2px solid #26262A;">
+<span class="mono" style="flex:0 0 58px;font-size:10.5px;letter-spacing:.14em;color:#5E5C57;padding-top:4px;">01</span>
+<span style="flex:0 0 132px;font-size:16px;font-weight:600;letter-spacing:-.015em;color:#6E6C66;">Denial</span>
+<span style="flex:1 1 300px;font-size:14px;line-height:1.6;color:#6E6C66;">“It's a toy.” Pilots die in committee; nobody's job changes.</span>
+<span class="mono" style="flex:0 0 92px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#3A3A3E;padding-top:4px;">closed</span>
+</div>
+<div class="o5a-row" style="display:flex;flex-wrap:wrap;gap:6px 24px;padding:20px 0 20px 18px;border-bottom:1px solid #26262A;border-left:2px solid #26262A;">
+<span class="mono" style="flex:0 0 58px;font-size:10.5px;letter-spacing:.14em;color:#5E5C57;padding-top:4px;">02</span>
+<span style="flex:0 0 132px;font-size:16px;font-weight:600;letter-spacing:-.015em;color:#6E6C66;">Experiment</span>
+<span style="flex:1 1 300px;font-size:14px;line-height:1.6;color:#6E6C66;">Demos, not systems. Impressive in the room, absent from the P&amp;L.</span>
+<span class="mono" style="flex:0 0 92px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#3A3A3E;padding-top:4px;">closed</span>
+</div>
+<div class="o5a-row" style="display:flex;flex-wrap:wrap;gap:6px 24px;padding:22px 0 22px 18px;border-bottom:1px solid #26262A;border-left:2px solid #C20A62;background:linear-gradient(90deg,rgba(194,10,98,.10),transparent 62%);">
+<span class="mono" style="flex:0 0 58px;font-size:10.5px;letter-spacing:.14em;color:#F2609B;padding-top:4px;">03</span>
+<span style="flex:0 0 132px;font-size:16px;font-weight:600;letter-spacing:-.015em;color:#fff;">Adoption</span>
+<span style="flex:1 1 300px;font-size:14px;line-height:1.6;color:#C9C7C1;">Competitors ship AI-native workflows to production. Their cost per unit of output falls. Yours doesn't.</span>
+<span class="mono" style="flex:0 0 92px;display:flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#fff;padding-top:4px;"><span style="width:6px;height:6px;background:#C20A62;animation:o2a-blink 1.4s ease-in-out infinite;"></span>now</span>
+</div>
+<div class="o5a-row" style="display:flex;flex-wrap:wrap;gap:6px 24px;padding:20px 0 20px 18px;border-bottom:1px solid #26262A;border-left:2px solid #26262A;">
+<span class="mono" style="flex:0 0 58px;font-size:10.5px;letter-spacing:.14em;color:#5E5C57;padding-top:4px;">04</span>
+<span style="flex:0 0 132px;font-size:16px;font-weight:600;letter-spacing:-.015em;color:#8B8983;">Lock-in</span>
+<span style="flex:1 1 300px;font-size:14px;line-height:1.6;color:#8B8983;">The gap stops being a project and starts being an acquisition price.</span>
+<span class="mono" style="flex:0 0 92px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#5E5C57;padding-top:4px;">ahead</span>
+</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding-top:16px;">
+<span class="mono" style="font-size:11px;color:#86837C;">stage&nbsp;03&nbsp;of&nbsp;04&nbsp;·&nbsp;one exit: build the system while it's still a decision</span>
+<a href="#scope" class="mono" style="font-size:11px;color:#F2609B;border-bottom:1px solid currentColor;padding-bottom:2px;">Scope the system&nbsp;→</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="5b">
+<div class="dv-olabel"><a class="dv-oid" href="#5b">5b</a>Readout panel — the engineer panel's vocabulary, logging the market</div>
+<div class="dv-card" style="width:960px;padding:0;">
+<div id="o5b-root" style="position:relative;background:#0A0A0B;overflow:hidden;padding:64px 56px;display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start;">
+<div aria-hidden="true" style="position:absolute;bottom:-28%;left:-10%;width:420px;height:420px;pointer-events:none;opacity:.13;background:radial-gradient(circle,#C20A62 0%,transparent 62%);"></div>
+<div style="position:relative;z-index:2;flex:1 1 320px;min-width:0;">
+<div class="mono" style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#F2609B;margin-bottom:18px;">01&nbsp;/&nbsp;The adoption curve</div>
+<div style="font-size:44px;line-height:1.02;letter-spacing:-.03em;font-weight:700;color:#fff;max-width:18ch;margin-bottom:20px;text-wrap:balance;">Adopt, or get dragged out by whoever did.</div>
+<div style="font-size:15px;line-height:1.75;color:#8B8983;max-width:44ch;text-wrap:pretty;">This isn't a hype cycle. It's a market redraw — already three stages in. The readout is the same in every industry we've scoped.</div>
+<div class="mono" style="margin-top:34px;display:flex;flex-direction:column;gap:11px;font-size:11px;letter-spacing:.05em;color:#8E8B84;">
+<div style="display:flex;gap:12px;"><span style="color:#F2609B;">—</span><span>read from 40+ shipped systems</span></div>
+<div style="display:flex;gap:12px;"><span style="color:#F2609B;">—</span><span>stage 03 is where the cost gap opens</span></div>
+<div style="display:flex;gap:12px;"><span style="color:#F2609B;">—</span><span>stage 04 is not survivable on payroll alone</span></div>
+</div>
+</div>
+<div style="position:relative;z-index:2;flex:1 1 430px;min-width:0;">
+<div style="background:#101113;border:1px solid #26262A;box-shadow:0 40px 80px -50px rgba(0,0,0,.9);">
+<div class="mono" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px;border-bottom:1px solid #26262A;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#8E8B84;">
+<span style="display:flex;align-items:center;gap:9px;color:#F5F4F1;"><span style="width:7px;height:7px;background:#C20A62;animation:o2a-blink 2.2s ease-in-out infinite;"></span>Market readout</span>
+<span id="o5b-status">reading</span>
+</div>
+<div class="mono" style="padding:20px 18px;font-size:11.5px;line-height:1.9;color:#C9C7C1;min-height:96px;">
+<div id="o5b-log"></div>
+<span id="o5b-caret" style="display:inline-block;width:8px;height:14px;background:#C20A62;vertical-align:-2px;animation:o2a-blink 1.05s step-end infinite;"></span>
+</div>
+<div style="border-top:1px solid #26262A;">
+<div class="o5b-stage" style="display:flex;align-items:baseline;gap:14px;padding:13px 18px;border-bottom:1px solid #26262A;"><span class="mono" style="flex:0 0 24px;font-size:10.5px;color:#5E5C57;">01</span><span style="flex:1;font-size:14px;color:#6E6C66;">Denial</span><span class="mono" style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#3A3A3E;">passed</span></div>
+<div class="o5b-stage" style="display:flex;align-items:baseline;gap:14px;padding:13px 18px;border-bottom:1px solid #26262A;"><span class="mono" style="flex:0 0 24px;font-size:10.5px;color:#5E5C57;">02</span><span style="flex:1;font-size:14px;color:#6E6C66;">Experiment</span><span class="mono" style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#3A3A3E;">passed</span></div>
+<div class="o5b-stage" style="display:flex;align-items:baseline;gap:14px;padding:15px 18px;border-bottom:1px solid #26262A;border-left:2px solid #C20A62;background:rgba(194,10,98,.08);"><span class="mono" style="flex:0 0 24px;font-size:10.5px;color:#F2609B;">03</span><span style="flex:1;font-size:14.5px;font-weight:600;color:#fff;">Adoption</span><span class="mono" style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#fff;">current</span></div>
+<div class="o5b-stage" style="display:flex;align-items:baseline;gap:14px;padding:13px 18px;"><span class="mono" style="flex:0 0 24px;font-size:10.5px;color:#5E5C57;">04</span><span style="flex:1;font-size:14px;color:#8B8983;">Lock-in</span><span class="mono" style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#5E5C57;">18–24 mo</span></div>
+</div>
+</div>
+<div class="mono" style="display:flex;justify-content:space-between;margin-top:12px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#86837C;"><span>anta&nbsp;·&nbsp;market&nbsp;readout</span><span>stage&nbsp;03&nbsp;/&nbsp;04</span></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="5c">
+<div class="dv-olabel"><a class="dv-oid" href="#5c">5c</a>Diagnostic grid — "was enough / costs you now", like Stays vs Added</div>
+<div class="dv-card" style="width:960px;padding:0;">
+<div id="o5c-root" style="position:relative;background:#0A0A0B;overflow:hidden;padding:64px 56px;">
+<div style="position:relative;z-index:2;">
+<div class="mono" style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#F2609B;margin-bottom:18px;">01&nbsp;/&nbsp;The adoption curve</div>
+<div style="font-size:46px;line-height:1.02;letter-spacing:-.03em;font-weight:700;color:#fff;max-width:20ch;margin-bottom:16px;text-wrap:balance;">Adopt, or get dragged out by whoever did.</div>
+<div style="font-size:15px;line-height:1.7;color:#8B8983;max-width:52ch;margin-bottom:40px;text-wrap:pretty;">This isn't a hype cycle. It's a market redraw — already three stages in.</div>
+
+<div style="display:flex;border:1px solid #26262A;margin-bottom:0;">
+<div class="o5c-tab" style="flex:1;padding:14px 16px;border-right:1px solid #26262A;"><div class="mono" style="font-size:10px;letter-spacing:.14em;color:#3A3A3E;margin-bottom:6px;">01</div><div class="mono" style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#5E5C57;">Denial</div></div>
+<div class="o5c-tab" style="flex:1;padding:14px 16px;border-right:1px solid #26262A;"><div class="mono" style="font-size:10px;letter-spacing:.14em;color:#3A3A3E;margin-bottom:6px;">02</div><div class="mono" style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#5E5C57;">Experiment</div></div>
+<div class="o5c-tab" style="flex:1.3;padding:14px 16px;border-right:1px solid #26262A;background:rgba(194,10,98,.09);border-bottom:2px solid #C20A62;"><div class="mono" style="font-size:10px;letter-spacing:.14em;color:#F2609B;margin-bottom:6px;">03</div><div class="mono" style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#fff;"><span style="width:6px;height:6px;background:#C20A62;animation:o2a-blink 1.4s ease-in-out infinite;"></span>Adoption · now</div></div>
+<div class="o5c-tab" style="flex:1;padding:14px 16px;"><div class="mono" style="font-size:10px;letter-spacing:.14em;color:#3A3A3E;margin-bottom:6px;">04</div><div class="mono" style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#5E5C57;">Lock-in</div></div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;border:1px solid #26262A;border-top:0;">
+<div style="padding:28px 26px;border-right:1px solid #26262A;">
+<div class="mono" style="font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#86837C;margin-bottom:18px;">Was enough — until stage 02</div>
+<div style="display:flex;flex-direction:column;gap:14px;">
+<div style="font-size:14.5px;line-height:1.55;color:#8B8983;">Headcount as capacity</div>
+<div style="font-size:14.5px;line-height:1.55;color:#8B8983;">Process docs as the source of truth</div>
+<div style="font-size:14.5px;line-height:1.55;color:#8B8983;">An annual tooling review</div>
+<div style="font-size:14.5px;line-height:1.55;color:#8B8983;">A pilot, run by whoever had time</div>
+</div>
+</div>
+<div class="o5c-cost" style="padding:28px 26px;background:rgba(194,10,98,.05);">
+<div class="mono" style="font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#F2609B;margin-bottom:18px;">What stage 03 charges for it</div>
+<div style="display:flex;flex-direction:column;gap:14px;">
+<div style="font-size:14.5px;line-height:1.55;color:#fff;">Competitors' cost per output keeps dropping</div>
+<div style="font-size:14.5px;line-height:1.55;color:#fff;">Your best people spend the week on retrieval</div>
+<div style="font-size:14.5px;line-height:1.55;color:#fff;">Pricing pressure you can't answer with hiring</div>
+<div style="font-size:14.5px;line-height:1.55;color:#fff;">Stage 04 arrives as an acquisition price</div>
+</div>
+</div>
+</div>
+<div class="mono" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;border:1px solid #26262A;border-top:0;padding:15px 26px;font-size:11px;color:#86837C;">
+<span>one exit from this curve — build the system now, while it's a decision and not a rescue</span>
+<a href="#scope" style="color:#F2609B;border-bottom:1px solid currentColor;padding-bottom:2px;">Scope it live&nbsp;→</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">These borrow the site's own parts — spec rows, the engineer panel, the Stays/Added grid. Say which one, or "5a with 5b's panel".</p>
+</section>
+
+<section class="dv-turn" id="t4">
+<div class="dv-thd"><a class="dv-tid" href="#t4">4</a><span class="dv-tname">Subtler visual metaphors — diffusion, terrain, cohort tide</span></div>
+<div class="dv-opts">
+
+<div class="dv-opt" id="4a">
+<div class="dv-olabel"><a class="dv-oid" href="#4a">4a</a>Diffusion field — adoption spreads cell by cell (canvas)</div>
+<div class="dv-card" style="width:960px;padding:0;">
+<div style="position:relative;min-height:520px;background:#050506;overflow:hidden;padding:72px 60px;display:flex;flex-direction:column;justify-content:flex-end;">
+<canvas id="o4a-canvas" style="position:absolute;inset:0;z-index:1;pointer-events:none;mask-image:linear-gradient(to bottom,#000 0%,#000 55%,transparent 96%);"></canvas>
+<div style="position:relative;z-index:2;max-width:560px;">
+<div class="mono" style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#C20A62;margin-bottom:20px;">01 / The adoption curve</div>
+<div style="font-size:46px;line-height:1.02;letter-spacing:-.03em;font-weight:700;color:#fff;margin-bottom:16px;max-width:18ch;text-wrap:pretty;">Adopt, or get dragged out by whoever did.</div>
+<div style="font-size:14px;line-height:1.65;color:#8B8983;max-width:44ch;">This isn't a hype cycle. It's a market redraw — already three stages in.</div>
+</div>
+<div style="position:relative;z-index:2;display:flex;gap:26px;margin-top:36px;border-top:1px solid rgba(255,255,255,.08);padding-top:16px;">
+<div class="mono" style="font-size:10px;letter-spacing:.1em;color:#5E5C57;">DENIAL</div>
+<div class="mono" style="font-size:10px;letter-spacing:.1em;color:#5E5C57;">EXPERIMENT</div>
+<div class="mono" style="font-size:10px;letter-spacing:.1em;color:#fff;">ADOPTION · NOW</div>
+<div class="mono" style="font-size:10px;letter-spacing:.1em;color:#3A3A3E;">LOCK-IN</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="4b">
+<div class="dv-olabel"><a class="dv-oid" href="#4b">4b</a>Logistic terrain — the curve as a 3D point field (three.js)</div>
+<div class="dv-card" style="width:960px;padding:0;">
+<div style="position:relative;min-height:560px;background:#050506;overflow:hidden;padding:72px 60px 0;">
+<div id="o4b-mount" style="position:absolute;left:0;right:0;bottom:-40px;height:420px;z-index:1;"></div>
+<div aria-hidden="true" style="position:absolute;left:55%;bottom:6%;width:620px;height:420px;background:radial-gradient(ellipse,rgba(194,10,98,.16) 0%,transparent 65%);filter:blur(8px);pointer-events:none;"></div>
+<div style="position:relative;z-index:2;max-width:540px;">
+<div class="mono" style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#C20A62;margin-bottom:20px;">01 / The adoption curve</div>
+<div style="font-size:46px;line-height:1.02;letter-spacing:-.03em;font-weight:700;color:#fff;margin-bottom:16px;max-width:18ch;text-wrap:pretty;">Adopt, or get dragged out by whoever did.</div>
+<div style="font-size:14px;line-height:1.65;color:#8B8983;max-width:44ch;">This isn't a hype cycle. It's a market redraw — already three stages in.</div>
+<div class="mono" style="margin-top:28px;font-size:10px;letter-spacing:.14em;color:#5E5C57;">YOU ARE STANDING ON THE STEEP PART</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="4c">
+<div class="dv-olabel"><a class="dv-oid" href="#4c">4c</a>Cohort tide — bars fill in as each cohort converts</div>
+<div class="dv-card" style="width:960px;padding:0;">
+<div style="position:relative;min-height:520px;background:#050506;overflow:hidden;padding:72px 60px;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;">
+<div style="position:relative;z-index:2;">
+<div class="mono" style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#C20A62;margin-bottom:20px;">01 / The adoption curve</div>
+<div style="font-size:44px;line-height:1.02;letter-spacing:-.03em;font-weight:700;color:#fff;margin-bottom:16px;max-width:17ch;text-wrap:pretty;">Adopt, or get dragged out by whoever did.</div>
+<div style="font-size:14px;line-height:1.65;color:#8B8983;max-width:40ch;">This isn't a hype cycle. It's a market redraw — already three stages in.</div>
+</div>
+<div id="o4c-bars" style="position:relative;z-index:2;display:flex;align-items:flex-end;gap:5px;height:260px;">
+<div class="o4c-bar" style="flex:1;height:14%;display:flex;align-items:flex-end;"><span style="display:block;width:100%;height:100%;background:#232326;"></span></div>
+<div class="o4c-bar" style="flex:1;height:20%;display:flex;align-items:flex-end;"><span style="display:block;width:100%;height:100%;background:#26262A;"></span></div>
+<div class="o4c-bar" style="flex:1;height:27%;display:flex;align-items:flex-end;"><span style="display:block;width:100%;height:100%;background:#2B2B30;"></span></div>
+<div class="o4c-bar" style="flex:1;height:36%;display:flex;align-items:flex-end;"><span style="display:block;width:100%;height:100%;background:#3A2330;"></span></div>
+<div class="o4c-bar" style="flex:1;height:47%;display:flex;align-items:flex-end;"><span style="display:block;width:100%;height:100%;background:#5A1B3C;"></span></div>
+<div class="o4c-bar" style="flex:1;height:60%;display:flex;align-items:flex-end;"><span style="display:block;width:100%;height:100%;background:#8A1450;"></span></div>
+<div class="o4c-bar" style="flex:1;height:74%;display:flex;align-items:flex-end;"><span style="display:block;width:100%;height:100%;background:#C20A62;box-shadow:0 0 18px rgba(194,10,98,.5);"></span></div>
+<div class="o4c-bar" style="flex:1;height:86%;display:flex;align-items:flex-end;"><span style="display:block;width:100%;height:100%;background:rgba(194,10,98,.35);"></span></div>
+<div class="o4c-bar" style="flex:1;height:94%;display:flex;align-items:flex-end;"><span style="display:block;width:100%;height:100%;background:rgba(194,10,98,.2);"></span></div>
+<div class="o4c-bar" style="flex:1;height:99%;display:flex;align-items:flex-end;"><span style="display:block;width:100%;height:100%;background:rgba(194,10,98,.12);"></span></div>
+</div>
+<div class="mono" style="position:absolute;right:60px;bottom:44px;z-index:2;font-size:10px;letter-spacing:.12em;color:#5E5C57;">COHORTS CONVERTED →</div>
+</div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "make <a class="dv-oid" href="#4b">4b</a> the real section" · "slower diffusion on <a class="dv-oid" href="#4a">4a</a>" · "scroll-drive the terrain"</p>
+</section>
+
+<section class="dv-turn" id="t3">
+<div class="dv-thd"><a class="dv-tid" href="#t3">3</a><span class="dv-tname">GSAP + Framer Motion bloom field</span></div>
+<div class="dv-opts">
+
+<div class="dv-opt" id="3a">
+<div class="dv-olabel"><a class="dv-oid" href="#3a">3a</a>Ember-curve bloom, particles + self-draw</div>
+<div class="dv-card" style="width:960px;padding:0;">
+<div id="o3a-root" style="position:relative;min-height:600px;background:#050506;overflow:hidden;padding:68px 60px;">
+<canvas id="o3a-canvas" style="position:absolute;inset:0;z-index:1;pointer-events:none;"></canvas>
+<div id="o3a-glowfield" aria-hidden="true" style="position:absolute;left:60%;top:8%;width:700px;height:700px;background:radial-gradient(circle,rgba(194,10,98,.22) 0%,transparent 62%);filter:blur(6px);opacity:.4;pointer-events:none;"></div>
+<div aria-hidden="true" style="position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.04) 1px,transparent 1px);background-size:26px 26px;mask-image:radial-gradient(ellipse 80% 70% at 30% 70%,#000 0%,transparent 70%);pointer-events:none;"></div>
+
+<div style="position:relative;z-index:2;">
+<div id="o3a-eyebrow" class="mono" style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#C20A62;margin-bottom:20px;display:flex;align-items:center;gap:10px;"><span style="width:7px;height:7px;background:#C20A62;border-radius:50%;box-shadow:0 0 10px #C20A62;animation:o2a-blink 2s ease-in-out infinite;"></span>01 / The adoption curve</div>
+<div id="o3a-h1" style="font-size:46px;line-height:1.02;letter-spacing:-.03em;font-weight:700;color:#fff;margin-bottom:16px;max-width:20ch;">Adopt, or get dragged out by whoever did.</div>
+<div id="o3a-p" style="font-size:14px;line-height:1.65;color:#8B8983;margin-bottom:8px;max-width:48ch;">This isn't a hype cycle. It's a market redraw — already three stages in.</div>
+</div>
+
+<svg viewBox="0 0 900 260" width="100%" height="300" style="position:relative;z-index:2;display:block;overflow:visible;">
+<path id="o3a-path" d="M 30 213 C 378 156, 594 36, 873 13" fill="none" stroke="#C20A62" stroke-width="2.5" stroke-dasharray="1000" stroke-dashoffset="1000" style="filter:drop-shadow(0 0 10px rgba(194,10,98,.75));"/>
+<circle id="o3a-ring" cx="594" cy="36" r="10" fill="none" stroke="#C20A62" stroke-width="1.4" opacity="0" style="transform-origin:594px 36px;"/>
+<circle id="o3a-marker" cx="594" cy="36" r="7" fill="#C20A62" opacity="0" style="transform-origin:594px 36px;transform:scale(0.3);filter:drop-shadow(0 0 12px rgba(194,10,98,.9));"/>
+</svg>
+
+<div id="o3a-labels" style="position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:4px;">
+<div class="o3a-label o3a-stagecard" style="border:1px solid rgba(255,255,255,.08);padding:14px 14px;transition:border-color .2s;"><div class="mono" style="font-size:9.5px;letter-spacing:.08em;color:#5E5C57;margin-bottom:6px;">01 · DENIAL</div><div style="font-size:12px;color:#6E6C66;">Past</div></div>
+<div class="o3a-label o3a-stagecard" style="border:1px solid rgba(255,255,255,.08);padding:14px 14px;transition:border-color .2s;"><div class="mono" style="font-size:9.5px;letter-spacing:.08em;color:#5E5C57;margin-bottom:6px;">02 · EXPERIMENT</div><div style="font-size:12px;color:#6E6C66;">Past</div></div>
+<div class="o3a-label o3a-stagecard" style="border:1px solid rgba(194,10,98,.4);background:rgba(194,10,98,.06);padding:14px 14px;transition:border-color .2s;"><div class="mono" style="font-size:9.5px;letter-spacing:.08em;color:#fff;margin-bottom:6px;">03 · ADOPTION</div><div style="font-size:12px;color:#F5C6D8;">Now</div></div>
+<div class="o3a-label o3a-stagecard" style="border:1px solid rgba(255,255,255,.08);padding:14px 14px;transition:border-color .2s;"><div class="mono" style="font-size:9.5px;letter-spacing:.08em;color:#3A3A3E;margin-bottom:6px;">04 · LOCK-IN</div><div style="font-size:12px;color:#4A4A4E;">Next</div></div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "make <a class="dv-oid" href="#3a">3a</a> the real section" · "denser particle field" · "add a scroll-triggered replay"</p>
+</section>
+
+<section class="dv-turn" id="t2">
+<div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">Full-bleed animated hero treatment</span></div>
+<div class="dv-opts">
+
+<div class="dv-opt" id="2a">
+<div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a>Self-drawing curve + ambient pulse</div>
+<div class="dv-card" style="width:900px;padding:0;">
+<div style="position:relative;min-height:520px;background:#050506;overflow:hidden;padding:64px 56px;">
+<div aria-hidden="true" style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:38px 38px;opacity:.5;mask-image:radial-gradient(ellipse 70% 60% at 50% 40%,#000 0%,transparent 75%);animation:o2a-drift 22s linear infinite;"></div>
+<div aria-hidden="true" style="position:absolute;left:50%;top:38%;width:900px;height:900px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(194,10,98,.24) 0%,transparent 60%);filter:blur(10px);animation:o2a-breathe 5.5s ease-in-out infinite;"></div>
+<div style="position:relative;z-index:2;">
+<div class="mono" style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#C20A62;margin-bottom:20px;display:flex;align-items:center;gap:10px;"><span style="width:7px;height:7px;background:#C20A62;border-radius:50%;box-shadow:0 0 10px #C20A62;animation:o2a-blink 2s ease-in-out infinite;"></span>01 / The adoption curve</div>
+<div style="font-size:44px;line-height:1.02;letter-spacing:-.03em;font-weight:700;color:#fff;margin-bottom:16px;max-width:20ch;">Adopt, or get dragged out by whoever did.</div>
+<div style="font-size:14px;line-height:1.65;color:#8B8983;margin-bottom:40px;max-width:46ch;">This isn't a hype cycle. It's a market redraw — already three stages in.</div>
+</div>
+<svg viewBox="0 0 800 220" width="100%" height="220" style="position:relative;z-index:2;display:block;overflow:visible;">
+<path d="M 20 190 C 220 190, 300 175, 420 110 C 520 55, 600 20, 780 12" fill="none" stroke="#1C1C1E" stroke-width="2"/>
+<path d="M 20 190 C 220 190, 300 175, 420 110" fill="none" stroke="#C20A62" stroke-width="3" stroke-dasharray="620" stroke-dashoffset="620" style="animation:o2a-draw 2.6s cubic-bezier(.2,.8,.2,1) 0.3s forwards;filter:drop-shadow(0 0 8px rgba(194,10,98,.7));"/>
+<circle cx="420" cy="110" r="7" fill="#C20A62" opacity="0"><animate attributeName="opacity" values="0;0;1" keyTimes="0;0.7;1" dur="2.9s" begin="0.3s" fill="freeze"/></circle>
+<circle cx="420" cy="110" r="14" fill="none" stroke="#C20A62" stroke-width="1.5" opacity="0"><animate attributeName="r" values="7;26" dur="1.8s" begin="3s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.6;0" dur="1.8s" begin="3s" repeatCount="indefinite"/></circle>
+</svg>
+<div style="position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:8px;">
+<div class="mono" style="font-size:10px;letter-spacing:.08em;color:#5E5C57;">01 · DENIAL</div>
+<div class="mono" style="font-size:10px;letter-spacing:.08em;color:#5E5C57;">02 · EXPERIMENT</div>
+<div class="mono" style="font-size:10px;letter-spacing:.08em;color:#fff;">03 · ADOPTION — NOW</div>
+<div class="mono" style="font-size:10px;letter-spacing:.08em;color:#3A3A3E;">04 · LOCK-IN</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="2b">
+<div class="dv-olabel"><a class="dv-oid" href="#2b">2b</a>Countdown radar / warning dial</div>
+<div class="dv-card" style="width:900px;padding:0;">
+<div style="position:relative;min-height:520px;background:#050506;overflow:hidden;padding:64px 56px;display:flex;flex-direction:column;justify-content:center;">
+<div aria-hidden="true" style="position:absolute;right:-140px;top:50%;width:640px;height:640px;transform:translateY(-50%);border-radius:50%;background:conic-gradient(from 0deg,rgba(194,10,98,.35),transparent 60%);animation:o2b-spin 6s linear infinite;filter:blur(2px);"></div>
+<div aria-hidden="true" style="position:absolute;right:-140px;top:50%;width:640px;height:640px;transform:translateY(-50%);border-radius:50%;border:1px solid #1C1C1E;"></div>
+<div aria-hidden="true" style="position:absolute;right:-20px;top:50%;width:400px;height:400px;transform:translateY(-50%);border-radius:50%;border:1px solid #1C1C1E;"></div>
+<div style="position:relative;z-index:2;max-width:480px;">
+<div class="mono" style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#C20A62;margin-bottom:20px;">01 / The adoption curve</div>
+<div style="font-size:44px;line-height:1.02;letter-spacing:-.03em;font-weight:700;color:#fff;margin-bottom:16px;max-width:16ch;">Adopt, or get dragged out by whoever did.</div>
+<div style="font-size:14px;line-height:1.65;color:#8B8983;margin-bottom:34px;">This isn't a hype cycle. It's a market redraw — already three stages in.</div>
+<div class="mono" style="display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.06em;color:#fff;border:1px solid #C20A62;padding:10px 16px;background:rgba(194,10,98,.08);">
+<span style="width:6px;height:6px;background:#C20A62;border-radius:50%;animation:o2a-blink 1.4s ease-in-out infinite;"></span>
+STAGE 03 OF 04 — ADOPTION IN PROGRESS
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "make <a class="dv-oid" href="#2a">2a</a> the real section" · "slow down the draw-in on <a class="dv-oid" href="#2a">2a</a>" · "keep <a class="dv-oid" href="#2b">2b</a>'s dial but <a class="dv-oid" href="#2a">2a</a>'s stage labels"</p>
+</section>
+
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Visual options for "01 / The adoption curve"</span></div>
+<div class="dv-opts">
+
+<div class="dv-opt" id="1a">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Literal S-curve chart</div>
+<div class="dv-card" style="width:460px;padding:40px 32px;">
+<div class="mono" style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#C20A62;margin-bottom:18px;">01 / The adoption curve</div>
+<div style="font-size:24px;line-height:1.05;letter-spacing:-.03em;font-weight:700;color:#fff;margin-bottom:14px;max-width:22ch;">Adopt, or get dragged out by whoever did.</div>
+<div style="font-size:13px;line-height:1.6;color:#8B8983;margin-bottom:28px;max-width:40ch;">This isn't a hype cycle. It's a market redraw — already three stages in.</div>
+<svg viewBox="0 0 400 160" width="100%" height="160" style="display:block;">
+<path d="M 10 140 C 100 140, 140 130, 190 90 C 240 50, 280 20, 390 15" fill="none" stroke="#2A2A2E" stroke-width="2"/>
+<path d="M 10 140 C 100 140, 140 130, 190 90" fill="none" stroke="#C20A62" stroke-width="2.5"/>
+<circle cx="10" cy="140" r="4" fill="#6E6C66"/>
+<circle cx="130" cy="132" r="4" fill="#6E6C66"/>
+<circle cx="190" cy="90" r="5.5" fill="#C20A62"/>
+<circle cx="330" cy="22" r="4" fill="#3A3A3E"/>
+</svg>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:8px;">
+<div class="mono" style="font-size:9.5px;letter-spacing:.08em;color:#6E6C66;">DENIAL</div>
+<div class="mono" style="font-size:9.5px;letter-spacing:.08em;color:#6E6C66;">EXPERIMENT</div>
+<div class="mono" style="font-size:9.5px;letter-spacing:.08em;color:#C20A62;">ADOPTION</div>
+<div class="mono" style="font-size:9.5px;letter-spacing:.08em;color:#3A3A3E;">LOCK-IN</div>
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1b">
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Vertical manifesto list</div>
+<div class="dv-card" style="width:420px;padding:40px 32px;">
+<div class="mono" style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#C20A62;margin-bottom:18px;">01 / The adoption curve</div>
+<div style="font-size:24px;line-height:1.05;letter-spacing:-.03em;font-weight:700;color:#fff;margin-bottom:14px;max-width:22ch;">Adopt, or get dragged out by whoever did.</div>
+<div style="font-size:13px;line-height:1.6;color:#8B8983;margin-bottom:26px;">Here's where most companies actually are.</div>
+<div style="display:flex;flex-direction:column;">
+<div style="display:flex;gap:16px;padding:14px 0;border-top:1px solid #1C1C1E;">
+<div class="mono" style="font-size:20px;font-weight:700;color:#3A3A3E;width:28px;">01</div>
+<div><div style="font-size:14px;font-weight:600;color:#6E6C66;">Denial</div><div style="font-size:12px;color:#5E5C57;">"Too specialized to automate."</div></div>
+</div>
+<div style="display:flex;gap:16px;padding:14px 0;border-top:1px solid #1C1C1E;">
+<div class="mono" style="font-size:20px;font-weight:700;color:#3A3A3E;width:28px;">02</div>
+<div><div style="font-size:14px;font-weight:600;color:#6E6C66;">Experimentation</div><div style="font-size:12px;color:#5E5C57;">A pilot, shelved before it shipped.</div></div>
+</div>
+<div style="display:flex;gap:16px;padding:16px 14px;border-top:1px solid #1C1C1E;background:linear-gradient(90deg, rgba(194,10,98,.12), transparent);border-left:2px solid #C20A62;">
+<div class="mono" style="font-size:20px;font-weight:700;color:#C20A62;width:28px;">03</div>
+<div><div style="font-size:14px;font-weight:700;color:#fff;">Adoption — you are here</div><div style="font-size:12px;color:#C9C7C1;">Competitors' cost per output is dropping.</div></div>
+</div>
+<div style="display:flex;gap:16px;padding:14px 0;border-top:1px solid #1C1C1E;border-bottom:1px solid #1C1C1E;">
+<div class="mono" style="font-size:20px;font-weight:700;color:#3A3A3E;width:28px;">04</div>
+<div><div style="font-size:14px;font-weight:600;color:#6E6C66;">Ecosystem lock-in</div><div style="font-size:12px;color:#5E5C57;">Late entrants pay to catch up.</div></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1c">
+<div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Single-focus "you are here"</div>
+<div class="dv-card" style="width:420px;padding:40px 32px;">
+<div class="mono" style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#C20A62;margin-bottom:18px;">01 / The adoption curve</div>
+<div style="font-size:24px;line-height:1.05;letter-spacing:-.03em;font-weight:700;color:#fff;margin-bottom:22px;max-width:22ch;">Adopt, or get dragged out by whoever did.</div>
+<div style="display:flex;gap:6px;margin-bottom:22px;">
+<div class="mono" style="flex:1;text-align:center;padding:8px 4px;font-size:9.5px;letter-spacing:.06em;color:#5E5C57;border-bottom:2px solid #2A2A2E;">01 DENIAL</div>
+<div class="mono" style="flex:1;text-align:center;padding:8px 4px;font-size:9.5px;letter-spacing:.06em;color:#5E5C57;border-bottom:2px solid #2A2A2E;">02 EXPERIMENT</div>
+<div class="mono" style="flex:1.4;text-align:center;padding:8px 4px;font-size:9.5px;letter-spacing:.06em;color:#fff;border-bottom:2px solid #C20A62;">03 ADOPTION</div>
+<div class="mono" style="flex:1;text-align:center;padding:8px 4px;font-size:9.5px;letter-spacing:.06em;color:#5E5C57;border-bottom:2px solid #2A2A2E;">04 LOCK-IN</div>
+</div>
+<div style="background:#111113;border:1px solid #1C1C1E;padding:24px 22px;">
+<div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px;">Where most companies are right now</div>
+<div style="font-size:13px;line-height:1.65;color:#A8A6A0;">Competitors are shipping AI-native workflows into production. Their cost per unit of output is dropping. Yours isn't.</div>
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1d">
+<div class="dv-olabel"><a class="dv-oid" href="#1d">1d</a>Dial / gauge dashboard</div>
+<div class="dv-card" style="width:460px;padding:40px 32px;">
+<div class="mono" style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#C20A62;margin-bottom:18px;">01 / The adoption curve</div>
+<div style="font-size:24px;line-height:1.05;letter-spacing:-.03em;font-weight:700;color:#fff;margin-bottom:22px;max-width:22ch;">Adopt, or get dragged out by whoever did.</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+<div style="text-align:center;"><svg viewBox="0 0 60 34" width="100%"><path d="M4 30 A26 26 0 0 1 56 30" fill="none" stroke="#1C1C1E" stroke-width="5"/><path d="M4 30 A26 26 0 0 1 15 10" fill="none" stroke="#4A4A4E" stroke-width="5"/></svg><div class="mono" style="font-size:9px;color:#5E5C57;margin-top:4px;">DENIAL</div></div>
+<div style="text-align:center;"><svg viewBox="0 0 60 34" width="100%"><path d="M4 30 A26 26 0 0 1 56 30" fill="none" stroke="#1C1C1E" stroke-width="5"/><path d="M4 30 A26 26 0 0 1 40 8" fill="none" stroke="#6E6C66" stroke-width="5"/></svg><div class="mono" style="font-size:9px;color:#5E5C57;margin-top:4px;">EXPERIMENT</div></div>
+<div style="text-align:center;"><svg viewBox="0 0 60 34" width="100%"><path d="M4 30 A26 26 0 0 1 56 30" fill="none" stroke="#1C1C1E" stroke-width="5"/><path d="M4 30 A26 26 0 0 1 56 30" fill="none" stroke="#C20A62" stroke-width="5"/></svg><div class="mono" style="font-size:9px;color:#fff;margin-top:4px;">ADOPTION</div></div>
+<div style="text-align:center;opacity:.5;"><svg viewBox="0 0 60 34" width="100%"><path d="M4 30 A26 26 0 0 1 56 30" fill="none" stroke="#1C1C1E" stroke-width="5"/></svg><div class="mono" style="font-size:9px;color:#5E5C57;margin-top:4px;">LOCK-IN</div></div>
+</div>
+<div style="margin-top:24px;font-size:13px;line-height:1.6;color:#8B8983;">Stage 03 fills fastest once competitors ship — the gauge doesn't reset between quarters.</div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "more like <a class="dv-oid" href="#1a">1a</a> but bigger" · "combine <a class="dv-oid" href="#1b">1b</a> layout with <a class="dv-oid" href="#1d">1d</a> gauges" · "new directions"</p>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    var self = this, tries = 0;
+    function boot() {
+      var ok = document.getElementById('o4a-canvas') && document.getElementById('o4b-mount') && document.getElementById('o3a-canvas') && window.THREE && window.gsap;
+      if (!ok && 400 > tries++) return requestAnimationFrame(boot);
+      if (self._booted) return;
+      self._booted = true;
+      try { self.init5(); } catch (e) { console.warn(e); }
+      try { self.init3a(); } catch (e) { console.warn(e); }
+      try { self.init4(); } catch (e) { console.warn(e); }
+    }
+    requestAnimationFrame(boot);
+  }
+
+  init5() {
+    var g = window.gsap;
+    if (!g) return;
+
+    g.from('#o5a-root .o5a-row', { opacity: 0, y: 14, duration: .7, stagger: .09, ease: 'power2.out', delay: .15 });
+    g.from('#o5c-root .o5c-tab', { opacity: 0, duration: .5, stagger: .08, ease: 'power1.out', delay: .1 });
+    g.from('#o5c-root .o5c-cost > div > div', { opacity: 0, x: 12, duration: .6, stagger: .1, ease: 'power2.out', delay: .5 });
+
+    var log = document.getElementById('o5b-log');
+    var status = document.getElementById('o5b-status');
+    var caret = document.getElementById('o5b-caret');
+    if (!log) return;
+    var lines = [
+      ['›', 'read market_position --industry any', '#86837C'],
+      ['·', 'stage 01 denial ........ passed', '#6E6C66'],
+      ['·', 'stage 02 experiment .... passed', '#6E6C66'],
+      ['!', 'stage 03 adoption ...... in progress', '#F2609B'],
+      ['·', 'competitor cost/output . falling', '#C9C7C1'],
+      ['·', 'window to stage 04 ..... 18–24 months', '#C9C7C1']
+    ];
+    var li = 0, ci = 0, row = null;
+    function tick() {
+      if (li >= lines.length) {
+        if (status) status.textContent = 'stage 03 / 04';
+        if (caret) caret.style.opacity = '.45';
+        return;
+      }
+      var L = lines[li];
+      if (!row) {
+        row = document.createElement('div');
+        row.style.cssText = 'display:flex;gap:10px;color:' + L[2] + ';';
+        var mark = document.createElement('span');
+        mark.style.cssText = 'color:#86837C;flex:0 0 8px;';
+        mark.textContent = L[0];
+        var txt = document.createElement('span');
+        row.appendChild(mark); row.appendChild(txt);
+        row._txt = txt;
+        log.appendChild(row);
+      }
+      row._txt.textContent = L[1].slice(0, ++ci);
+      if (ci >= L[1].length) { li++; ci = 0; row = null; setTimeout(tick, 260); }
+      else setTimeout(tick, 14);
+    }
+    setTimeout(tick, 400);
+  }
+
+  init3a() {
+    var root = document.getElementById('o3a-root');
+    if (!root || !window.gsap) return;
+    var canvas = document.getElementById('o3a-canvas');
+    var ctx = canvas.getContext('2d');
+    var W, H, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    function size() {
+      var r = root.getBoundingClientRect();
+      W = r.width; H = r.height;
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    size();
+    window.addEventListener('resize', size);
+    function curvePt(t) {
+      var x0 = 30, y0 = H * 0.82, x1 = W * 0.42, y1 = H * 0.6, x2 = W * 0.66, y2 = H * 0.14, x3 = W * 0.97, y3 = H * 0.05;
+      var u = 1 - t;
+      return [u*u*u*x0 + 3*u*u*t*x1 + 3*u*t*t*x2 + t*t*t*x3, u*u*u*y0 + 3*u*u*t*y1 + 3*u*t*t*y2 + t*t*t*y3];
+    }
+    var motes = [];
+    for (var i = 0; 46 > i; i++) motes.push({ u: Math.random(), speed: 0.06 + Math.random() * 0.09, r: 1 + Math.random() * 2.2, phase: Math.random() * Math.PI * 2 });
+    var t0 = performance.now();
+    (function frame(now) {
+      var t = (now - t0) / 1000;
+      ctx.clearRect(0, 0, W, H);
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      for (var i = 0; motes.length > i; i++) {
+        var m = motes[i], p = curvePt((m.u + t * m.speed) % 1);
+        var flick = 0.55 + 0.45 * Math.sin(t * 2.4 + m.phase);
+        var glow = ctx.createRadialGradient(p[0], p[1], 0, p[0], p[1], m.r * 9);
+        glow.addColorStop(0, 'rgba(194,10,98,' + (0.55 * flick) + ')');
+        glow.addColorStop(1, 'rgba(194,10,98,0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath(); ctx.arc(p[0], p[1], m.r * 9, 0, 6.284); ctx.fill();
+        ctx.fillStyle = 'rgba(255,235,244,' + (0.85 * flick) + ')';
+        ctx.beginPath(); ctx.arc(p[0], p[1], m.r, 0, 6.284); ctx.fill();
+      }
+      ctx.restore();
+      requestAnimationFrame(frame);
+    })(performance.now());
+
+    var tl = gsap.timeline({ delay: 0.15 });
+    tl.from('#o3a-eyebrow', { opacity: 0, y: 8, duration: 0.5 })
+      .from('#o3a-h1', { opacity: 0, y: 22, duration: 0.7, ease: 'power3.out' }, '-=0.2')
+      .from('#o3a-p', { opacity: 0, y: 14, duration: 0.6 }, '-=0.35')
+      .to('#o3a-path', { strokeDashoffset: 0, duration: 2.2, ease: 'power2.inOut' }, '-=0.1')
+      .to('#o3a-marker', { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(3)' }, '-=0.5')
+      .from('#o3a-labels .o3a-label', { opacity: 0, y: 10, duration: 0.45, stagger: 0.08 }, '-=0.2')
+      .add(function () {
+        gsap.to('#o3a-ring', { scale: 2.4, opacity: 0, duration: 1.8, ease: 'power1.out', repeat: -1, repeatDelay: 0.4 });
+      });
+    gsap.to('#o3a-glowfield', { opacity: 0.9, duration: 4, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+  }
+
+  init4() {
+    var c = document.getElementById('o4a-canvas');
+    if (c) {
+      var host = c.parentElement, ctx = c.getContext('2d'), dpr = Math.min(devicePixelRatio || 1, 2);
+      var cells = [], cols, rows, gap = 22, W, H;
+      function build() {
+        var r = host.getBoundingClientRect(); W = r.width; H = r.height;
+        c.width = W * dpr; c.height = H * dpr; c.style.width = W + 'px'; c.style.height = H + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        cols = Math.ceil(W / gap); rows = Math.ceil(H / gap); cells = [];
+        for (var y = 0; rows > y; y++) for (var x = 0; cols > x; x++) {
+          cells.push({ x: x * gap + gap / 2, y: y * gap + gap / 2, t: x / cols + (Math.random() - 0.5) * 0.16 + (y / rows) * 0.08 });
+        }
+      }
+      build(); addEventListener('resize', build);
+      var t0 = performance.now();
+      (function loop(now) {
+        var t = ((now - t0) / 1000) % 20 / 20 * 1.5 - 0.2;
+        ctx.clearRect(0, 0, W, H);
+        for (var i = 0; cells.length > i; i++) {
+          var m = cells[i], d = t - m.t;
+          var on = 1 / (1 + Math.exp(-d * 16));
+          var edge = Math.exp(-Math.pow(d * 5, 2));
+          var r = 1 + edge * 1.8;
+          ctx.beginPath(); ctx.arc(m.x, m.y, r, 0, 6.284);
+          ctx.fillStyle = 'rgba(255,255,255,' + (0.05 + on * 0.03) + ')'; ctx.fill();
+          if (on > 0.02) {
+            ctx.beginPath(); ctx.arc(m.x, m.y, r, 0, 6.284);
+            ctx.fillStyle = 'rgba(194,10,98,' + (on * 0.55 + edge * 0.45) + ')'; ctx.fill();
+          }
+          if (edge > 0.35) {
+            var g = ctx.createRadialGradient(m.x, m.y, 0, m.x, m.y, 12);
+            g.addColorStop(0, 'rgba(194,10,98,' + edge * 0.22 + ')'); g.addColorStop(1, 'rgba(194,10,98,0)');
+            ctx.fillStyle = g; ctx.beginPath(); ctx.arc(m.x, m.y, 12, 0, 6.284); ctx.fill();
+          }
+        }
+        requestAnimationFrame(loop);
+      })(performance.now());
+    }
+
+    var mount = document.getElementById('o4b-mount');
+    if (mount && window.THREE && !mount.childElementCount) {
+      var T = window.THREE, w = mount.clientWidth, h = mount.clientHeight;
+      var rend = new T.WebGLRenderer({ antialias: true, alpha: true });
+      rend.setPixelRatio(Math.min(devicePixelRatio || 1, 2)); rend.setSize(w, h);
+      mount.appendChild(rend.domElement);
+      var scene = new T.Scene();
+      var cam = new T.PerspectiveCamera(38, w / h, 0.1, 100);
+      cam.position.set(0, 3.1, 6.4); cam.lookAt(0, 0.35, 0);
+      var NX = 74, NZ = 30, pos = [], col = [];
+      var cLo = new T.Color('#2A2A2E'), cHi = new T.Color('#C20A62');
+      for (var z = 0; NZ > z; z++) for (var x = 0; NX > x; x++) {
+        var u = x / (NX - 1), v = z / (NZ - 1);
+        pos.push((u - 0.5) * 9, 0, (v - 0.5) * 3.4);
+        var cc = cLo.clone().lerp(cHi, Math.pow(u, 1.6)); col.push(cc.r, cc.g, cc.b);
+      }
+      var geo = new T.BufferGeometry();
+      geo.setAttribute('position', new T.Float32BufferAttribute(pos, 3));
+      geo.setAttribute('color', new T.Float32BufferAttribute(col, 3));
+      var pts = new T.Points(geo, new T.PointsMaterial({ size: 0.045, vertexColors: true, transparent: true, opacity: 0.95, sizeAttenuation: true }));
+      scene.add(pts);
+      var arr = geo.attributes.position.array;
+      var scroll = 0;
+      function onScroll() {
+        var r = mount.getBoundingClientRect();
+        var p = 1 - (r.top + r.height * 0.5) / (window.innerHeight + r.height * 0.5);
+        scroll = Math.max(0, Math.min(1, p));
+      }
+      onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+      var start = performance.now(), reveal = 0;
+      (function anim(now) {
+        var t = (now - start) / 1000;
+        reveal += (scroll - reveal) * 0.06;
+        for (var i = 0, k = 0; NZ > i; i++) for (var j = 0; NX > j; j++, k++) {
+          var u = j / (NX - 1), v = i / (NZ - 1);
+          var front = 0.95 - reveal * 0.75;
+          var s = 1 / (1 + Math.exp(-(u - front + Math.sin(t * 0.35 + v * 2.2) * 0.05) * 13));
+          arr[k * 3 + 1] = s * 1.9 + Math.sin(t * 1.1 + u * 9 + v * 5) * 0.035 * (0.2 + s);
+        }
+        geo.attributes.position.needsUpdate = true;
+        pts.rotation.y = Math.sin(t * 0.16) * 0.14 + (reveal - 0.5) * 0.12;
+        rend.render(scene, cam);
+        requestAnimationFrame(anim);
+      })(start);
+      window.addEventListener('resize', function () {
+        var W2 = mount.clientWidth, H2 = mount.clientHeight;
+        cam.aspect = W2 / H2; cam.updateProjectionMatrix(); rend.setSize(W2, H2);
+      });
+    }
+
+    if (window.gsap && document.querySelector('#o4c-bars .o4c-bar span')) {
+      gsap.fromTo('#o4c-bars .o4c-bar span', { scaleY: 0.06 }, {
+        scaleY: 1, transformOrigin: 'bottom', duration: 1.6, ease: 'power3.out',
+        stagger: { each: 0.045, from: 'start' }, repeat: -1, repeatDelay: 2.6, yoyo: true
+      });
+    }
+  }
+}
+</script>
+</body>
+</html>

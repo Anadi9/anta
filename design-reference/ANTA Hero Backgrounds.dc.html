@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ANTA — Hero Background System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Dancing+Script:wght@700&family=Bitcount+Prop+Single&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/MotionPathPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/motion@11.11.17/dist/motion.js"></script>
+<style>
+  html { background: #0a0508; }
+  body { margin: 0; background: #0a0508; color: #F5EEF1; font-family: 'Space Grotesk', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  * { box-sizing: border-box; }
+  ::selection { background: #ec1a63; color: #fff; }
+  a { color: #F5EEF1; text-decoration: none; }
+  a:hover { color: #ff5f96; }
+  :focus-visible { outline: 2px solid #ec1a63; outline-offset: 3px; }
+  @keyframes hb-px { 0%, 100% { opacity: .2 } 50% { opacity: 1 } }
+</style>
+</helmet>
+
+<div style="position: relative; background: #0a0508;">
+
+  <!-- ============================= 01 · DESIGN ============================= -->
+  <section data-screen-label="Design" style="position: relative; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: clamp(80px, 12vh, 130px) clamp(18px, 4vw, 56px); overflow: hidden; background: #0a0508; border-bottom: 1px solid #1b0a12;">
+    <div ref="{{ bgDesign }}" aria-hidden="true" style="position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; opacity: 0; -webkit-mask-image: radial-gradient(ellipse 44% 36% at 50% 52%, rgba(0,0,0,0.20) 0%, rgba(0,0,0,0.52) 54%, #000 82%); mask-image: radial-gradient(ellipse 44% 36% at 50% 52%, rgba(0,0,0,0.20) 0%, rgba(0,0,0,0.52) 54%, #000 82%);"></div>
+
+    <sc-if value="{{ showRail }}" hint-placeholder-val="{{ true }}">
+      <div style="position: absolute; left: clamp(18px, 3vw, 48px); top: clamp(28px, 7vh, 66px); width: 190px; z-index: 10;">
+        <div style="display: flex; align-items: center; gap: 11px; margin-bottom: 24px;">
+          <span aria-hidden="true" style="display: block; width: 12px; height: 12px; border: 1.5px solid #ec1a63; transform: rotate(45deg); box-shadow: 0 0 14px rgba(236,26,99,0.7);"></span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.22em; color: #ec1a63;">DESIGN</span>
+        </div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.75; color: #9c8b93; letter-spacing: 0.03em;">Concept:<br />Creative exploration<br />&amp; composition</div>
+        <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 40px;">
+          <div style="display: flex; gap: 10px;"><span aria-hidden="true" style="flex: none; width: 5px; height: 5px; margin-top: 6px; background: #ec1a63; box-shadow: 0 0 9px #ec1a63;"></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7; color: #8d8288;">Shapes explore various forms</span></div>
+          <div style="display: flex; gap: 10px;"><span aria-hidden="true" style="flex: none; width: 5px; height: 5px; margin-top: 6px; background: #ec1a63; box-shadow: 0 0 9px #ec1a63;"></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7; color: #8d8288;">Elements drift, morph and compose</span></div>
+          <div style="display: flex; gap: 10px;"><span aria-hidden="true" style="flex: none; width: 5px; height: 5px; margin-top: 6px; background: #ec1a63; box-shadow: 0 0 9px #ec1a63;"></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7; color: #8d8288;">A balanced composition emerges over time</span></div>
+        </div>
+      </div>
+    </sc-if>
+
+    <div ref="{{ fgDesign }}" style="position: relative; z-index: 10; max-width: 820px; margin: 0 auto; text-align: center;">
+      <h1 style="margin: 0; font-size: clamp(30px, 4.2vw, 58px); line-height: 1.1; letter-spacing: -0.03em; font-weight: 700;">
+        <span data-anim="line" style="display: flex; align-items: baseline; justify-content: center; gap: 0.26em; color: #ADA1A7; white-space: nowrap;">We <span style="display: inline-block; color: #FFFFFF; background: #ec1a63; padding: 0.02em 0.16em;">design</span></span>
+        <span data-anim="line" style="display: block; color: #ADA1A7;">the future with</span>
+        <span data-anim="line" style="display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; gap: 0.13em; color: #FFFFFF; margin-top: 0.06em;">
+          <span aria-hidden="true" style="display: inline-block; width: 0.82em; height: 0.82em; background: #ec1a63; filter: drop-shadow(0 0 14px rgba(236,26,99,0.6)); -webkit-mask-image: url('assets/fingerprint-heart.png'); mask-image: url('assets/fingerprint-heart.png'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;"></span>
+          <span style="font-family: 'Dancing Script', cursive; font-weight: 700; font-size: 1.5em; letter-spacing: -0.02em;">Human</span>
+          <span style="color: #ec1a63; font-weight: 700; font-size: 0.66em; margin: 0 0.2em;">+</span>
+          <span aria-hidden="true" style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 0.028em; width: 0.62em; height: 0.62em; margin-right: 0.12em;">
+            <span style="background: #ec1a63; animation: hb-px 2.4s ease-in-out infinite;"></span><span style="background: #ec1a63; opacity: .9;"></span><span style="background: #ec1a63; opacity: .3;"></span>
+            <span style="background: #ec1a63; opacity: .55;"></span><span style="background: #ec1a63; animation: hb-px 2.4s ease-in-out infinite; animation-delay: .6s;"></span><span style="background: #ec1a63; opacity: .85;"></span>
+            <span style="background: #ec1a63; opacity: .25;"></span><span style="background: #ec1a63; opacity: .65;"></span><span style="background: #ec1a63; opacity: .14;"></span>
+          </span>
+          <span style="font-family: 'Bitcount Prop Single', 'Silkscreen', monospace; font-weight: 700; font-size: 1.85em; letter-spacing: -0.02em; text-shadow: 0 0 40px rgba(236,26,99,0.35);">AI</span>
+        </span>
+      </h1>
+      <p data-anim="line" style="margin: clamp(22px, 3vw, 34px) auto 0; max-width: 46ch; font-size: clamp(13px, 1.15vw, 15px); line-height: 1.75; color: #8B8085; text-wrap: pretty;">We design and build the AI systems your team needs,<br />so you scale without adding headcount.</p>
+      <div data-anim="line" style="display: flex; justify-content: center; margin-top: clamp(30px, 4vw, 46px);">
+        <a ref="{{ ctaDesign }}" href="#contact" style="display: inline-flex; align-items: center; gap: 12px; color: #F5EEF1; border: 1px solid rgba(236,26,99,0.75); font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 15px 26px; background: rgba(12,5,9,0.5); box-shadow: 0 0 30px rgba(236,26,99,0.22);" style-hover="border-color: #ec1a63; box-shadow: 0 0 46px rgba(236,26,99,0.45); color: #FFFFFF;">Start a conversation <span data-cta-arrow="1" style="display: inline-block; font-size: 14px;">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= 02 · BUILD ============================= -->
+  <section data-screen-label="Build" style="position: relative; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: clamp(80px, 12vh, 130px) clamp(18px, 4vw, 56px); overflow: hidden; background: #0a0508; border-bottom: 1px solid #1b0a12;">
+    <div ref="{{ bgBuild }}" aria-hidden="true" style="position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; opacity: 0; -webkit-mask-image: radial-gradient(ellipse 44% 36% at 50% 52%, rgba(0,0,0,0.20) 0%, rgba(0,0,0,0.52) 54%, #000 82%); mask-image: radial-gradient(ellipse 44% 36% at 50% 52%, rgba(0,0,0,0.20) 0%, rgba(0,0,0,0.52) 54%, #000 82%);"></div>
+
+    <sc-if value="{{ showRail }}" hint-placeholder-val="{{ true }}">
+      <div style="position: absolute; left: clamp(18px, 3vw, 48px); top: clamp(28px, 7vh, 66px); width: 190px; z-index: 10;">
+        <div style="display: flex; align-items: center; gap: 11px; margin-bottom: 24px;">
+          <span aria-hidden="true" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; width: 13px; height: 13px; filter: drop-shadow(0 0 8px rgba(236,26,99,0.8));"><span style="background: #ec1a63;"></span><span style="background: #ec1a63; opacity: .5;"></span><span style="background: #ec1a63; opacity: .5;"></span><span style="background: #ec1a63;"></span></span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.22em; color: #ec1a63;">BUILD</span>
+        </div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.75; color: #9c8b93; letter-spacing: 0.03em;">Concept:<br />Assembly &amp;<br />construction</div>
+        <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 40px;">
+          <div style="display: flex; gap: 10px;"><span aria-hidden="true" style="flex: none; width: 5px; height: 5px; margin-top: 6px; background: #ec1a63; box-shadow: 0 0 9px #ec1a63;"></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7; color: #8d8288;">Components come together</span></div>
+          <div style="display: flex; gap: 10px;"><span aria-hidden="true" style="flex: none; width: 5px; height: 5px; margin-top: 6px; background: #ec1a63; box-shadow: 0 0 9px #ec1a63;"></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7; color: #8d8288;">Align and lock into place</span></div>
+          <div style="display: flex; gap: 10px;"><span aria-hidden="true" style="flex: none; width: 5px; height: 5px; margin-top: 6px; background: #ec1a63; box-shadow: 0 0 9px #ec1a63;"></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7; color: #8d8288;">A product takes shape</span></div>
+        </div>
+      </div>
+    </sc-if>
+
+    <div ref="{{ fgBuild }}" style="position: relative; z-index: 10; max-width: 820px; margin: 0 auto; text-align: center;">
+      <h1 style="margin: 0; font-size: clamp(30px, 4.2vw, 58px); line-height: 1.1; letter-spacing: -0.03em; font-weight: 700;">
+        <span data-anim="line" style="display: flex; align-items: baseline; justify-content: center; gap: 0.26em; color: #ADA1A7; white-space: nowrap;">We <span style="display: inline-block; color: #FFFFFF; background: #ec1a63; padding: 0.02em 0.16em;">build</span></span>
+        <span data-anim="line" style="display: block; color: #ADA1A7;">the future with</span>
+        <span data-anim="line" style="display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; gap: 0.13em; color: #FFFFFF; margin-top: 0.06em;">
+          <span aria-hidden="true" style="display: inline-block; width: 0.82em; height: 0.82em; background: #ec1a63; filter: drop-shadow(0 0 14px rgba(236,26,99,0.6)); -webkit-mask-image: url('assets/fingerprint-heart.png'); mask-image: url('assets/fingerprint-heart.png'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;"></span>
+          <span style="font-family: 'Dancing Script', cursive; font-weight: 700; font-size: 1.5em; letter-spacing: -0.02em;">Human</span>
+          <span style="color: #ec1a63; font-weight: 700; font-size: 0.66em; margin: 0 0.2em;">+</span>
+          <span aria-hidden="true" style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 0.028em; width: 0.62em; height: 0.62em; margin-right: 0.12em;">
+            <span style="background: #ec1a63; animation: hb-px 2.4s ease-in-out infinite;"></span><span style="background: #ec1a63; opacity: .9;"></span><span style="background: #ec1a63; opacity: .3;"></span>
+            <span style="background: #ec1a63; opacity: .55;"></span><span style="background: #ec1a63; animation: hb-px 2.4s ease-in-out infinite; animation-delay: .6s;"></span><span style="background: #ec1a63; opacity: .85;"></span>
+            <span style="background: #ec1a63; opacity: .25;"></span><span style="background: #ec1a63; opacity: .65;"></span><span style="background: #ec1a63; opacity: .14;"></span>
+          </span>
+          <span style="font-family: 'Bitcount Prop Single', 'Silkscreen', monospace; font-weight: 700; font-size: 1.85em; letter-spacing: -0.02em; text-shadow: 0 0 40px rgba(236,26,99,0.35);">AI</span>
+        </span>
+      </h1>
+      <p data-anim="line" style="margin: clamp(22px, 3vw, 34px) auto 0; max-width: 46ch; font-size: clamp(13px, 1.15vw, 15px); line-height: 1.75; color: #8B8085; text-wrap: pretty;">We design and build the AI systems your team needs,<br />so you scale without adding headcount.</p>
+      <div data-anim="line" style="display: flex; justify-content: center; margin-top: clamp(30px, 4vw, 46px);">
+        <a ref="{{ ctaBuild }}" href="#contact" style="display: inline-flex; align-items: center; gap: 12px; color: #F5EEF1; border: 1px solid rgba(236,26,99,0.75); font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 15px 26px; background: rgba(12,5,9,0.5); box-shadow: 0 0 30px rgba(236,26,99,0.22);" style-hover="border-color: #ec1a63; box-shadow: 0 0 46px rgba(236,26,99,0.45); color: #FFFFFF;">Start a conversation <span data-cta-arrow="1" style="display: inline-block; font-size: 14px;">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= 03 · ARCHITECT ============================= -->
+  <section data-screen-label="Architect" style="position: relative; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: clamp(80px, 12vh, 130px) clamp(18px, 4vw, 56px); overflow: hidden; background: #0a0508; border-bottom: 1px solid #1b0a12;">
+    <div ref="{{ bgArchitect }}" aria-hidden="true" style="position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; opacity: 0; -webkit-mask-image: radial-gradient(ellipse 44% 36% at 50% 52%, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.6) 54%, #000 82%); mask-image: radial-gradient(ellipse 44% 36% at 50% 52%, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.6) 54%, #000 82%);"></div>
+
+    <sc-if value="{{ showRail }}" hint-placeholder-val="{{ true }}">
+      <div style="position: absolute; left: clamp(18px, 3vw, 48px); top: clamp(28px, 7vh, 66px); width: 190px; z-index: 10;">
+        <div style="display: flex; align-items: center; gap: 11px; margin-bottom: 24px;">
+          <span aria-hidden="true" style="position: relative; display: block; width: 13px; height: 13px; border: 1.5px solid #ec1a63; box-shadow: 0 0 12px rgba(236,26,99,0.6);"><span style="position: absolute; inset: 3px; background: #ec1a63; opacity: .5;"></span></span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.22em; color: #ec1a63;">ARCHITECT</span>
+        </div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.75; color: #9c8b93; letter-spacing: 0.03em;">Concept:<br />Blueprint &amp;<br />spatial design</div>
+        <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 40px;">
+          <div style="display: flex; gap: 10px;"><span aria-hidden="true" style="flex: none; width: 5px; height: 5px; margin-top: 6px; background: #ec1a63; box-shadow: 0 0 9px #ec1a63;"></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7; color: #8d8288;">Blueprint lines draw themselves</span></div>
+          <div style="display: flex; gap: 10px;"><span aria-hidden="true" style="flex: none; width: 5px; height: 5px; margin-top: 6px; background: #ec1a63; box-shadow: 0 0 9px #ec1a63;"></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7; color: #8d8288;">Points, grids and annotations appear</span></div>
+          <div style="display: flex; gap: 10px;"><span aria-hidden="true" style="flex: none; width: 5px; height: 5px; margin-top: 6px; background: #ec1a63; box-shadow: 0 0 9px #ec1a63;"></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7; color: #8d8288;">Systems are designed with precision</span></div>
+        </div>
+      </div>
+    </sc-if>
+
+    <div ref="{{ fgArchitect }}" style="position: relative; z-index: 10; max-width: 820px; margin: 0 auto; text-align: center;">
+      <h1 style="margin: 0; font-size: clamp(30px, 4.2vw, 58px); line-height: 1.1; letter-spacing: -0.03em; font-weight: 700;">
+        <span data-anim="line" style="display: flex; align-items: baseline; justify-content: center; gap: 0.26em; color: #ADA1A7; white-space: nowrap;">We <span style="display: inline-block; color: #FFFFFF; background: #ec1a63; padding: 0.02em 0.16em;">architect</span></span>
+        <span data-anim="line" style="display: block; color: #ADA1A7;">the future with</span>
+        <span data-anim="line" style="display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; gap: 0.13em; color: #FFFFFF; margin-top: 0.06em;">
+          <span aria-hidden="true" style="display: inline-block; width: 0.82em; height: 0.82em; background: #ec1a63; filter: drop-shadow(0 0 14px rgba(236,26,99,0.6)); -webkit-mask-image: url('assets/fingerprint-heart.png'); mask-image: url('assets/fingerprint-heart.png'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;"></span>
+          <span style="font-family: 'Dancing Script', cursive; font-weight: 700; font-size: 1.5em; letter-spacing: -0.02em;">Human</span>
+          <span style="color: #ec1a63; font-weight: 700; font-size: 0.66em; margin: 0 0.2em;">+</span>
+          <span aria-hidden="true" style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 0.028em; width: 0.62em; height: 0.62em; margin-right: 0.12em;">
+            <span style="background: #ec1a63; animation: hb-px 2.4s ease-in-out infinite;"></span><span style="background: #ec1a63; opacity: .9;"></span><span style="background: #ec1a63; opacity: .3;"></span>
+            <span style="background: #ec1a63; opacity: .55;"></span><span style="background: #ec1a63; animation: hb-px 2.4s ease-in-out infinite; animation-delay: .6s;"></span><span style="background: #ec1a63; opacity: .85;"></span>
+            <span style="background: #ec1a63; opacity: .25;"></span><span style="background: #ec1a63; opacity: .65;"></span><span style="background: #ec1a63; opacity: .14;"></span>
+          </span>
+          <span style="font-family: 'Bitcount Prop Single', 'Silkscreen', monospace; font-weight: 700; font-size: 1.85em; letter-spacing: -0.02em; text-shadow: 0 0 40px rgba(236,26,99,0.35);">AI</span>
+        </span>
+      </h1>
+      <p data-anim="line" style="margin: clamp(22px, 3vw, 34px) auto 0; max-width: 46ch; font-size: clamp(13px, 1.15vw, 15px); line-height: 1.75; color: #8B8085; text-wrap: pretty;">We design and build the AI systems your team needs,<br />so you scale without adding headcount.</p>
+      <div data-anim="line" style="display: flex; justify-content: center; margin-top: clamp(30px, 4vw, 46px);">
+        <a ref="{{ ctaArchitect }}" href="#contact" style="display: inline-flex; align-items: center; gap: 12px; color: #F5EEF1; border: 1px solid rgba(236,26,99,0.75); font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 15px 26px; background: rgba(12,5,9,0.5); box-shadow: 0 0 30px rgba(236,26,99,0.22);" style-hover="border-color: #ec1a63; box-shadow: 0 0 46px rgba(236,26,99,0.45); color: #FFFFFF;">Start a conversation <span data-cta-arrow="1" style="display: inline-block; font-size: 14px;">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= 04 · AUTOMATE ============================= -->
+  <section data-screen-label="Automate" style="position: relative; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: clamp(80px, 12vh, 130px) clamp(18px, 4vw, 56px); overflow: hidden; background: #0a0508; border-bottom: 1px solid #1b0a12;">
+    <div ref="{{ bgAutomate }}" aria-hidden="true" style="position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; opacity: 0; -webkit-mask-image: radial-gradient(ellipse 44% 36% at 50% 52%, rgba(0,0,0,0.20) 0%, rgba(0,0,0,0.52) 54%, #000 82%); mask-image: radial-gradient(ellipse 44% 36% at 50% 52%, rgba(0,0,0,0.20) 0%, rgba(0,0,0,0.52) 54%, #000 82%);"></div>
+
+    <sc-if value="{{ showRail }}" hint-placeholder-val="{{ true }}">
+      <div style="position: absolute; left: clamp(18px, 3vw, 48px); top: clamp(28px, 7vh, 66px); width: 190px; z-index: 10;">
+        <div style="display: flex; align-items: center; gap: 11px; margin-bottom: 24px;">
+          <span aria-hidden="true" style="position: relative; display: block; width: 13px; height: 13px; border: 1.5px solid #ec1a63; border-radius: 50%; box-shadow: 0 0 12px rgba(236,26,99,0.6);"><span style="position: absolute; inset: 3.5px; background: #ec1a63; border-radius: 50%;"></span></span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.22em; color: #ec1a63;">AUTOMATE</span>
+        </div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.75; color: #9c8b93; letter-spacing: 0.03em;">Concept:<br />Continuous system<br />&amp; intelligent flow</div>
+        <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 40px;">
+          <div style="display: flex; gap: 10px;"><span aria-hidden="true" style="flex: none; width: 5px; height: 5px; margin-top: 6px; background: #ec1a63; box-shadow: 0 0 9px #ec1a63;"></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7; color: #8d8288;">Inputs flow in</span></div>
+          <div style="display: flex; gap: 10px;"><span aria-hidden="true" style="flex: none; width: 5px; height: 5px; margin-top: 6px; background: #ec1a63; box-shadow: 0 0 9px #ec1a63;"></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7; color: #8d8288;">System processes in real time</span></div>
+          <div style="display: flex; gap: 10px;"><span aria-hidden="true" style="flex: none; width: 5px; height: 5px; margin-top: 6px; background: #ec1a63; box-shadow: 0 0 9px #ec1a63;"></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7; color: #8d8288;">Outputs flow out transformed</span></div>
+        </div>
+      </div>
+    </sc-if>
+
+    <div ref="{{ fgAutomate }}" style="position: relative; z-index: 10; max-width: 820px; margin: 0 auto; text-align: center;">
+      <h1 style="margin: 0; font-size: clamp(30px, 4.2vw, 58px); line-height: 1.1; letter-spacing: -0.03em; font-weight: 700;">
+        <span data-anim="line" style="display: flex; align-items: baseline; justify-content: center; gap: 0.26em; color: #ADA1A7; white-space: nowrap;">We <span style="display: inline-block; color: #FFFFFF; background: #ec1a63; padding: 0.02em 0.16em;">automate</span></span>
+        <span data-anim="line" style="display: block; color: #ADA1A7;">the future with</span>
+        <span data-anim="line" style="display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; gap: 0.13em; color: #FFFFFF; margin-top: 0.06em;">
+          <span aria-hidden="true" style="display: inline-block; width: 0.82em; height: 0.82em; background: #ec1a63; filter: drop-shadow(0 0 14px rgba(236,26,99,0.6)); -webkit-mask-image: url('assets/fingerprint-heart.png'); mask-image: url('assets/fingerprint-heart.png'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;"></span>
+          <span style="font-family: 'Dancing Script', cursive; font-weight: 700; font-size: 1.5em; letter-spacing: -0.02em;">Human</span>
+          <span style="color: #ec1a63; font-weight: 700; font-size: 0.66em; margin: 0 0.2em;">+</span>
+          <span aria-hidden="true" style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 0.028em; width: 0.62em; height: 0.62em; margin-right: 0.12em;">
+            <span style="background: #ec1a63; animation: hb-px 2.4s ease-in-out infinite;"></span><span style="background: #ec1a63; opacity: .9;"></span><span style="background: #ec1a63; opacity: .3;"></span>
+            <span style="background: #ec1a63; opacity: .55;"></span><span style="background: #ec1a63; animation: hb-px 2.4s ease-in-out infinite; animation-delay: .6s;"></span><span style="background: #ec1a63; opacity: .85;"></span>
+            <span style="background: #ec1a63; opacity: .25;"></span><span style="background: #ec1a63; opacity: .65;"></span><span style="background: #ec1a63; opacity: .14;"></span>
+          </span>
+          <span style="font-family: 'Bitcount Prop Single', 'Silkscreen', monospace; font-weight: 700; font-size: 1.85em; letter-spacing: -0.02em; text-shadow: 0 0 40px rgba(236,26,99,0.35);">AI</span>
+        </span>
+      </h1>
+      <p data-anim="line" style="margin: clamp(22px, 3vw, 34px) auto 0; max-width: 46ch; font-size: clamp(13px, 1.15vw, 15px); line-height: 1.75; color: #8B8085; text-wrap: pretty;">We design and build the AI systems your team needs,<br />so you scale without adding headcount.</p>
+      <div data-anim="line" style="display: flex; justify-content: center; margin-top: clamp(30px, 4vw, 46px);">
+        <a ref="{{ ctaAutomate }}" href="#contact" style="display: inline-flex; align-items: center; gap: 12px; color: #F5EEF1; border: 1px solid rgba(236,26,99,0.75); font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 15px 26px; background: rgba(12,5,9,0.5); box-shadow: 0 0 30px rgba(236,26,99,0.22);" style-hover="border-color: #ec1a63; box-shadow: 0 0 46px rgba(236,26,99,0.45); color: #FFFFFF;">Start a conversation <span data-cta-arrow="1" style="display: inline-block; font-size: 14px;">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= 05 · SHIP ============================= -->
+  <section data-screen-label="Ship" style="position: relative; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: clamp(80px, 12vh, 130px) clamp(18px, 4vw, 56px); overflow: hidden; background: #0a0508;">
+    <div ref="{{ bgShip }}" aria-hidden="true" style="position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; opacity: 0; -webkit-mask-image: radial-gradient(ellipse 42% 34% at 50% 52%, rgba(0,0,0,0.20) 0%, rgba(0,0,0,0.52) 54%, #000 82%); mask-image: radial-gradient(ellipse 42% 34% at 50% 52%, rgba(0,0,0,0.20) 0%, rgba(0,0,0,0.52) 54%, #000 82%);"></div>
+
+    <sc-if value="{{ showRail }}" hint-placeholder-val="{{ true }}">
+      <div style="position: absolute; left: clamp(18px, 3vw, 48px); top: clamp(28px, 7vh, 66px); width: 190px; z-index: 10;">
+        <div style="display: flex; align-items: center; gap: 11px; margin-bottom: 24px;">
+          <span aria-hidden="true" style="display: flex; align-items: center; gap: 3px; filter: drop-shadow(0 0 8px rgba(236,26,99,0.8));"><span style="display: block; width: 5px; height: 1.5px; background: #ec1a63; opacity: .5;"></span><span style="display: block; width: 10px; height: 10px; background: #ec1a63; transform: rotate(45deg);"></span></span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.22em; color: #ec1a63;">SHIP</span>
+        </div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.75; color: #9c8b93; letter-spacing: 0.03em;">Concept:<br />Launch &amp; forward<br />momentum</div>
+        <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 40px;">
+          <div style="display: flex; gap: 10px;"><span aria-hidden="true" style="flex: none; width: 5px; height: 5px; margin-top: 6px; background: #ec1a63; box-shadow: 0 0 9px #ec1a63;"></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7; color: #8d8288;">Momentum builds</span></div>
+          <div style="display: flex; gap: 10px;"><span aria-hidden="true" style="flex: none; width: 5px; height: 5px; margin-top: 6px; background: #ec1a63; box-shadow: 0 0 9px #ec1a63;"></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7; color: #8d8288;">Elements move forward</span></div>
+          <div style="display: flex; gap: 10px;"><span aria-hidden="true" style="flex: none; width: 5px; height: 5px; margin-top: 6px; background: #ec1a63; box-shadow: 0 0 9px #ec1a63;"></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; line-height: 1.7; color: #8d8288;">Solutions ship into the world</span></div>
+        </div>
+      </div>
+    </sc-if>
+
+    <div ref="{{ fgShip }}" style="position: relative; z-index: 10; max-width: 820px; margin: 0 auto; text-align: center;">
+      <h1 style="margin: 0; font-size: clamp(30px, 4.2vw, 58px); line-height: 1.1; letter-spacing: -0.03em; font-weight: 700;">
+        <span data-anim="line" style="display: flex; align-items: baseline; justify-content: center; gap: 0.26em; color: #ADA1A7; white-space: nowrap;">We <span style="display: inline-block; color: #FFFFFF; background: #ec1a63; padding: 0.02em 0.16em;">ship</span></span>
+        <span data-anim="line" style="display: block; color: #ADA1A7;">the future with</span>
+        <span data-anim="line" style="display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; gap: 0.13em; color: #FFFFFF; margin-top: 0.06em;">
+          <span aria-hidden="true" style="display: inline-block; width: 0.82em; height: 0.82em; background: #ec1a63; filter: drop-shadow(0 0 14px rgba(236,26,99,0.6)); -webkit-mask-image: url('assets/fingerprint-heart.png'); mask-image: url('assets/fingerprint-heart.png'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;"></span>
+          <span style="font-family: 'Dancing Script', cursive; font-weight: 700; font-size: 1.5em; letter-spacing: -0.02em;">Human</span>
+          <span style="color: #ec1a63; font-weight: 700; font-size: 0.66em; margin: 0 0.2em;">+</span>
+          <span aria-hidden="true" style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 0.028em; width: 0.62em; height: 0.62em; margin-right: 0.12em;">
+            <span style="background: #ec1a63; animation: hb-px 2.4s ease-in-out infinite;"></span><span style="background: #ec1a63; opacity: .9;"></span><span style="background: #ec1a63; opacity: .3;"></span>
+            <span style="background: #ec1a63; opacity: .55;"></span><span style="background: #ec1a63; animation: hb-px 2.4s ease-in-out infinite; animation-delay: .6s;"></span><span style="background: #ec1a63; opacity: .85;"></span>
+            <span style="background: #ec1a63; opacity: .25;"></span><span style="background: #ec1a63; opacity: .65;"></span><span style="background: #ec1a63; opacity: .14;"></span>
+          </span>
+          <span style="font-family: 'Bitcount Prop Single', 'Silkscreen', monospace; font-weight: 700; font-size: 1.85em; letter-spacing: -0.02em; text-shadow: 0 0 40px rgba(236,26,99,0.35);">AI</span>
+        </span>
+      </h1>
+      <p data-anim="line" style="margin: clamp(22px, 3vw, 34px) auto 0; max-width: 46ch; font-size: clamp(13px, 1.15vw, 15px); line-height: 1.75; color: #8B8085; text-wrap: pretty;">We design and build the AI systems your team needs,<br />so you scale without adding headcount.</p>
+      <div data-anim="line" style="display: flex; justify-content: center; margin-top: clamp(30px, 4vw, 46px);">
+        <a ref="{{ ctaShip }}" href="#contact" style="display: inline-flex; align-items: center; gap: 12px; color: #F5EEF1; border: 1px solid rgba(236,26,99,0.75); font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 15px 26px; background: rgba(12,5,9,0.5); box-shadow: 0 0 30px rgba(236,26,99,0.22);" style-hover="border-color: #ec1a63; box-shadow: 0 0 46px rgba(236,26,99,0.45); color: #FFFFFF;">Start a conversation <span data-cta-arrow="1" style="display: inline-block; font-size: 14px;">→</span></a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;intensity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.4,&quot;max&quot;:1.6,&quot;step&quot;:0.1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Motion&quot;,&quot;label&quot;:&quot;Scene density&quot;},&quot;freezeMotion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Motion&quot;,&quot;label&quot;:&quot;Freeze loops (reduced motion)&quot;},&quot;showRail&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;,&quot;label&quot;:&quot;Show concept rail&quot;}}">
+class Component extends DCLogic {
+  NS = 'http://www.w3.org/2000/svg';
+  uid = 'hb' + Math.floor(Math.random() * 99999);
+  els = {}; fgEls = {}; ctaEls = {}; scenes = {}; ready = false;
+
+  bgRefs = {
+    design: e => this.mountBg('design', e), build: e => this.mountBg('build', e),
+    architect: e => this.mountBg('architect', e), automate: e => this.mountBg('automate', e),
+    ship: e => this.mountBg('ship', e)
+  };
+  fgRefs = {
+    design: e => this.mountFg('design', e), build: e => this.mountFg('build', e),
+    architect: e => this.mountFg('architect', e), automate: e => this.mountFg('automate', e),
+    ship: e => this.mountFg('ship', e)
+  };
+  ctaRefs = {
+    design: e => this.mountCta('design', e), build: e => this.mountCta('build', e),
+    architect: e => this.mountCta('architect', e), automate: e => this.mountCta('automate', e),
+    ship: e => this.mountCta('ship', e)
+  };
+
+  renderVals() {
+    return {
+      showRail: this.props.showRail ?? true,
+      bgDesign: this.bgRefs.design, bgBuild: this.bgRefs.build, bgArchitect: this.bgRefs.architect,
+      bgAutomate: this.bgRefs.automate, bgShip: this.bgRefs.ship,
+      fgDesign: this.fgRefs.design, fgBuild: this.fgRefs.build, fgArchitect: this.fgRefs.architect,
+      fgAutomate: this.fgRefs.automate, fgShip: this.fgRefs.ship,
+      ctaDesign: this.ctaRefs.design, ctaBuild: this.ctaRefs.build, ctaArchitect: this.ctaRefs.architect,
+      ctaAutomate: this.ctaRefs.automate, ctaShip: this.ctaRefs.ship
+    };
+  }
+
+  /* ---------------- lifecycle ---------------- */
+  componentDidMount() { this.waitLibs(); }
+  componentWillUnmount() {
+    clearTimeout(this._t);
+    Object.keys(this.scenes).forEach(k => this.destroy(k));
+    Object.values(this.fgEls).forEach(o => o && o.io && o.io.disconnect());
+  }
+  componentDidUpdate(prev) {
+    if (prev.intensity !== this.props.intensity || prev.freezeMotion !== this.props.freezeMotion) {
+      Object.keys(this.scenes).forEach(k => this.destroy(k));
+      if (this.ready) Object.keys(this.els).forEach(k => this.build(k));
+    }
+  }
+  waitLibs() {
+    let n = 0;
+    const tick = () => {
+      if (window.gsap && window.ScrollTrigger && window.MotionPathPlugin) {
+        window.gsap.registerPlugin(window.ScrollTrigger, window.MotionPathPlugin);
+        this.ready = true;
+        Object.keys(this.els).forEach(k => this.build(k));
+        return;
+      }
+      if (n++ > 200) { Object.values(this.els).forEach(e => { if (e) e.style.opacity = '1'; }); return; }
+      this._t = setTimeout(tick, 60);
+    };
+    tick();
+  }
+
+  isReduced() {
+    const mq = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    return !!mq || !!this.props.freezeMotion;
+  }
+  cfg() {
+    return { acc: '#ec1a63', rgb: '236,26,99', hot: '255,150,190', intensity: Math.max(0.3, this.props.intensity ?? 1), reduced: this.isReduced() };
+  }
+
+  /* ---------------- background mounting ---------------- */
+  mountBg(name, el) {
+    if (!el) { this.destroy(name); delete this.els[name]; return; }
+    this.els[name] = el;
+    if (this.ready) this.build(name);
+  }
+  build(name) {
+    const el = this.els[name];
+    if (!el || this.scenes[name] || !this.ready) return;
+    const g = window.gsap, cfg = this.cfg();
+    el.innerHTML = '';
+    const out = { tw: [], loops: [] };
+    if (name === 'design') this.sceneDesign(el, cfg, out);
+    else if (name === 'build') this.sceneBuild(el, cfg, out);
+    else if (name === 'architect') this.sceneArchitect(el, cfg, out);
+    else if (name === 'automate') this.sceneAutomate(el, cfg, out);
+    else if (name === 'ship') this.sceneShip(el, cfg, out);
+    g.set(el, { opacity: 1, scale: 1 });
+    out.entrance = g.fromTo(el, { opacity: 0, scale: 1.05 }, {
+      opacity: 1, scale: 1, duration: 1.1, ease: 'power2.out', immediateRender: false,
+      scrollTrigger: {
+        trigger: el.parentElement, start: 'top 80%', end: 'bottom 20%',
+        toggleActions: 'play reverse play reverse',
+        onToggle: self => {
+          out.tw.forEach(t => { if (t) self.isActive ? t.resume() : t.pause(); });
+          out.loops.forEach(l => { if (l) self.isActive ? l.start() : l.stop(); });
+        }
+      }
+    });
+    this.scenes[name] = out;
+  }
+  destroy(name) {
+    const s = this.scenes[name];
+    if (!s) return;
+    s.tw.forEach(t => t && t.kill());
+    s.loops.forEach(l => l && l.kill());
+    if (s.entrance) { if (s.entrance.scrollTrigger) s.entrance.scrollTrigger.kill(); s.entrance.kill(); }
+    const el = this.els[name];
+    if (el) { el.innerHTML = ''; el.style.opacity = '0'; }
+    delete this.scenes[name];
+  }
+
+  /* ---------------- foreground (Framer Motion layer) ---------------- */
+  mountCta(name, el) {
+    if (!el) return;
+    this.ctaEls[name] = el;
+    if (el.__wired) return;
+    el.__wired = true;
+    const arrow = el.querySelector('[data-cta-arrow]');
+    const M = window.Motion;
+    const to = (o, t) => { if (M && M.animate) M.animate(o, t, { duration: 0.28, ease: [0.22, 1, 0.36, 1] }); };
+    el.addEventListener('mouseenter', () => { to(el, { scale: 1.03 }); if (arrow) to(arrow, { x: 5 }); });
+    el.addEventListener('mouseleave', () => { to(el, { scale: 1 }); if (arrow) to(arrow, { x: 0 }); });
+    el.addEventListener('pointerdown', () => to(el, { scale: 0.985 }));
+    el.addEventListener('pointerup', () => to(el, { scale: 1.03 }));
+  }
+  mountFg(name, el) {
+    if (!el) { const p = this.fgEls[name]; if (p && p.io) p.io.disconnect(); delete this.fgEls[name]; return; }
+    if (this.fgEls[name]) return;
+    const items = Array.prototype.slice.call(el.querySelectorAll('[data-anim]'));
+    const reduced = this.isReduced();
+    items.forEach(n => { n.style.opacity = '0'; n.style.transform = 'translateY(20px)'; });
+    const run = () => {
+      const M = window.Motion;
+      if (M && M.animate && !reduced) {
+        M.animate(items, { opacity: [0, 1], y: [20, 0] },
+          { duration: 0.85, delay: M.stagger ? M.stagger(0.09) : 0, ease: [0.22, 1, 0.36, 1] });
+      } else {
+        items.forEach((n, i) => {
+          n.style.transition = 'opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1)';
+          n.style.transitionDelay = (reduced ? 0 : i * 0.09) + 's';
+          requestAnimationFrame(() => { n.style.opacity = '1'; n.style.transform = 'none'; });
+        });
+      }
+    };
+    let done = false;
+    const once = () => { if (done) return; done = true; io.disconnect(); run(); };
+    const io = new IntersectionObserver(es => {
+      es.forEach(e => { if (e.isIntersecting) once(); });
+    }, { threshold: 0.15 });
+    io.observe(el);
+    setTimeout(() => { if (!done) { const r = el.getBoundingClientRect(); if (r.top < window.innerHeight) once(); } }, 900);
+    setTimeout(() => { items.forEach(n => { if (getComputedStyle(n).opacity === '0') { n.style.opacity = '1'; n.style.transform = 'none'; } }); }, 2600);
+    this.fgEls[name] = { el, io };
+  }
+
+  /* ---------------- primitives ---------------- */
+  rnd(s) { const x = Math.sin(s * 127.1) * 43758.5453; return x - Math.floor(x); }
+  sv(tag, attrs, parent) {
+    const e = document.createElementNS(this.NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  dv(css, parent) { const e = document.createElement('div'); e.style.cssText = css; if (parent) parent.appendChild(e); return e; }
+  glow(root, css) { return this.dv('position:absolute;pointer-events:none;' + css, root); }
+  svgRoot(root) {
+    const s = this.sv('svg', { viewBox: '0 0 1440 900', preserveAspectRatio: 'xMidYMid slice' }, root);
+    s.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block;';
+    return s;
+  }
+  defs(svg, p, cfg) {
+    const d = this.sv('defs', {}, svg);
+    const fill = this.sv('radialGradient', { id: p + '-fill', cx: '32%', cy: '24%', r: '86%' }, d);
+    this.sv('stop', { offset: '0%', 'stop-color': 'rgba(' + cfg.hot + ',0.55)' }, fill);
+    this.sv('stop', { offset: '16%', 'stop-color': 'rgba(' + cfg.rgb + ',0.34)' }, fill);
+    this.sv('stop', { offset: '40%', 'stop-color': '#2a0714' }, fill);
+    this.sv('stop', { offset: '100%', 'stop-color': '#0d0308' }, fill);
+    const rim = this.sv('linearGradient', { id: p + '-rim', x1: '0', y1: '0', x2: '1', y2: '1' }, d);
+    this.sv('stop', { offset: '0%', 'stop-color': '#ffd6e6' }, rim);
+    this.sv('stop', { offset: '38%', 'stop-color': cfg.acc }, rim);
+    this.sv('stop', { offset: '100%', 'stop-color': 'rgba(' + cfg.rgb + ',0.05)' }, rim);
+    const spec = this.sv('radialGradient', { id: p + '-spec' }, d);
+    this.sv('stop', { offset: '0%', 'stop-color': '#ffffff', 'stop-opacity': '0.9' }, spec);
+    this.sv('stop', { offset: '100%', 'stop-color': '#ffffff', 'stop-opacity': '0' }, spec);
+    const blur = this.sv('filter', { id: p + '-blur', x: '-60%', y: '-60%', width: '220%', height: '220%' }, d);
+    this.sv('feGaussianBlur', { stdDeviation: '7' }, blur);
+    const soft = this.sv('filter', { id: p + '-soft', x: '-60%', y: '-60%', width: '220%', height: '220%' }, d);
+    this.sv('feGaussianBlur', { stdDeviation: '26' }, soft);
+    return { fill: p + '-fill', rim: p + '-rim', spec: p + '-spec', blur: p + '-blur', soft: p + '-soft' };
+  }
+
+  blobPath(radii, cx, cy, rx, ry, rot) {
+    const n = radii.length, pts = [];
+    for (let i = 0; i < n; i++) {
+      const a = (rot || 0) + (i / n) * Math.PI * 2;
+      pts.push([cx + Math.cos(a) * rx * radii[i], cy + Math.sin(a) * ry * radii[i]]);
+    }
+    let d = 'M ' + pts[0][0].toFixed(1) + ' ' + pts[0][1].toFixed(1);
+    for (let i = 0; i < n; i++) {
+      const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
+      const c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
+      const c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
+      d += ' C ' + c1x.toFixed(1) + ' ' + c1y.toFixed(1) + ', ' + c2x.toFixed(1) + ' ' + c2y.toFixed(1) + ', ' + p2[0].toFixed(1) + ' ' + p2[1].toFixed(1);
+    }
+    return d + ' Z';
+  }
+  blob(parent, o, cfg, ids, out) {
+    const g = window.gsap, n = o.n || 8, radii = [];
+    for (let i = 0; i < n; i++) {
+      let r = 0.7 + 0.3 * this.rnd(o.seed + i * 3.7);
+      if (o.star) r = (i % 2 ? (o.starIn || 0.42) : 1) * (0.86 + 0.22 * this.rnd(o.seed + i));
+      radii.push(r);
+    }
+    const grp = this.sv('g', { opacity: o.opacity == null ? 1 : o.opacity }, parent);
+    const d0 = this.blobPath(radii, o.cx, o.cy, o.rx, o.ry, o.rot || 0);
+    const body = this.sv('path', { d: d0, fill: 'url(#' + ids.fill + ')' }, grp);
+    const rim = this.sv('path', { d: d0, fill: 'none', stroke: 'url(#' + ids.rim + ')', 'stroke-width': o.rimW || 1.6, opacity: 0.85, filter: 'url(#' + ids.blur + ')' }, grp);
+    this.sv('ellipse', {
+      cx: o.cx - o.rx * 0.34, cy: o.cy - o.ry * 0.44, rx: o.rx * 0.30, ry: o.ry * 0.16,
+      fill: 'url(#' + ids.spec + ')', opacity: 0.34, transform: 'rotate(-26 ' + o.cx + ' ' + o.cy + ')'
+    }, grp);
+    const upd = () => {
+      const d = this.blobPath(radii, o.cx, o.cy, o.rx, o.ry, o.rot || 0);
+      body.setAttribute('d', d); rim.setAttribute('d', d);
+    };
+    if (!cfg.reduced) {
+      const t = { duration: o.dur || 8, ease: 'sine.inOut', repeat: -1, yoyo: true, onUpdate: upd };
+      for (let i = 0; i < n; i++) {
+        let r = 0.66 + 0.34 * this.rnd(o.seed + 100 + i * 5.1);
+        if (o.star) r = (i % 2 ? (o.starIn ? o.starIn - 0.06 : 0.34) : 1) * (0.82 + 0.3 * this.rnd(o.seed + 200 + i));
+        t[i] = r;
+      }
+      out.tw.push(g.to(radii, t));
+      out.tw.push(g.to(grp, {
+        x: o.dx == null ? 22 : o.dx, y: o.dy == null ? -18 : o.dy, rotation: o.spin == null ? 4 : o.spin,
+        svgOrigin: o.cx + ' ' + o.cy, duration: (o.dur || 8) * 1.7, ease: 'sine.inOut', repeat: -1, yoyo: true
+      }));
+    }
+    return grp;
+  }
+  bubble(parent, o, cfg, ids, out) {
+    const g = window.gsap, gg = this.sv('g', { opacity: o.opacity == null ? 0.92 : o.opacity }, parent);
+    this.sv('circle', { cx: o.cx, cy: o.cy, r: o.r, fill: 'url(#' + ids.fill + ')' }, gg);
+    this.sv('circle', { cx: o.cx, cy: o.cy, r: o.r, fill: 'none', stroke: 'url(#' + ids.rim + ')', 'stroke-width': 1, opacity: 0.8 }, gg);
+    this.sv('ellipse', { cx: o.cx - o.r * 0.34, cy: o.cy - o.r * 0.42, rx: o.r * 0.3, ry: o.r * 0.2, fill: 'url(#' + ids.spec + ')', opacity: 0.55 }, gg);
+    if (!cfg.reduced) out.tw.push(g.to(gg, { y: o.amp || 20, x: o.ampx || 0, duration: o.dur || 6, ease: 'sine.inOut', repeat: -1, yoyo: true, delay: o.delay || 0 }));
+    return gg;
+  }
+
+  particles(root, cfg, o, out) {
+    const cv = document.createElement('canvas');
+    cv.style.cssText = 'position:absolute;left:' + o.left + ';top:' + o.top + ';width:' + o.w + ';height:' + o.h + ';display:block;';
+    root.appendChild(cv);
+    const ctx = cv.getContext('2d'), dpr = Math.min(2, window.devicePixelRatio || 1);
+    const count = Math.max(8, Math.round((o.count || 40) * cfg.intensity));
+    const S = i => this.rnd(i * 1.7 + (o.seed || 1));
+    let W = 1, H = 1, N = [], raf = 0, run = false;
+    const init = () => {
+      const r = cv.getBoundingClientRect();
+      W = Math.max(1, r.width); H = Math.max(1, r.height);
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      N = [];
+      const bx = o.origin === 'left' ? 0.34 : o.origin === 'right' ? 0.68 : 0.5;
+      for (let i = 0; i < count; i++) {
+        const gx = Math.min(0.98, Math.max(0.02, bx + (S(i) - 0.5) * (o.spread || 0.95)));
+        const gy = Math.min(0.98, Math.max(0.02, 0.5 + (S(i + 50) - 0.5) * 0.96));
+        N.push({
+          x: gx * W, y: gy * H, vx: (S(i + 11) - 0.5) * 0.24, vy: (S(i + 23) - 0.5) * 0.24,
+          s: 3 + 7 * S(i + 31), pts: 4 + Math.floor(3 * S(i + 41)), rot: S(i + 53) * 6.283,
+          bright: S(i + 61) > 0.76, ph: S(i + 71) * 6.283
+        });
+      }
+    };
+    const star = n => {
+      ctx.beginPath();
+      const k = n.pts * 2;
+      for (let i = 0; i < k; i++) {
+        const a = n.rot + (i / k) * Math.PI * 2;
+        const rr = (i % 2 ? n.s * 0.44 : n.s) * (0.82 + 0.3 * this.rnd(n.ph + i));
+        const x = n.x + Math.cos(a) * rr, y = n.y + Math.sin(a) * rr;
+        i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+      }
+      ctx.closePath();
+    };
+    const draw = () => {
+      ctx.clearRect(0, 0, W, H);
+      const md = Math.min(200, Math.max(90, W * 0.17));
+      ctx.lineWidth = 0.7;
+      for (let i = 0; i < N.length; i++) for (let j = i + 1; j < N.length; j++) {
+        const a = N[i], b = N[j], d = Math.hypot(a.x - b.x, a.y - b.y);
+        if (d < md) {
+          ctx.strokeStyle = 'rgba(' + cfg.rgb + ',' + (0.3 * (1 - d / md)).toFixed(3) + ')';
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        }
+      }
+      for (let i = 0; i < N.length; i++) {
+        const n = N[i];
+        if (n.bright) {
+          const gr = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.s * 3.6);
+          gr.addColorStop(0, 'rgba(255,228,240,0.95)');
+          gr.addColorStop(0.34, 'rgba(' + cfg.rgb + ',0.5)');
+          gr.addColorStop(1, 'rgba(' + cfg.rgb + ',0)');
+          ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(n.x, n.y, n.s * 3.6, 0, 6.283); ctx.fill();
+          ctx.fillStyle = 'rgba(255,245,250,0.95)';
+          ctx.beginPath(); ctx.arc(n.x, n.y, Math.max(1, n.s * 0.3), 0, 6.283); ctx.fill();
+        } else {
+          star(n);
+          ctx.fillStyle = 'rgba(26,8,15,0.88)'; ctx.fill();
+          ctx.strokeStyle = 'rgba(' + cfg.rgb + ',0.55)'; ctx.lineWidth = 0.9; ctx.stroke();
+        }
+      }
+    };
+    const step = () => {
+      if (!run) return;
+      for (let i = 0; i < N.length; i++) {
+        const n = N[i];
+        n.x += n.vx; n.y += n.vy; n.rot += 0.0016;
+        if (n.x < 4 || n.x > W - 4) n.vx *= -1;
+        if (n.y < 4 || n.y > H - 4) n.vy *= -1;
+      }
+      draw();
+      raf = requestAnimationFrame(step);
+    };
+    const ro = new ResizeObserver(() => { init(); draw(); });
+    ro.observe(cv);
+    init(); draw();
+    const api = {
+      start() { if (cfg.reduced || run) return; run = true; raf = requestAnimationFrame(step); },
+      stop() { run = false; cancelAnimationFrame(raf); },
+      kill() { run = false; cancelAnimationFrame(raf); ro.disconnect(); }
+    };
+    out.loops.push(api);
+    return api;
+  }
+
+  /* ---------------- scenes ---------------- */
+  imgLayer(root, o, cfg, out) {
+    const g = window.gsap;
+    const fe = o.feather == null ? 5 : o.feather;
+    const mask = 'linear-gradient(to right,transparent,#000 ' + fe + '%,#000 ' + (100 - fe) + '%,transparent),' +
+      'linear-gradient(to bottom,transparent,#000 ' + fe + '%,#000 ' + (100 - fe) + '%,transparent)';
+    const img = document.createElement('img');
+    img.src = 'assets/scene/' + o.src + '.png?v=5';
+    img.alt = ''; img.decoding = 'async';
+    img.style.cssText = 'position:absolute;left:' + o.left + ';top:' + o.top + ';width:' + o.w + ';display:block;' +
+      'opacity:' + (o.op == null ? 1 : o.op) + ';' +
+      '-webkit-mask-image:' + mask + ';mask-image:' + mask + ';-webkit-mask-composite:source-in;mask-composite:intersect;' +
+      'filter:drop-shadow(0 24px 50px rgba(' + cfg.rgb + ',0.3));will-change:transform;';
+    root.appendChild(img);
+    if (g) {
+      g.set(img, { xPercent: o.xp || 0, yPercent: o.yp || 0 });
+      if (!cfg.reduced) {
+        out.tw.push(g.to(img, {
+          x: o.dx || 0, y: o.dy || 0, rotation: o.rot || 0,
+          duration: o.dur || 16, ease: 'sine.inOut', repeat: -1, yoyo: true
+        }));
+      }
+    }
+    return img;
+  }
+  sceneDesign(root, cfg, out) {
+    this.glow(root, 'left:-14%;top:-24%;width:56%;height:80%;background:radial-gradient(circle,rgba(' + cfg.rgb + ',0.20),transparent 62%);');
+    this.glow(root, 'right:-16%;bottom:-26%;width:60%;height:82%;background:radial-gradient(circle,rgba(' + cfg.rgb + ',0.17),transparent 62%);');
+    this.imgLayer(root, { src: 'design_ribbon', left: '-3%', top: '50%', w: '19%', yp: -50, dx: 14, dy: 26, rot: 1.6, dur: 17 }, cfg, out);
+    this.imgLayer(root, { src: 'design_top_right', left: '89%', top: '15%', w: '27%', xp: -50, yp: -50, dx: -16, dy: 18, rot: -1.4, dur: 19 }, cfg, out);
+    this.imgLayer(root, { src: 'design_bottom_right', left: '85%', top: '80%', w: '31%', xp: -50, yp: -50, dx: -18, dy: -16, rot: 1.2, dur: 21 }, cfg, out);
+    const p = this.uid + '-de', svg = this.svgRoot(root), ids = this.defs(svg, p, cfg);
+    const bb = [[560, 70, 20], [980, 55, 13], [230, 140, 9], [1080, 470, 12], [595, 655, 15], [645, 705, 9], [555, 725, 7]];
+    bb.forEach((b, i) => this.bubble(svg, { cx: b[0], cy: b[1], r: b[2], dur: 5 + i * 0.9, amp: 16 + i * 4, ampx: i % 2 ? 10 : -8, delay: i * 0.4 }, cfg, ids, out));
+  }
+
+  sceneBuild(root, cfg, out) {
+    const p = this.uid + '-bu', svg = this.svgRoot(root), ids = this.defs(svg, p, cfg);
+    const g = window.gsap;
+    this.glow(root, 'right:-2%;top:2%;width:56%;height:94%;background:radial-gradient(circle at 52% 48%,rgba(' + cfg.rgb + ',0.17),transparent 62%);');
+    this.glow(root, 'left:2%;top:6%;width:34%;height:88%;background:radial-gradient(ellipse at 50% 50%,rgba(' + cfg.rgb + ',0.07),transparent 66%);');
+    const chain = [[392, 143], [280, 339], [422, 416], [284, 631], [435, 684], [383, 786]];
+    const cpath = this.sv('path', {
+      d: 'M ' + chain.map(c => c[0] + ' ' + c[1]).join(' L '), fill: 'none',
+      stroke: 'rgba(' + cfg.rgb + ',0.6)', 'stroke-width': 1.1, 'stroke-dasharray': '4 7', 'stroke-linecap': 'round'
+    }, svg);
+    [[422, 416, 4], [383, 786, 3.4]].forEach(c => this.sv('circle', { cx: c[0], cy: c[1], r: c[2], fill: '#ffe4ef', opacity: 0.92 }, svg));
+    [[392, 143, 62, 3], [280, 339, 70, 11], [284, 631, 62, 23]].forEach((s, i) =>
+      this.blob(svg, { cx: s[0], cy: s[1], rx: s[2], ry: s[2], n: 10, star: true, starIn: 0.74, seed: s[3], dur: 7 + i, dx: 13, dy: -14, spin: 11, rimW: 1.3 }, cfg, ids, out));
+    this.bubble(svg, { cx: 435, cy: 684, r: 33, dur: 6.5, amp: 16, ampx: -10, delay: 0.4 }, cfg, ids, out);
+    if (!cfg.reduced && g) out.tw.push(g.to(cpath, { strokeDashoffset: -44, duration: 3.4, ease: 'none', repeat: -1 }));
+    this.cubes(root, cfg, out, { left: '84%', top: '52%', size: 470 });
+  }
+
+  cubes(root, cfg, out, o) {
+    const g = window.gsap;
+    const wrap = this.dv('position:absolute;left:' + o.left + ';top:' + o.top + ';width:' + o.size + 'px;height:' + o.size + 'px;transform:translate(-50%,-50%);perspective:1500px;', root);
+    const grp = this.dv('position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(-20deg) rotateY(-33deg);', wrap);
+    const fit = () => { const w = root.clientWidth || 1440, k = Math.max(0.5, Math.min(1.05, w / 1440)); wrap.style.transform = 'translate(-50%,-50%) scale(' + k.toFixed(3) + ')'; };
+    fit();
+    const fro = new ResizeObserver(fit); fro.observe(root);
+    out.loops.push({ kill: function () { fro.disconnect(); } });
+    const S = 62, gap = 13, n = 3, span = (S + gap) * n - gap, half = span / 2;
+    const list = [];
+    for (let x = 0; x < n; x++) for (let y = 0; y < n; y++) for (let z = 0; z < n; z++) {
+      const px = x * (S + gap) - half + S / 2, py = y * (S + gap) - half + S / 2, pz = z * (S + gap) - half + S / 2;
+      const slot = this.dv('position:absolute;left:50%;top:50%;width:' + S + 'px;height:' + S + 'px;margin:' + (-S / 2) + 'px 0 0 ' + (-S / 2) + 'px;transform-style:preserve-3d;transform:translate3d(' + px + 'px,' + py + 'px,' + pz + 'px);', grp);
+      const cube = this.dv('position:absolute;inset:0;transform-style:preserve-3d;', slot);
+      const faces = [
+      { t: 'translateZ(' + S / 2 + 'px)', g: 'linear-gradient(155deg,#e22d76,#5e0a30)', b: 0.66, i: 16 },
+      { t: 'rotateY(180deg) translateZ(' + S / 2 + 'px)', g: 'linear-gradient(155deg,#8a1046,#31041a)', b: 0.34, i: 10 },
+      { t: 'rotateY(90deg) translateZ(' + S / 2 + 'px)', g: 'linear-gradient(125deg,#b6195c,#420624)', b: 0.48, i: 13 },
+      { t: 'rotateY(-90deg) translateZ(' + S / 2 + 'px)', g: 'linear-gradient(125deg,#740c3a,#2b0416)', b: 0.3, i: 9 },
+      { t: 'rotateX(90deg) translateZ(' + S / 2 + 'px)', g: 'linear-gradient(165deg,#f85c9e,#a41454)', b: 0.82, i: 20 },
+      { t: 'rotateX(-90deg) translateZ(' + S / 2 + 'px)', g: 'linear-gradient(165deg,#8c0e48,#230312)', b: 0.38, i: 12 }
+      ];
+      faces.forEach(f => this.dv('position:absolute;inset:0;border-radius:6px;backface-visibility:hidden;transform:' + f.t + ';background:' + f.g + ';border:1px solid rgba(255,175,212,' + f.b + ');box-shadow:inset 0 0 ' + f.i + 'px rgba(255,150,200,0.4),inset 0 1px 0 rgba(255,225,240,' + (f.b * 0.8).toFixed(2) + '),0 0 14px rgba(' + cfg.rgb + ',0.3);', cube));
+      list.push({ cube: cube, d: x + y + z });
+    }
+    list.sort((a, b) => a.d - b.d);
+    const cubesEls = list.map(l => l.cube);
+    const floorPlane = this.dv('position:absolute;left:50%;top:50%;width:0;height:0;transform:rotateX(90deg) translateZ(-' + (half + 60) + 'px);transform-style:preserve-3d;', grp);
+    for (let i = -13; i <= 13; i++) for (let j = -13; j <= 13; j++) {
+      const dd = Math.sqrt(i * i + j * j) / 13;
+      if (dd > 1.02) continue;
+      const op = Math.pow(Math.max(0, 1 - dd), 1.05);
+      if (op < 0.06) continue;
+      this.dv('position:absolute;left:' + (i * 46) + 'px;top:' + (j * 46) + 'px;width:3.4px;height:3.4px;margin:-1.7px 0 0 -1.7px;border-radius:50%;background:rgba(255,190,220,' + Math.min(1, op * 1.5).toFixed(2) + ');box-shadow:0 0 ' + (5 + op * 9).toFixed(1) + 'px rgba(255,90,160,' + Math.min(1, op * 1.3).toFixed(2) + ');', floorPlane);
+    }
+    this.dv('position:absolute;left:50%;top:50%;width:900px;height:900px;margin:-450px 0 0 -450px;transform:rotateX(90deg) translateZ(-' + (half + 58) + 'px);background:radial-gradient(circle at 50% 50%,rgba(' + cfg.rgb + ',0.34),transparent 56%);filter:blur(26px);', grp);
+
+    const svg = this.sv('svg', { viewBox: '0 0 ' + o.size + ' ' + o.size }, wrap);
+    svg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;overflow:visible;';
+    const ids = this.defs(svg, this.uid + '-cc', cfg);
+    const sats = [
+      { nx: -128, ny: -122, r: 30, seed: 61, ax: 96, ay: 118 },
+      { nx: 44, ny: -196, r: 24, seed: 68, ax: 168, ay: 84 },
+      { nx: 300, ny: -166, r: 26, seed: 75, ax: 306, ay: 96 },
+      { nx: 404, ny: -8, r: 22, seed: 82, ax: 372, ay: 168 },
+      { nx: 396, ny: 214, r: 18, seed: 89, ax: 366, ay: 244 }
+    ];
+    const lines = [];
+    sats.forEach((s, i) => {
+      lines.push(this.sv('path', { d: 'M ' + s.nx + ' ' + s.ny + ' L ' + s.ax + ' ' + s.ay, fill: 'none', stroke: 'rgba(' + cfg.rgb + ',0.6)', 'stroke-width': 1, 'stroke-dasharray': '4 7', 'stroke-linecap': 'round' }, svg));
+      this.blob(svg, { cx: s.nx, cy: s.ny, rx: s.r, ry: s.r, n: 10, star: true, starIn: 0.74, seed: s.seed, dur: 6 + i * 0.7, dx: 9, dy: -11, spin: 13, rimW: 1.1 }, cfg, ids, out);
+      this.sv('circle', { cx: s.ax, cy: s.ay, r: 2.6, fill: '#ffe4ef', opacity: 0.9 }, svg);
+    });
+    [[-96, 66, 15], [-84, 268, 13], [438, 122, 12], [352, 396, 20]].forEach((b, i) =>
+      this.bubble(svg, { cx: b[0], cy: b[1], r: b[2], dur: 5 + i * 0.9, amp: 14 + i * 3, ampx: i % 2 ? 9 : -8, delay: i * 0.3 }, cfg, ids, out));
+    g.set(lines, { opacity: 0 });
+    if (cfg.reduced) {
+      g.set(cubesEls, { opacity: 1 }); g.set(lines, { opacity: 1 });
+    } else {
+      out.tw.push(g.from(cubesEls, {
+        opacity: 0, duration: 1.15, ease: 'power3.out', stagger: 0.02,
+        x: (i) => (this.rnd(i + 3) - 0.5) * 460, y: (i) => (this.rnd(i + 19) - 0.5) * 420, z: (i) => (this.rnd(i + 31) - 0.5) * 460,
+        rotationY: (i) => (this.rnd(i + 43) - 0.5) * 180
+      }));
+      out.tw.push(g.to(lines, { opacity: 1, duration: 0.8, ease: 'power2.out', stagger: 0.14, delay: 0.9 }));
+      out.tw.push(g.to(lines, { strokeDashoffset: -44, duration: 3.2, ease: 'none', repeat: -1 }));
+      out.tw.push(g.to(grp, { rotationY: '-=14', rotationX: '+=6', duration: 13, ease: 'sine.inOut', repeat: -1, yoyo: true }));
+    }
+  }
+
+  sceneArchitect(root, cfg, out) {
+    const g = window.gsap, svg = this.svgRoot(root), ids = this.glossDefs(svg, cfg);
+    const A = a => 'rgba(' + cfg.rgb + ',' + a + ')';
+    this.glow(root, 'left:-10%;bottom:-24%;width:52%;height:70%;background:radial-gradient(ellipse at 50% 50%,rgba(' + cfg.rgb + ',0.10),transparent 64%);');
+    this.glow(root, 'right:-12%;top:-16%;width:44%;height:66%;background:radial-gradient(ellipse at 55% 50%,rgba(' + cfg.rgb + ',0.07),transparent 64%);');
+
+    const gridG = this.sv('g', {}, svg);       // faint construction grid — draws itself
+    const geoG = this.sv('g', {}, svg);        // solid blueprint geometry — draws itself
+    const dashG = this.sv('g', { opacity: 0 }, svg);  // dashed construction lines
+    const notes = this.sv('g', { opacity: 0 }, svg);  // annotations, dimensions, panel
+
+    const ln = (x1, y1, x2, y2, a, w, parent) =>
+      this.sv('line', { x1: x1, y1: y1, x2: x2, y2: y2, stroke: A(a), 'stroke-width': w || 1, 'stroke-linecap': 'square' }, parent || geoG);
+    const dln = (x1, y1, x2, y2, a, dash) =>
+      this.sv('line', { x1: x1, y1: y1, x2: x2, y2: y2, stroke: A(a), 'stroke-width': 1, 'stroke-dasharray': dash || '5 7' }, dashG);
+    const txt = (x, y, s, size, a, anchor) => {
+      const t = this.sv('text', {
+        x: x, y: y, fill: a || 'rgba(255,110,165,0.92)', 'font-family': "'JetBrains Mono', monospace",
+        'font-size': size || 13, 'letter-spacing': '0.08em', 'text-anchor': anchor || 'start'
+      }, notes);
+      t.textContent = s;
+      return t;
+    };
+    const dot = (x, y, r, o) => this.sv('circle', { cx: x, cy: y, r: r || 2, fill: '#ff86b3', opacity: o == null ? 0.85 : o }, notes);
+    const tip = (x, y, dir) => this.sv('path', {
+      d: {
+        l: 'M ' + (x + 9) + ' ' + (y - 4) + ' L ' + x + ' ' + y + ' L ' + (x + 9) + ' ' + (y + 4),
+        r: 'M ' + (x - 9) + ' ' + (y - 4) + ' L ' + x + ' ' + y + ' L ' + (x - 9) + ' ' + (y + 4),
+        u: 'M ' + (x - 4) + ' ' + (y + 9) + ' L ' + x + ' ' + y + ' L ' + (x + 4) + ' ' + (y + 9),
+        d: 'M ' + (x - 4) + ' ' + (y - 9) + ' L ' + x + ' ' + y + ' L ' + (x + 4) + ' ' + (y - 9)
+      }[dir], fill: 'none', stroke: A(0.8), 'stroke-width': 1
+    }, notes);
+    const plus = (x, y, s, a) => { ln(x - s, y, x + s, y, a || 0.5, 1, notes); ln(x, y - s, x, y + s, a || 0.5, 1, notes); };
+
+    /* --- construction grid: sparse, uneven, mostly whispers --- */
+    const gridEls = [];
+    [[72, 0.09], [297, 0.13], [470, 0.1], [620, 0.12], [771, 0.09], [1010, 0.2], [1205, 0.11], [1352, 0.09]]
+      .forEach(v => gridEls.push(ln(v[0], 0, v[0], 900, v[1], 0.8, gridG)));
+    [[96, 0.13], [306, 0.09], [470, 0.08], [612, 0.11], [746, 0.09], [820, 0.12]]
+      .forEach(h => gridEls.push(ln(0, h[0], 1440, h[0], h[1], 0.8, gridG)));
+
+    /* --- left: framed square with X + big sweep arcs --- */
+    const sq = [258, 266, 353, 364];
+    gridEls.push(ln(sq[0], sq[1], sq[2], sq[1], 0.4, 1));
+    gridEls.push(ln(sq[2], sq[1], sq[2], sq[3], 0.4, 1));
+    gridEls.push(ln(sq[2], sq[3], sq[0], sq[3], 0.4, 1));
+    gridEls.push(ln(sq[0], sq[3], sq[0], sq[1], 0.4, 1));
+    dln(sq[0], sq[1], sq[2], sq[3], 0.45, '4 6');
+    dln(sq[2], sq[1], sq[0], sq[3], 0.45, '4 6');
+    [[sq[0], sq[1]], [sq[2], sq[1]], [sq[0], sq[3]], [sq[2], sq[3]]].forEach(c => dot(c[0], c[1], 1.8, 0.9));
+    dot((sq[0] + sq[2]) / 2, (sq[1] + sq[3]) / 2, 2, 0.95);
+
+    const arcs = [
+      this.sv('circle', { cx: 10, cy: 700, r: 344, fill: 'none', stroke: A(0.17), 'stroke-width': 1 }, geoG),
+      this.sv('circle', { cx: 10, cy: 700, r: 196, fill: 'none', stroke: A(0.13), 'stroke-width': 1 }, geoG)
+    ];
+
+    /* --- right: dimensioned assembly frame --- */
+    const fr = [1049, 117, 1344, 603], br = 46;
+    const corner = (x, y, sx, sy) => {
+      gridEls.push(ln(x, y, x + br * sx, y, 0.5, 1.2));
+      gridEls.push(ln(x, y, x, y + br * sy, 0.5, 1.2));
+    };
+    corner(fr[0], fr[1], 1, 1); corner(fr[2], fr[1], -1, 1);
+    corner(fr[0], fr[3], 1, -1); corner(fr[2], fr[3], -1, -1);
+    gridEls.push(ln(fr[0], fr[1], fr[0], fr[3], 0.16, 1));
+    gridEls.push(ln(fr[2], fr[1], fr[2], fr[3], 0.16, 1));
+
+    const inr = [1120, 218, 1292, 478];
+    dln(inr[0], inr[1], inr[2], inr[1], 0.36); dln(inr[2], inr[1], inr[2], inr[3], 0.36);
+    dln(inr[2], inr[3], inr[0], inr[3], 0.36); dln(inr[0], inr[3], inr[0], inr[1], 0.36);
+
+    const circ = this.sv('circle', { cx: 1206, cy: 340, r: 61, fill: 'none', stroke: A(0.42), 'stroke-width': 1 }, geoG);
+    plus(1206, 340, 7, 0.65);
+    txt(1243, 249, 'Ø 120', 13);
+
+    // vertical dimension, right edge
+    gridEls.push(ln(1378, 124, 1378, 332, 0.5, 1));
+    gridEls.push(ln(1378, 380, 1378, 545, 0.5, 1));
+    tip(1378, 124, 'u'); tip(1378, 545, 'd');
+    gridEls.push(ln(1352, 124, 1396, 124, 0.3, 1));
+    gridEls.push(ln(1352, 545, 1396, 545, 0.3, 1));
+    txt(1378, 362, '480', 13, null, 'middle');
+
+    // horizontal dimension, under the frame
+    gridEls.push(ln(1063, 581, 1176, 581, 0.5, 1));
+    gridEls.push(ln(1234, 581, 1344, 581, 0.5, 1));
+    tip(1063, 581, 'l'); tip(1344, 581, 'r');
+    txt(1205, 586, '640', 13, null, 'middle');
+
+    // short vertical dimension, left of the frame
+    gridEls.push(ln(982, 552, 982, 606, 0.5, 1));
+    tip(982, 546, 'u'); tip(982, 612, 'd');
+    gridEls.push(ln(962, 546, 1002, 546, 0.28, 1));
+
+    /* --- annotations --- */
+    txt(1341, 62, 'X. 892', 13); txt(1341, 85, 'Y. 348', 13);
+    this.sv('circle', { cx: 1318, cy: 68, r: 6.5, fill: 'none', stroke: A(0.7), 'stroke-width': 1 }, notes);
+    plus(1318, 68, 12, 0.7);
+
+    txt(222, 208, 'Y.278', 13); dot(206, 203, 1.9);
+    txt(396, 762, 'R.138', 13); dot(380, 757, 1.9);
+    txt(930, 152, 'A.24', 13);
+    this.sv('path', { d: 'M 976 158 L 1006 186 L 1032 186', fill: 'none', stroke: A(0.55), 'stroke-width': 1 }, notes);
+    txt(922, 632, 'B.52', 13);
+
+    /* --- title block, bottom right --- */
+    const pb = [1254, 660, 158, 100];
+    this.sv('rect', { x: pb[0], y: pb[1], width: pb[2], height: pb[3], fill: 'none', stroke: A(0.5), 'stroke-width': 1 }, notes);
+    txt(pb[0] + 14, pb[1] + 27, 'SYSTEM BLUEPRINT', 11.5);
+    txt(pb[0] + 14, pb[1] + 50, 'SCALE 1:10', 11, A(0.75));
+    txt(pb[0] + 14, pb[1] + 72, 'UNIT : PX', 11, A(0.75));
+    for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++) {
+      if (this.rnd(i * 4 + j + 11) < 0.28) continue;
+      this.sv('rect', { x: pb[0] + 108 + i * 8, y: pb[1] + 56 + j * 8, width: 5, height: 5, fill: '#ff5f96', opacity: 0.75 }, notes);
+    }
+
+    /* --- scattered survey points and micro crosses --- */
+    const pts = [];
+    for (let i = 0; i < 18; i++) {
+      const x = 60 + this.rnd(i + 5) * 1320, y = 40 + this.rnd(i + 61) * 830;
+      pts.push(dot(x, y, 1.5 + this.rnd(i + 3) * 0.9, 0.6));
+    }
+    [[901, 732], [1206, 822], [755, 823], [620, 96], [470, 306]].forEach(c => plus(c[0], c[1], 5, 0.45));
+
+    /* --- glossy liquid masses --- */
+    this.gloss(svg, ids, { cx: 448, cy: 142, rx: 68, ry: 64, n: 10, star: true, starIn: 0.6, seed: 7, grad: 34, dur: 11, dx: 12, dy: -10, spin: 6, box: [330, 10, 250, 270], wide: 30, soft: 12, tight: 3 }, cfg, out);
+    this.gloss(svg, ids, { cx: 150, cy: 846, rx: 252, ry: 168, n: 9, seed: 23, grad: 18, dur: 16, dx: 14, dy: -10, spin: 2, box: [-160, 620, 720, 460] }, cfg, out);
+    this.gloss(svg, ids, { cx: 1142, cy: 856, rx: 138, ry: 152, n: 9, seed: 41, grad: 202, dur: 14, dx: -12, dy: -12, spin: -3, box: [940, 640, 460, 440] }, cfg, out);
+    this.orb(svg, ids, { cx: 1277, cy: 158, r: 44, grad: 300, dur: 8, amp: 14, ampx: -8 }, cfg, out);
+    this.orb(svg, ids, { cx: 264, cy: 586, r: 21, grad: 312, dur: 6.4, amp: 12, ampx: 8, delay: 0.4 }, cfg, out);
+    dln(288, 604, 342, 664, 0.4, '3 6');
+
+    /* --- draw-on --- */
+    const solid = gridEls.concat(arcs, [circ]);
+    solid.forEach(el => { const len = el.getTotalLength ? el.getTotalLength() : 0; if (len) g.set(el, { strokeDasharray: len, strokeDashoffset: len }); });
+    if (cfg.reduced) {
+      g.set(solid, { strokeDashoffset: 0 });
+      g.set([dashG, notes], { opacity: 1 });
+      return;
+    }
+    const tl = g.timeline();
+    tl.to(gridEls, { strokeDashoffset: 0, duration: 1.3, ease: 'power2.out', stagger: { each: 0.035, from: 'start' } }, 0)
+      .to(arcs, { strokeDashoffset: 0, duration: 2.2, ease: 'power1.inOut' }, 0.35)
+      .to(circ, { strokeDashoffset: 0, duration: 1.4, ease: 'power2.inOut' }, 0.8)
+      .to(dashG, { opacity: 1, duration: 0.8, ease: 'power2.out' }, 1.1)
+      .to(notes, { opacity: 1, duration: 0.9, ease: 'power2.out' }, 1.5);
+    out.tw.push(tl);
+    out.tw.push(g.to(dashG.querySelectorAll('line'), { strokeDashoffset: -24, duration: 3.6, ease: 'none', repeat: -1 }));
+    out.tw.push(g.fromTo(pts, { opacity: 0.25 }, {
+      opacity: 0.95, duration: 2.1, ease: 'sine.inOut', repeat: -1, yoyo: true, stagger: { each: 0.2, from: 'random' }
+    }));
+    const bar = this.dv('position:absolute;left:0;right:0;height:120px;top:-14%;background:linear-gradient(180deg,transparent,rgba(' + cfg.rgb + ',0.10),rgba(255,180,205,0.07),transparent);', root);
+    out.tw.push(g.fromTo(bar, { top: '-14%' }, { top: '106%', duration: 9, ease: 'none', repeat: -1 }));
+  }
+
+  sceneAutomate(root, cfg, out) {
+    const g = window.gsap, p = this.uid + '-au', svg = this.svgRoot(root), ids = this.defs(svg, p, cfg);
+    const fx = 590, fy = 470;
+    this.glow(root, 'left:28%;top:32%;width:22%;height:36%;background:radial-gradient(circle,rgba(255,215,232,0.4),rgba(' + cfg.rgb + ',0.20) 32%,transparent 66%);transform:translate(-50%,-50%);');
+    const rays = [], n = Math.round(38 * cfg.intensity);
+    const gr = this.sv('g', {}, svg);
+    for (let i = 0; i < n; i++) {
+      const a = (i / n) * Math.PI * 2 + this.rnd(i + 3) * 0.14;
+      const len = 150 + 620 * this.rnd(i + 9);
+      const l = this.sv('line', {
+        x1: fx, y1: fy, x2: fx + Math.cos(a) * len, y2: fy + Math.sin(a) * len * 0.72,
+        stroke: 'rgba(' + cfg.rgb + ',' + (0.16 + 0.5 * this.rnd(i + 17)).toFixed(2) + ')',
+        'stroke-width': (0.6 + 1.3 * this.rnd(i + 29)).toFixed(2), 'stroke-linecap': 'round'
+      }, gr);
+      rays.push(l);
+    }
+    this.sv('circle', { cx: fx, cy: fy, r: 5, fill: '#fff' }, svg);
+    this.particles(root, cfg, { left: '52%', top: '6%', w: '48%', h: '88%', count: 30, origin: 'right', seed: 13 }, out);
+    [[1215, 500, 96, 7], [1310, 590, 62, 19], [1140, 620, 58, 31], [1268, 420, 48, 43], [1180, 452, 40, 57]].forEach((b, i) =>
+      this.blob(svg, { cx: b[0], cy: b[1], rx: b[2], ry: b[2] * 0.92, n: 9, seed: b[3], dur: 7 + i, dx: 14, dy: -12, spin: 5, opacity: 0.95 }, cfg, ids, out));
+    const sq = [];
+    for (let i = 0; i < 9; i++) {
+      const s = 5 + 7 * this.rnd(i + 71);
+      sq.push(this.sv('rect', { x: 1330 + this.rnd(i + 3) * 90, y: 300 + this.rnd(i + 11) * 400, width: s, height: s, fill: '#ff5f96', opacity: 0.9 }, svg));
+    }
+    if (cfg.reduced) return;
+    out.tw.push(g.fromTo(rays, { scale: 0.3, opacity: 0.1 }, {
+      scale: 1, opacity: 1, duration: 2.4, ease: 'sine.inOut', repeat: -1, yoyo: true,
+      svgOrigin: fx + ' ' + fy, stagger: { each: 0.055, from: 'random' }
+    }));
+    out.tw.push(g.fromTo(sq, { x: -140, opacity: 0 }, { x: 60, opacity: 1, duration: 3.4, ease: 'power1.out', repeat: -1, stagger: 0.32 }));
+    const dots = [];
+    for (let i = 0; i < 10; i++) dots.push(this.sv('circle', { cx: fx, cy: fy, r: 2 + 2 * this.rnd(i + 5), fill: '#ffd9e7' }, svg));
+    out.tw.push(g.fromTo(dots, { x: 0, y: 0, opacity: 0 }, {
+      x: i => 320 + 420 * this.rnd(i + 13), y: i => (this.rnd(i + 27) - 0.5) * 420,
+      opacity: 0, duration: 3, ease: 'power1.out', repeat: -1, stagger: 0.25,
+      keyframes: undefined, onStart: () => { }
+    }));
+  }
+
+  sceneShip(root, cfg, out) {
+    const g = window.gsap, svg = this.svgRoot(root), ids = this.glossDefs(svg, cfg);
+    const A = a => 'rgba(' + cfg.rgb + ',' + a + ')';
+    this.glow(root, 'left:-10%;top:-16%;width:44%;height:70%;background:radial-gradient(ellipse at 46% 48%,' + A(0.08) + ',transparent 64%);');
+    this.glow(root, 'left:-12%;bottom:-22%;width:46%;height:56%;background:radial-gradient(ellipse at 50% 50%,' + A(0.07) + ',transparent 64%);');
+    this.glow(root, 'left:84%;top:49%;width:38%;height:52%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,168,204,0.30),' + A(0.15) + ' 34%,transparent 70%);');
+
+    const back = this.sv('g', {}, svg), streakG = this.sv('g', {}, svg);
+    const mid = this.sv('g', {}, svg), front = this.sv('g', {}, svg);
+
+    /* left-hand liquid masses — fused lobes anchored off-canvas */
+    this.gloss(back, ids, {
+      d: this.lobesD([[-70, -50, 172], [176, 92, 112], [402, 224, 52]], 0.36),
+      box: [-260, -240, 780, 580], grad: 202, dur: 17, dx: 14, dy: -10, spin: 1.2, wide: 28, soft: 11, tight: 3
+    }, cfg, out);
+    this.gloss(back, ids, {
+      d: this.lobesD([[-80, 600, 108], [258, 668, 124], [488, 756, 56], [668, 826, 11]], 0.34),
+      box: [-260, 460, 1120, 620], grad: 256, dur: 19, dx: 16, dy: -12, spin: -1.2, wide: 26, soft: 11, tight: 3
+    }, cfg, out);
+
+    /* right-hand debris riding the slipstream */
+    [[[1074, 78, 40], [1120, 128, 32]], [[1040, 316, 43], [1082, 356, 35]],
+     [[1108, 748, 46], [1160, 786, 38]], [[930, 690, 20], [962, 714, 15]]]
+      .forEach((lb, i) => this.gloss(mid, ids, {
+        d: this.lobesD(lb, 0.3), box: [lb[0][0] - 160, lb[0][1] - 160, 460, 440], grad: 200 + i * 26,
+        dur: 12 + i * 1.6, dx: -14 - i * 2, dy: i % 2 ? 12 : -12, spin: i % 2 ? -3 : 3,
+        wide: 26, soft: 11, tight: 2.8
+      }, cfg, out));
+
+    [[504, 74, 19], [278, 362, 15], [346, 486, 20], [250, 566, 22], [978, 164, 16], [1066, 252, 19],
+     [1042, 574, 33], [1232, 572, 21], [1272, 276, 15], [1266, 712, 27]]
+      .forEach((b, i) => this.orb(mid, ids, {
+        cx: b[0], cy: b[1], r: b[2], dur: 6 + i * 0.7, amp: 11 + (i % 4) * 4, ampx: i % 2 ? 9 : -8,
+        delay: i * 0.28, grad: 286 + (i % 3) * 34
+      }, cfg, out));
+
+    /* slipstream: light streaks fanning out of the arrow */
+    const FX = 660, FY = 442;
+    for (let i = 0; i < 58; i++) {
+      const ang = (this.rnd(i * 1.9 + 3) - 0.5) * 1.02;
+      const ux = Math.cos(ang), uy = Math.sin(ang);
+      const d0 = 300 + this.rnd(i + 17) * 520, len = 140 + this.rnd(i + 41) * 380;
+      const x2 = FX + ux * (d0 + len), y2 = FY + uy * (d0 + len);
+      const gEl = this.sv('g', { opacity: 0.9 }, streakG);
+      this.sv('line', {
+        x1: FX + ux * d0, y1: FY + uy * d0, x2: x2, y2: y2,
+        stroke: A((0.24 + 0.56 * this.rnd(i + 29)).toFixed(2)),
+        'stroke-width': (0.6 + 1.1 * this.rnd(i + 7)).toFixed(2), 'stroke-linecap': 'round'
+      }, gEl);
+      if (this.rnd(i + 53) > 0.62) this.sv('circle', { cx: x2, cy: y2, r: (1.1 + 1.7 * this.rnd(i + 61)).toFixed(2), fill: '#ffd9e8', opacity: 0.9 }, gEl);
+      if (!cfg.reduced) out.tw.push(g.fromTo(gEl,
+        { opacity: 0.08, x: -ux * 130, y: -uy * 130 },
+        { opacity: 1, x: ux * 60, y: uy * 60, duration: 2.6 + this.rnd(i + 71) * 2.8, ease: 'sine.inOut', repeat: -1, yoyo: true, delay: this.rnd(i + 83) * 2.4 }));
+    }
+
+    /* the arrow */
+    const ad = 'M 1412 442 C 1330 380, 1212 330, 1086 296 C 1136 362, 1182 408, 1208 442 ' +
+               'C 1182 476, 1136 522, 1086 588 C 1212 554, 1330 504, 1412 442 Z';
+    const arrow = this.sv('g', {}, front);
+    this.sv('path', { d: ad, fill: 'none', stroke: A(0.6), 'stroke-width': 20, filter: 'url(#' + ids.b3 + ')', opacity: 0.55 }, arrow);
+    this.sv('path', { d: ad, fill: 'rgba(9,3,8,0.88)' }, arrow);
+    this.gloss(arrow, ids, { d: ad, box: [1040, 264, 420, 356], grad: 18, dur: 9, dx: 20, dy: -8, spin: 0, wide: 22, soft: 9, tight: 2.6 }, cfg, out);
+    const cid = this.uid + '-arrclip';
+    const clip = this.sv('clipPath', { id: cid }, ids.defs);
+    this.sv('path', { d: ad }, clip);
+    const inner = this.sv('g', { 'clip-path': 'url(#' + cid + ')' }, arrow);
+    [[1096, 340, 1390, 428], [1106, 396, 1400, 438], [1098, 548, 1390, 456], [1110, 494, 1396, 448]].forEach((l, i) =>
+      this.sv('line', {
+        x1: l[0], y1: l[1], x2: l[2], y2: l[3],
+        stroke: 'rgba(255,190,220,' + (0.3 + 0.28 * this.rnd(i + 5)).toFixed(2) + ')',
+        'stroke-width': 1.8, 'stroke-linecap': 'round', filter: 'url(#' + ids.b1 + ')'
+      }, inner));
+    this.sv('path', { d: ad, fill: 'none', stroke: 'rgba(255,120,178,0.8)', 'stroke-width': 9, filter: 'url(#' + ids.b2 + ')' }, arrow);
+      sv('path', { d: ad, fill: 'none', stroke: 'rgba(255,236,246,0.9)', 'stroke-width': 4, filter: 'url(#' + ids.b1 + ')' }, arrow);
+      sv('path', { d: ad, fill: 'none', stroke: 'rgba(255,232,245,0.95)', 'stroke-width': 1.9 }, arrow);
+    const tid = this.uid + '-tipflare';
+    const tg = this.sv('radialGradient', { id: tid }, ids.defs);
+    this.sv('stop', { offset: '0%', 'stop-color': 'rgba(255,236,246,0.95)' }, tg);
+    this.sv('stop', { offset: '34%', 'stop-color': 'rgba(255,140,190,0.5)' }, tg);
+    this.sv('stop', { offset: '100%', 'stop-color': A(0) }, tg);
+    const tipFlare = this.sv('ellipse', { cx: 1408, cy: 442, rx: 112, ry: 72, fill: 'url(#' + tid + ')', opacity: 0.85 }, arrow);
+
+    const sp = this.sv('g', { opacity: 0.75 }, front), dots = [];
+    for (let i = 0; i < 20; i++) dots.push(this.sv('circle', {
+      cx: (620 + this.rnd(i + 11) * 800).toFixed(0), cy: (40 + this.rnd(i + 47) * 840).toFixed(0),
+      r: (0.8 + 1.3 * this.rnd(i + 23)).toFixed(2), fill: '#ffc9de'
+    }, sp));
+
+    if (cfg.reduced) return;
+    out.tw.push(g.to(arrow, { x: 14, y: -6, duration: 5, ease: 'sine.inOut', repeat: -1, yoyo: true }));
+    out.tw.push(g.fromTo(tipFlare, { opacity: 0.5, scale: 0.92, transformOrigin: '1408px 442px' },
+      { opacity: 1, scale: 1.08, duration: 2.4, ease: 'sine.inOut', repeat: -1, yoyo: true }));
+    out.tw.push(g.fromTo(inner.children, { opacity: 0.15 }, {
+      opacity: 1, duration: 1.4, ease: 'sine.inOut', repeat: -1, yoyo: true, stagger: { each: 0.22, from: 'random' }
+    }));
+    out.tw.push(g.fromTo(dots, { opacity: 0.15 }, {
+      opacity: 0.9, duration: 2.2, ease: 'sine.inOut', repeat: -1, yoyo: true, stagger: { each: 0.19, from: 'random' }
+    }));
+  }
+
+  smoothClosed(pts) {
+    const n = pts.length;
+    let d = 'M ' + pts[0][0].toFixed(1) + ' ' + pts[0][1].toFixed(1);
+    for (let i = 0; i < n; i++) {
+      const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
+      d += ' C ' + (p1[0] + (p2[0] - p0[0]) / 6).toFixed(1) + ' ' + (p1[1] + (p2[1] - p0[1]) / 6).toFixed(1) +
+           ', ' + (p2[0] - (p3[0] - p1[0]) / 6).toFixed(1) + ' ' + (p2[1] - (p3[1] - p1[1]) / 6).toFixed(1) +
+           ', ' + p2[0].toFixed(1) + ' ' + p2[1].toFixed(1);
+    }
+    return d + ' Z';
+  }
+
+  // Fused chain of lobes -> peanut / cluster silhouette. lobes: [[x, y, r], ...]
+  lobesD(lobes, neck) {
+    const SEG = 12, k = neck == null ? 0.38 : neck, pts = [];
+    const geo = i => {
+      const a = lobes[i], b = lobes[i + 1];
+      const dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1;
+      return { a: a, b: b, dx: dx, dy: dy, ux: dx / L, uy: dy / L };
+    };
+    const rAt = (a, b, t) => (a[2] + (b[2] - a[2]) * t) * (1 - k * Math.sin(Math.PI * t));
+    const arc = (c, from, to) => {
+      for (let i = 0; i <= 12; i++) {
+        const ang = from + (to - from) * (i / 12);
+        pts.push([c[0] + Math.cos(ang) * c[2], c[1] + Math.sin(ang) * c[2]]);
+      }
+    };
+    for (let s = 0; s < lobes.length - 1; s++) {
+      const q = geo(s);
+      for (let i = 0; i <= SEG; i++) {
+        const t = i / SEG, rr = rAt(q.a, q.b, t);
+        pts.push([q.a[0] + q.dx * t - q.uy * rr, q.a[1] + q.dy * t + q.ux * rr]);
+      }
+    }
+    const lastQ = geo(lobes.length - 2), thL = Math.atan2(lastQ.uy, lastQ.ux) + Math.PI / 2;
+    arc(lobes[lobes.length - 1], thL, thL - Math.PI);
+    for (let s = lobes.length - 2; s >= 0; s--) {
+      const q = geo(s);
+      for (let i = SEG; i >= 0; i--) {
+        const t = i / SEG, rr = rAt(q.a, q.b, t);
+        pts.push([q.a[0] + q.dx * t + q.uy * rr, q.a[1] + q.dy * t - q.ux * rr]);
+      }
+    }
+    const firstQ = geo(0), th0 = Math.atan2(firstQ.uy, firstQ.ux) + Math.PI / 2;
+    arc(lobes[0], th0 - Math.PI, th0 - Math.PI * 2);
+    return this.smoothClosed(pts);
+  }
+
+  /* ---------------- glossy liquid primitives (dark plum bodies, luminous rims) ---------------- */
+  glossDefs(svg, cfg) {
+    const p = this.uid + '-gl' + (this._gn = (this._gn || 0) + 1);
+    const d = this.sv('defs', {}, svg);
+    const deep = this.sv('radialGradient', { id: p + '-deep', cx: '38%', cy: '28%', r: '80%' }, d);
+    this.sv('stop', { offset: '0%', 'stop-color': 'rgba(' + cfg.rgb + ',0.16)' }, deep);
+    this.sv('stop', { offset: '26%', 'stop-color': '#190510' }, deep);
+    this.sv('stop', { offset: '64%', 'stop-color': '#0e030a' }, deep);
+    this.sv('stop', { offset: '100%', 'stop-color': '#090207' }, deep);
+    const mk = (id, sd) => {
+      const f = this.sv('filter', { id: id, x: '-60%', y: '-60%', width: '220%', height: '220%' }, d);
+      this.sv('feGaussianBlur', { stdDeviation: sd }, f);
+      return id;
+    };
+    return { defs: d, deep: p + '-deep', b1: mk(p + '-b1', 2.4), b2: mk(p + '-b2', 11), b3: mk(p + '-b3', 26) };
+  }
+  gloss(svg, ids, o, cfg, out) {
+    const g = window.gsap, p = this.uid + '-gx' + (this._gx = (this._gx || 0) + 1);
+    const grp = this.sv('g', { opacity: o.opacity == null ? 1 : o.opacity }, svg), bx = o.box;
+    const eg = this.sv('linearGradient', { id: p + '-e', gradientTransform: 'rotate(' + (o.grad == null ? 28 : o.grad) + ' 0.5 0.5)' }, ids.defs);
+    this.sv('stop', { offset: '0%', 'stop-color': 'rgba(255,226,242,0.96)' }, eg);
+    this.sv('stop', { offset: '18%', 'stop-color': 'rgba(255,138,192,0.9)' }, eg);
+    this.sv('stop', { offset: '44%', 'stop-color': 'rgba(' + cfg.rgb + ',0.6)' }, eg);
+    this.sv('stop', { offset: '72%', 'stop-color': 'rgba(' + cfg.rgb + ',0.18)' }, eg);
+    this.sv('stop', { offset: '100%', 'stop-color': 'rgba(' + cfg.rgb + ',0.02)' }, eg);
+    const band = (w, blur) => {
+      const id = p + '-m' + w;
+      const m = this.sv('mask', { id: id, maskUnits: 'userSpaceOnUse', x: -600, y: -600, width: 2640, height: 2100 }, ids.defs);
+      return { id: id, path: this.sv('path', { fill: 'none', stroke: '#fff', 'stroke-width': w, 'stroke-linejoin': 'round', filter: 'url(#' + blur + ')' }, m) };
+    };
+    const wide = band(o.wide || 34, ids.b3), soft = band(o.soft || 13, ids.b2), tight = band(o.tight || 3.4, ids.b1);
+    const body = this.sv('path', { fill: 'url(#' + ids.deep + ')' }, grp);
+    const rect = (mask, op) => this.sv('rect', { x: bx[0], y: bx[1], width: bx[2], height: bx[3], fill: 'url(#' + p + '-e)', mask: 'url(#' + mask + ')', opacity: op }, grp);
+    rect(wide.id, 0.26); rect(soft.id, 0.5); rect(tight.id, 0.88);
+    const setD = d => { body.setAttribute('d', d); wide.path.setAttribute('d', d); soft.path.setAttribute('d', d); tight.path.setAttribute('d', d); };
+    if (o.d) {
+      setD(o.d);
+      if (!cfg.reduced) out.tw.push(g.to(grp, {
+        x: o.dx == null ? 16 : o.dx, y: o.dy == null ? -14 : o.dy, rotation: o.spin == null ? 1.6 : o.spin,
+        transformOrigin: '50% 50%', duration: o.dur || 14, ease: 'sine.inOut', repeat: -1, yoyo: true
+      }));
+      return grp;
+    }
+    const n = o.n || 9, radii = [];
+    for (let i = 0; i < n; i++) {
+      let r = 0.68 + 0.34 * this.rnd(o.seed + i * 3.7);
+      if (o.star) r = (i % 2 ? (o.starIn || 0.6) : 1) * (0.9 + 0.16 * this.rnd(o.seed + i));
+      radii.push(r);
+    }
+    setD(this.blobPath(radii, o.cx, o.cy, o.rx, o.ry, o.rot || 0));
+    if (!cfg.reduced) {
+      const t = { duration: o.dur || 12, ease: 'sine.inOut', repeat: -1, yoyo: true, onUpdate: () => setD(this.blobPath(radii, o.cx, o.cy, o.rx, o.ry, o.rot || 0)) };
+      for (let i = 0; i < n; i++) {
+        let r = 0.62 + 0.4 * this.rnd(o.seed + 130 + i * 5.1);
+        if (o.star) r = (i % 2 ? (o.starIn ? o.starIn - 0.05 : 0.55) : 1) * (0.86 + 0.2 * this.rnd(o.seed + 210 + i));
+        t[i] = r;
+      }
+      out.tw.push(g.to(radii, t));
+      out.tw.push(g.to(grp, {
+        x: o.dx == null ? 18 : o.dx, y: o.dy == null ? -14 : o.dy, rotation: o.spin == null ? 3 : o.spin,
+        svgOrigin: o.cx + ' ' + o.cy, duration: (o.dur || 12) * 1.6, ease: 'sine.inOut', repeat: -1, yoyo: true
+      }));
+    }
+    return grp;
+  }
+  orb(svg, ids, o, cfg, out) {
+    const g = window.gsap, p = this.uid + '-ob' + (this._ob = (this._ob || 0) + 1);
+    const grp = this.sv('g', { opacity: o.opacity == null ? 0.96 : o.opacity }, svg);
+    const rg = this.sv('radialGradient', { id: p + '-f', cx: '34%', cy: '28%', r: '78%' }, ids.defs);
+    this.sv('stop', { offset: '0%', 'stop-color': 'rgba(255,180,214,0.22)' }, rg);
+    this.sv('stop', { offset: '26%', 'stop-color': 'rgba(' + cfg.rgb + ',0.2)' }, rg);
+    this.sv('stop', { offset: '58%', 'stop-color': '#150410' }, rg);
+    this.sv('stop', { offset: '100%', 'stop-color': '#0a0308' }, rg);
+    const cg = this.sv('linearGradient', { id: p + '-c', gradientTransform: 'rotate(' + (o.grad == null ? 300 : o.grad) + ' 0.5 0.5)' }, ids.defs);
+    this.sv('stop', { offset: '0%', 'stop-color': 'rgba(255,224,240,0.95)' }, cg);
+    this.sv('stop', { offset: '38%', 'stop-color': 'rgba(255,120,180,0.6)' }, cg);
+    this.sv('stop', { offset: '100%', 'stop-color': 'rgba(' + cfg.rgb + ',0)' }, cg);
+    const mid = this.sv('mask', { id: p + '-m', maskUnits: 'userSpaceOnUse', x: o.cx - o.r * 2, y: o.cy - o.r * 2, width: o.r * 4, height: o.r * 4 }, ids.defs);
+    this.sv('circle', { cx: o.cx, cy: o.cy, r: o.r, fill: '#fff' }, mid);
+    this.sv('circle', { cx: o.cx, cy: o.cy, r: o.r, fill: 'url(#' + p + '-f)' }, grp);
+    this.sv('circle', {
+      cx: o.cx, cy: o.cy, r: o.r * 0.94, fill: 'none', stroke: 'url(#' + p + '-c)',
+      'stroke-width': Math.max(1.2, o.r * 0.15), filter: 'url(#' + ids.b1 + ')', mask: 'url(#' + p + '-m)'
+    }, grp);
+    this.sv('ellipse', {
+      cx: o.cx - o.r * 0.32, cy: o.cy - o.r * 0.42, rx: o.r * 0.26, ry: o.r * 0.17,
+      fill: '#fff', opacity: 0.4, filter: 'url(#' + ids.b1 + ')', transform: 'rotate(-28 ' + o.cx + ' ' + o.cy + ')'
+    }, grp);
+    if (!cfg.reduced) out.tw.push(g.to(grp, { y: o.amp || 16, x: o.ampx || 0, duration: o.dur || 7, ease: 'sine.inOut', repeat: -1, yoyo: true, delay: o.delay || 0 }));
+    return grp;
+  }
+}
+
+</script>
+</body>
+</html>

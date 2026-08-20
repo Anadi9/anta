@@ -50,11 +50,17 @@ codebase that's about to be partly discarded.
 > This repo is a from-scratch rebuild of the site currently live at
 > `github.com/Anadi9/anta`. Do the following:
 >
-> 1. Fetch `supabase-migration.sql` from the old repo and add its two tables
->    (`contact_submissions`, `project_submissions`) to this repo as
->    `supabase/migrations/` (or wherever migrations live here) — the schema
->    is fine as-is, just port it forward. Add a third table,
->    `scope_submissions`, per `ARCHITECTURE.md` §4, for Phase 6.
+> 1. Supabase — **done, and it landed differently than this step assumed.**
+>    The old project is not ported forward; the rebuild uses a fresh
+>    project with one table, `scope_submissions`
+>    (`supabase/migrations/0001_scope_submissions.sql`). The old site's two
+>    form tables have no reader here — `/api/scope` is the only route
+>    handler and the contact section is a `mailto:` link — so they sit
+>    unapplied in `supabase/legacy/` as a record of where the historical
+>    submissions still live. Setup steps in `supabase/README.md`, reasoning
+>    in `ARCHITECTURE.md` §7. This exception applies to Supabase only: the
+>    domain, Vercel project, and GA4 property are still ported forward per
+>    the steps below.
 > 2. Port the real GA4 measurement ID `G-BF6M3EFFKH` into this repo via
 >    `@next/third-parties`'s `<GoogleAnalytics>` in `app/layout.tsx` — don't
 >    create a new GA property.
@@ -67,8 +73,9 @@ codebase that's about to be partly discarded.
 > 4. Delete `bun.lockb` if it exists here — this project uses npm only, and
 >    two lockfiles is how installs silently drift.
 > 5. Confirm `.env.local.example` lists every secret referenced in
->    `ARCHITECTURE.md` §6 (`ANTHROPIC_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY`,
->    `SUPABASE_URL`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`,
+>    `ARCHITECTURE.md` §6 (`ANTHROPIC_API_KEY` or `GEMINI_API_KEY`,
+>    `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_URL`,
+>    `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`,
 >    `RESEND_API_KEY`) even before each is wired up, so nothing gets
 >    hardcoded later out of convenience.
 
@@ -285,34 +292,67 @@ declaring the SEO work done:
   unused, that's worse than not having one (thin/abandoned sections are a
   quality signal search engines penalize).
 
+**Decision (17 Aug 2026): deferred, not dropped.** No `/writing` section at
+launch. Pre-revenue, writing time competes directly with outreach time, and
+a thin abandoned section is a worse signal than no section — so this ships
+as four pages plus one case study, and content lead-gen runs through
+LinkedIn in the meantime.
+
+Revisit ~mid-September 2026, at the same checkpoint as the ICP review in the
+top-level `CLAUDE.md`. Two things make it a yes: two or three write-ups
+already drafted (not planned), and a repeatable weekly slot to publish. The
+build itself is small — MDX files in the repo, an index route, a
+`/writing/[slug]` route, `Article` JSON-LD reusing `caseStudyJsonLd`'s
+shape, and the slugs added to `app/sitemap.ts`. Don't scaffold any of it
+until the drafts exist.
+
 ---
 
-## Phase 6 — Wire the real Claude API into "Scope it live"
-
-Only do this once the rest of the site is live. This turns the hardcoded
-demo into ANTA's actual AI-powered lead-gen tool — the proof-of-work
-argument for the whole business. Follow `ARCHITECTURE.md` §3 exactly.
-
-**Prompt:**
-
-> Replace the hardcoded Scope it live logic with a real Claude API call, per
-> the data flow in `ARCHITECTURE.md` §3. Add `app/api/scope/route.ts` as a
-> thin HTTP boundary that delegates to new files under `lib/scope/`
-> (prompt template, Claude call via `@anthropic-ai/sdk` using tool use /
-> structured output for a reliably parseable
-> `{ issue, recommendedFix, alternativeApproach, timeline, budgetFraming }`
-> response, and a rate-limit check). Stream the response to the client with
-> the Vercel AI SDK so the "analyzing" state shows real progressive output.
-> Add IP-based rate limiting via Upstash Redis — ask me for credentials if
-> not already in `.env.local`. Log every submission to the
-> `scope_submissions` Supabase table (query + full response + timestamp,
-> `ip_hash` not raw IP) via a typed helper in `lib/leads/`, so completed
-> scopes are visible pipeline even without a contact form. If the visitor
-> opts to "send me this scope," send it via Resend (`lib/email/`) — not
-> nodemailer.
+## Phase 6 — Wire a real model into "Scope it live" — **shipped**
 
 This is the one part of the build with real engineering risk (cost control,
-abuse, latency) — budget more time here than the page-building phases.
+abuse, latency), and it is done. What follows is the record of what landed,
+not a prompt to run. Where it diverges from `ARCHITECTURE.md` §3 as
+originally written, the code carries the reasoning in a header comment.
+
+**What was built:**
+
+- `app/api/scope/route.ts` — thin HTTP boundary. Parses, rate-limits,
+  delegates, logs. Responds with newline-delimited JSON
+  (`status` / `result` / `emailed` / `error` events) that it writes itself.
+  No Vercel AI SDK: the panel's progress comes from a 900ms server-side
+  heartbeat, so there were never model tokens to stream.
+- `lib/scope/provider.ts` — picks the model by which API key is set.
+  `ANTHROPIC_API_KEY` wins if both are; `SCOPE_PROVIDER=anthropic|gemini`
+  pins one. Switching paid ↔ free is one Vercel env var, no deploy.
+- `lib/scope/claude.ts` — paid path. `@anthropic-ai/sdk`, `claude-opus-5`,
+  `effort: "low"`, structured outputs (`output_config.format`), streamed to
+  `finalMessage()`, `stop_reason: "refusal"` handled as its own class.
+- `lib/scope/gemini.ts` — free path. Google AI Studio `gemini-2.5-flash`
+  over plain `fetch`, no SDK, `responseSchema` translated from the same
+  JSON Schema, `thinkingBudget: 0`, safety finish reasons mapped to a
+  refusal. Read the free-tier caveats in `.env.local.example` before
+  pointing production at it.
+- `lib/scope/errors.ts` — the two error classes both providers throw, so
+  the route's `instanceof` checks hold whichever one ran.
+- `lib/scope/schema.ts` — the response contract, generating
+  `{ issue, name, verdict, steps, stack }` rather than §3's original
+  `{ issue, recommendedFix, alternativeApproach, timeline, budgetFraming }`.
+  The approved panel renders the former; generating fields nothing renders
+  would only add latency and tokens.
+- `lib/scope/ratelimit.ts` — Upstash sliding window, 5/hour/IP, SHA-256
+  IP hashing salted with `IP_HASH_SALT`. Production **refuses to serve**
+  if Upstash is unconfigured — an uncapped public endpoint on a paid API
+  is a deployment error, not a degraded mode.
+- `lib/leads/scope-submissions.ts` — every completed scope is a row,
+  contact info or not. `import "server-only"` guards the service-role key.
+- `lib/email/send-scope.ts` — Resend, plain text, optional.
+
+**The invariant to preserve:** every failure path in `lib/scope/client.ts`
+resolves rather than throws, and the panel falls back to the hand-written
+scopes in `lib/scope/static-scopes.ts`. Unconfigured, rate-limited, refused,
+quota-exhausted or down — the visitor still sees a real architecture. This
+widget is the site's proof of work and is never allowed to look broken.
 
 ---
 
@@ -329,9 +369,12 @@ git push origin main   # or open a PR first if you want a review pass
 Before merging to `main` (which triggers the production deploy), confirm in
 Vercel project settings:
 
-- `ANTHROPIC_API_KEY`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`,
-  `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, `RESEND_API_KEY` are
-  all set for the Production environment (not just Preview)
+- `ANTHROPIC_API_KEY` **or** `GEMINI_API_KEY` (one model provider must be
+  reachable, or every scope silently serves a static fallback),
+  `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `UPSTASH_REDIS_REST_URL`,
+  `UPSTASH_REDIS_REST_TOKEN`, `RESEND_API_KEY` are all set for the
+  Production environment (not just Preview). Upstash is not optional in
+  production — `/api/scope` returns 503 without it.
 - the GA4 property (`G-BF6M3EFFKH`) is receiving data from a preview deploy
   before you cut production over
 - Google Search Console verification is completed with a real code (see

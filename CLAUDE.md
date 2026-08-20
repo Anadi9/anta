@@ -23,11 +23,17 @@ Vercel. Its content and design are being fully replaced — its copy frames
 ANTA as a generic "AI Product Studio for MVPs," which conflicts with the
 positioning above, and it carries two off-brand SEO pages
 (`/services/web-development`, `/services/custom-websites`) that are being
-dropped, not ported. But its **infrastructure is being kept**: the
-`theanta.com` domain and Vercel project, the Supabase project and its
-`contact_submissions`/`project_submissions` schema, and the GA4 property
-(`G-BF6M3EFFKH`). Don't provision new versions of any of these — port them
-forward per `BUILD_PLAN.md` Phase 0. Full reasoning in `ARCHITECTURE.md` §7.
+dropped, not ported. Most of its **infrastructure is being kept**: the
+`theanta.com` domain and Vercel project, and the GA4 property
+(`G-BF6M3EFFKH`). Don't provision new versions of those — port them forward
+per `BUILD_PLAN.md` Phase 0.
+
+**Supabase is the exception.** The rebuild uses a **fresh Supabase project**
+with a single table (`scope_submissions`), not the old one: this site's only
+server-side write is `/api/scope`, its contact section is a `mailto:` link,
+and the old project's `contact_submissions`/`project_submissions` have no
+reader here. Setup steps in `supabase/README.md`, reasoning in
+`ARCHITECTURE.md` §7.
 
 ## Finalized tech stack
 
@@ -38,10 +44,17 @@ forward per `BUILD_PLAN.md` Phase 0. Full reasoning in `ARCHITECTURE.md` §7.
   component suite. Add individual headless primitives only when a specific
   interaction needs one; don't reintroduce the old repo's full Radix
   dependency list
-- **Data:** Supabase (Postgres) — ported from the live repo, schema
-  documented in `ARCHITECTURE.md` §4
-- **AI:** Anthropic SDK (`@anthropic-ai/sdk`) + Vercel AI SDK, for the
-  "Scope it live" tool (`BUILD_PLAN.md` Phase 6) — not built yet
+- **Data:** Supabase (Postgres) — fresh project, one table, schema in
+  `supabase/migrations/` and documented in `ARCHITECTURE.md` §4
+- **AI:** two interchangeable providers behind one contract
+  (`lib/scope/provider.ts`), for the "Scope it live" tool — **built**, see
+  `BUILD_PLAN.md` Phase 6. Paid path: Anthropic SDK (`@anthropic-ai/sdk`),
+  `claude-opus-5`. Free path: Google AI Studio (`gemini-2.5-flash`) over
+  plain `fetch`, no SDK. Whichever API key is present wins,
+  `ANTHROPIC_API_KEY` first; `SCOPE_PROVIDER` pins one explicitly. The
+  Vercel AI SDK is **not** used and is not a dependency — the route streams
+  NDJSON it builds itself, because its progress events come from a server
+  heartbeat, not from model tokens
 - **Rate limiting:** Upstash Redis, for the public unauthenticated AI
   endpoint
 - **Email:** Resend, replacing the old repo's `nodemailer` (HTTP API fits
@@ -94,26 +107,33 @@ slip:
 
 - Next.js 16 (App Router) + TypeScript + Tailwind v4, scaffolded and working.
 - GSAP + Framer Motion installed.
-- `components/hero-background/` — a complete, production-grade animated
-  background system (5 variants: design, build, architect, automate, ship).
-  **Read `components/hero-background/README.md` before touching it.** It's
-  already wired into the homepage hero (`components/home/HeroSection.tsx`,
-  rendered from `app/page.tsx`) as a working example — don't rebuild it,
-  extend/reuse it.
+- `components/hero-background/` — the hero background. Two systems: the
+  `Scenes` art (`HeroScenes.tsx` + `scenes.ts`), ported from
+  `design-reference/ANTA Hero.html`, which is what the hero actually renders;
+  and the canvas fallback (`HeroCanvas.tsx`, `Network` / `Blueprint` modes),
+  ported from `ANTA Site.dc.html` and currently unmounted. **Read
+  `components/hero-background/README.md` before touching it** — it explains why
+  there are two and which one wins. `HeroScenes` is wired into the homepage
+  hero (`components/home/HeroSection.tsx`, rendered from `app/page.tsx`) —
+  don't rebuild it, extend/reuse it. Those two exports are the *only*
+  references for the hero background; don't reintroduce art from others.
 - `design-reference/` — the actual approved visual design and copy, exported
   as self-contained HTML previews from the design tool. **These are the
   source of truth for layout, copy, and visual treatment.** Open them in a
   browser to see the real design before building each page:
   - `ANTA Site.dc.html` — homepage (hero, proof of work, "how the studio
     operates", the "Scope it live" interactive tool, contact)
+  - `ANTA Hero.html` — the approved hero, and the only export that ships the
+    `hero-scenes.js` module plus its 19 art plates (now `public/scene/`).
+    Source of truth for the hero background; supersedes `ANTA Site.dc.html`
+    for that layer only.
   - `ANTA About.dc.html` / `ANTA About Options.dc.html` — Studio/About page
   - `ANTA Work.dc.html` — Work page (real case study: Lead Intelligence
     Agent, with a "System log" terminal feed and stack callouts)
   - `ANTA Build.dc.html` / `Workflow Section Concepts.dc.html` — Build page
     (hover-to-reveal "Workflow explorer")
-  - `ANTA Hero Backgrounds.dc.html`, `Hero Mark Options.dc.html`,
-    `ANTA Loader.dc.html` — background/loader/wordmark exploration, reference
-    only, not standalone pages
+  - `Hero Mark Options.dc.html`, `ANTA Loader.dc.html` — loader/wordmark
+    exploration, reference only, not standalone pages
   - `ANTA_Website_Prototype_Prompt.md` — the original brief this design was
     built from (tone, voice, "Time-less Architecture" concept)
 - Design tokens live in `components/hero-background/tokens.ts` and are
@@ -143,8 +163,8 @@ slip:
   all four pages in one pass.
 - Match the reference's copy exactly — it's already written and approved.
   Don't paraphrase or improve it.
-- Reuse `components/hero-background` variants per section rather than
-  building new background art from scratch.
+- Reuse `components/hero-background` (its `network` / `blueprint` modes)
+  rather than building new background art from scratch.
 - Keep components in `components/`, one file per component, colocated by
   feature if a page grows complex (e.g. `components/work/SystemLog.tsx`).
 - Keep business logic (Supabase queries, Claude calls, email sends) in

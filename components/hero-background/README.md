@@ -1,114 +1,129 @@
-# Hero background system
+# Hero background
 
-Animated, non-interactive background layer for hero sections. Five variants —
-`design`, `build`, `architect`, `automate`, `ship` — sharing one token set and
-one technical foundation. No paid GSAP plugins.
+Two independent background systems live here:
 
-## Install
+| File | What it is | Source |
+| --- | --- | --- |
+| `HeroScenes.tsx` + `scenes.ts` | **The hero's actual background.** Five composited art worlds, one per rotating verb. | `design-reference/ANTA Hero.html` |
+| `HeroCanvas.tsx` | The canvas fallback art — `network` / `blueprint` particle modes. Not currently mounted anywhere. | `design-reference/ANTA Site.dc.html` |
 
-```bash
-npm i gsap framer-motion
-```
+## Why there are two
 
-Only free plugins are used: `ScrollTrigger` and `MotionPathPlugin` (both
-registered inside the components that need them).
+`ANTA Site.dc.html` exposed the hero background as an enum (line 493):
+`Scenes | Network | Blueprint | None`. It defaulted to `Scenes`, but that mode
+dynamically `import()`ed a `hero-scenes.js` that the export did not ship — so
+the original port covered only the two inlined canvas modes and defaulted to
+`Network`.
 
-## Drop-in
+**`ANTA Hero.html` ships that module.** Its `heroMode()` returns `'Scenes'`
+unconditionally, and in that mode its `drawFrame` clears the canvas every frame
+— the canvas contributes nothing. So `Scenes` is the approved hero art, and
+`HeroCanvas` is kept as the fallback it always was, not as the target.
+
+## Scenes
+
+`createHeroScenes(root, { accent, reduced, intensity })` → `{ setVariant, destroy }`.
+
+Each of the five `HeroVariant` words maps to a scene of three parts:
+
+1. **Glows** — 2–3 absolutely-positioned radial gradients in the accent.
+2. **Art plates** — PNGs from `public/scene/` (19 files, byte-identical to the
+   export's bundled assets). Each is placed by `cx`/`cy`/`w` as a % of the hero
+   box, edge-feathered with a two-axis gradient mask so no crop rectangle
+   prints, and given a slow yoyo float (`fx`/`fy`/`rot` over `dur` seconds) plus
+   a one-shot entry tween. `z` sets how hard it reacts to pointer parallax.
+3. **A procedural accent layer** built in SVG, one per word:
+   - `design` → `orbs` (glass spheres) + `twinkle`
+   - `build` → `links` (dashed circuit runs between the node clusters) + `twinkle`
+   - `architect` → `blueprint` (drafting grid, brackets, crosshairs, call-outs,
+     with a self-drawing stroke-dash entry and a travelling scan bar)
+   - `automate` → `flow` (packet comets along the intake fan and out of the
+     core, plus the INPUTS / LEARNING LOOP HUD) + `orbs` on a second spot set
+   - `ship` → `streaks` (slipstream lines fanning back from the arrow) + `twinkle`
+
+`setVariant` cross-fades: the new scene builds at `opacity: 0` and tweens in
+over 900ms while the outgoing one tweens out over 700ms and is then torn down
+(with a 1400ms belt-and-braces timer behind the `onComplete`).
+
+### Layering
+
+`ANTA Hero.html` stacks three things inside the hero section, all at `z-0`:
+
+1. the `<canvas>` — full-bleed and unmasked, and **blank in Scenes mode**;
+2. the scene `<div>` at `opacity: .78` behind a centre ellipse mask — this is
+   `HeroScenes`, and the opacity and mask belong to *it*;
+3. an accent radial bloom, `top: -30%`, `70vw` square, `opacity: .10` — this
+   lives in `HeroSection`, as a sibling.
+
+The reference's `--scene-filter: invert(1) hue-rotate(180deg)` is a
+**light-theme** correction. Its dark theme sets `--scene-filter: none`
+(line 41), and this site is dark-only, so no filter applies.
+
+### Deliberate deviations
+
+- Art is served from `/scene/*.png` rather than the export's bundled
+  `assets/scene/*.png?v=6` + `window.__resources` lookup.
+- The accent is read from the `--color-accent` CSS variable instead of the
+  reference's hardcoded `#C20A62`, so the art tracks `tokens.ts` /
+  `app/globals.css`. `HeroCanvas` follows the same rule.
+- The reference's unused `out.loops` bucket is dropped.
+
+### Reduced motion
+
+Under `prefers-reduced-motion: reduce` no tween is created: plates render at
+their resting position, `blueprint`'s strokes and `flow`'s HUD are `set` to
+their finished state, and the cross-fade runs at `duration: 0`. Pointer
+parallax is not wired up at all. The composition is fully legible — it just
+doesn't move.
+
+## Usage
 
 ```tsx
-import { motion } from "framer-motion";
-import { HeroBackground } from "@/components/hero-background/HeroBackground";
+import { HeroScenes } from "@/components/hero-background/HeroScenes";
 
-export function Hero() {
-  return (
-    <section className="relative min-h-screen overflow-hidden bg-[#0a0508]">
-      <HeroBackground variant="design" />
-
-      {/* Foreground stays on its own layer — Framer Motion only, z-10 */}
-      <motion.div
-        className="relative z-10 mx-auto flex min-h-screen max-w-4xl flex-col justify-center text-center"
-        initial="hidden"
-        animate="show"
-        variants={{ show: { transition: { staggerChildren: 0.09 } } }}
-      >
-        <motion.h1 variants={fadeUp} className="text-5xl font-bold text-white">…</motion.h1>
-        <motion.p  variants={fadeUp} className="mt-6 text-neutral-400">…</motion.p>
-        <motion.a
-          variants={fadeUp}
-          whileHover="hover"
-          whileTap={{ scale: 0.98 }}
-          className="mx-auto mt-10 inline-flex items-center gap-3 border border-[#ec1a63]/75 px-6 py-4 font-mono text-xs uppercase tracking-widest text-white"
-          transition={{ type: "spring", stiffness: 400, damping: 28 }}
-          animate=""
-        >
-          Start a conversation
-          <motion.span variants={{ hover: { x: 5 } }}>→</motion.span>
-        </motion.a>
-      </motion.div>
-    </section>
-  );
-}
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.85, ease: [0.22, 1, 0.36, 1] } },
-};
+<section className="relative overflow-hidden">
+  <HeroScenes word={word} />
+  <div className="relative z-10">…</div>
+</section>
 ```
 
-The parent **must** be `position: relative` and `overflow: hidden`; the
-background pins itself to `inset-0 z-0 pointer-events-none`, so put content at
-`z-10`.
+`word` is a `HeroVariant` (`design | build | architect | automate | ship`) — the
+same five strings as the rotating headline verb, in the reference's rotation
+order. That coupling is the reference's own (`ANTA Hero.html`, `componentDidMount`):
+every word change calls `scenes.setVariant(word)` in the same tick that swaps
+the word, so the art and the word move as one.
 
-## Files
+The host positions itself absolutely against its parent and sizes off the
+parent's box, so the parent needs `position: relative` and `overflow: hidden`.
+It is `aria-hidden` and `pointer-events: none` — the parallax listener is on
+`window`.
 
-| File | Role |
-| --- | --- |
-| `HeroBackground.tsx` | variant switch, shared wrapper, ScrollTrigger crossfade |
-| `useBlobPath.ts` | Catmull-Rom→Bezier blob path + radii tween (the MorphSVG replacement) |
-| `GlossyBlob.tsx` | `BlobDefs`, `GlossyBlob`, `Bubble`, `BubbleField` |
-| `ParticleNetwork.tsx` | canvas 2D node field + distance-faded links |
-| `CubeCluster.tsx` | CSS-3D lattice, stagger assembly, connector lines |
-| `BlueprintGrid.tsx` | self-drawing grid, coordinate labels, scan line |
-| `RadiatingRays.tsx` | pulsing ray burst from a focal point |
-| `CometTrail.tsx` | rocket arrow, MotionPath particle stream, speed lines |
-| `tokens.ts` | colors + deterministic `rnd()` |
-| `useReducedMotion.ts` | OS motion preference |
+## HeroCanvas (fallback)
 
-## Variant composition
+```tsx
+<HeroCanvas word={word} mode="network" />   {/* "network" | "blueprint" | "none" */}
+```
 
-- **design** — four liquid blobs (upper-left / lower-right anchors) + seven drifting bubbles.
-- **build** — `ParticleNetwork` left half, `CubeCluster` right half assembling on mount with connector lines from glowing input nodes.
-- **architect** — full-bleed blueprint grid, coordinate labels, 8s scan sweep. No blobs.
-- **automate** — `RadiatingRays` just left of center terminating into a blob cluster + dense `ParticleNetwork` on the right.
-- **ship** — comet blob and bubble scatter far left, speed-line streaks across the middle, rocket arrow with MotionPath trail on the right.
+**`network`** — 16-42 particles (count scales with hero area), joined by accent
+lines under a 210px / 22vw-wide distance threshold, with a pulse travelling a
+random edge every ~850ms. On each word change the particles ease toward a new
+target layout: concentric rings for `build`, a structural grid for `architect`,
+three sine-displaced conveyor lines for `automate`, a radial burst for
+`design`, an arrow for `ship`.
 
-## How the blob morph works (no MorphSVGPlugin)
+**`blueprint`** — three exploded isometric plates with bolt holes, explode axes,
+a dash-dot centre axis, and a dimension stack. One plate is the focus per word,
+and a per-word annotation layer (sheet number, revision, title block, leader
+labels) cross-fades over 420ms. Annotations measure the hero's real text nodes
+(`h1, h2, p, a, button, span[data-copy]`, cached 500ms) and skip any label that
+would collide with the copy.
 
-`useBlobPath` keeps a fixed-length array of radius multipliers around a ring.
-GSAP tweens **that array of numbers**, and `onUpdate` rebuilds the path string
-through a Catmull-Rom→cubic-Bezier conversion. Because the point count never
-changes, every keyframe is topologically identical, so interpolation is stable
-and free. `gsap.to(radii, { 0: …, 1: …, ease: "sine.inOut", repeat: -1, yoyo: true })`.
+It parks its RAF loop with an `IntersectionObserver` while the hero is
+off-screen; the reference runs unconditionally.
 
-Drift and rotation live on a separate infinite timeline attached to the `<g>`,
-so parallax and morph never fight.
+## No GSAP in the canvas
 
-## Legibility
-
-The whole layer carries a radial mask that drops shapes to ~20% opacity across
-the center ellipse (roughly the middle 60% width) and full strength at the
-edges. Tune `TEXT_SAFE_MASK` in `HeroBackground.tsx` if your headline block is
-wider or off-center.
-
-## Reduced motion
-
-`useReducedMotion` feeds a `paused` prop into every child. When set, loops are
-skipped and shapes render on their first frame; the ScrollTrigger entrance
-still runs at duration 0 so nothing stays invisible.
-
-## Performance notes
-
-- Particle fields are canvas + rAF, never GSAP — one draw call per frame.
-- Blob morphs are `setState` on a path string; keep `points` at 8–10.
-- Everything scoped through `gsap.context()` and killed on unmount.
-- Pass `density={0.6}` on mobile breakpoints to thin the node/ray counts.
+`HeroCanvas` is pure canvas 2D. `scenes.ts` is the one place GSAP is used (core
+only — no plugins; the reference registers `MotionPathPlugin` but the scenes
+module never calls it). Foreground content keeps using Framer Motion on its own
+`z-10` layer.

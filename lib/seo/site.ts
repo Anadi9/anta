@@ -19,7 +19,11 @@ export const SITE = {
   founder: "Anadi",
   foundedLocationNote: "Built in India, operating with a US (Detroit) entity for client-facing work.",
   twitter: "@theanta", // update if/when a real handle exists — remove field if not
-  ogImage: "/og/default.png", // see BUILD_PLAN Phase: OG images
+  // Social cards are generated per route by app/**/opengraph-image.tsx (see
+  // lib/seo/og.tsx) — there is no static OG file to point at. This is kept
+  // as the absolute URL of the homepage card, for the places that need a
+  // concrete image URL rather than a meta tag: JSON-LD `image`, llms.txt.
+  ogImage: "https://theanta.com/opengraph-image",
 } as const;
 
 export const NAV_PAGES = [

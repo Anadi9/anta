@@ -1,31 +1,157 @@
 @import "tailwindcss";
 
 /*
-  Dark Terminal design tokens — pulled directly from
-  components/hero-background/tokens.ts so the background system and the
-  rest of the site share one source of truth. Don't hand-edit hex values
-  in components; add a token here and reference it instead.
+  Design tokens.
+
+  Two groups, both deliberate:
+
+  1. `bg` / `accent*` come from components/hero-background/tokens.ts, so the
+     animated background system and the rest of the site share one source of
+     truth for the brand crimson and the near-black ground.
+
+  2. Everything else (`ink`, `t1`–`t9`, `surface*`, `line*`, `cta*`) is the
+     `html[data-theme="dark"]` scale lifted verbatim out of
+     design-reference/ANTA Site.dc.html. The reference ships a light-default
+     site with a dark toggle; we ship dark-only, so we take its dark half and
+     drop the light half. Keeping the reference's own token *names* means
+     translating a `.dc.html` section into a component is mechanical —
+     `color: var(--t4)` becomes `text-t4`, `border-color: var(--line-2)`
+     becomes `border-line-2`.
+
+  Don't hand-edit hex values in components; add a token here and reference it.
 */
 :root {
-  --color-bg: #0a0508;
+  /*
+    Reference dark theme, ANTA Site.dc.html:33 — `--bg: #0B0B0C`. Was
+    #0a0508, a warm plum-black that appears nowhere in the reference and
+    cast a purple tint over the hero art. --color-bg-deep (#0a0a0b) is the
+    reference's `--bg-hero` and stays the ground for full-bleed dark bands.
+  */
+  --color-bg: #0b0b0c;
   --color-bg-raised: #14100f;
+  --color-bg-alt: #111214;
+  --color-surface: #101113;
+  --color-surface-2: #15161a;
+
   --color-fg: #ffffff;
   --color-fg-muted: rgba(255, 255, 255, 0.7);
   --color-fg-faint: rgba(255, 255, 255, 0.45);
+
   --color-accent: #ec1a63;
   --color-accent-hot: #ff3d81;
   --color-border: rgba(255, 255, 255, 0.12);
+
+  /*
+    Two accent variants that exist purely to hold WCAG AA, measured against
+    every ground the site actually paints (--color-bg, --color-bg-raised,
+    --color-surface, and the #0B0C0E process block). `--color-accent` itself
+    is left exactly as-is: it's mirrored from components/hero-background/
+    tokens.ts and is the brand fill, so it stays the source of truth for
+    marks, rules and indicator squares, where contrast rules don't apply.
+
+    - `accent-ink` — accent-coloured *text*. Plain --color-accent measures
+      4.41:1 on the raised panels (Scope terminal, System log, toolkit
+      table), just under the 4.5:1 floor, and nearly all accent text on this
+      site is 10–11px mono, which is never "large text". This is the same
+      hue nudged two steps brighter: 4.58:1 on the raised panels, 4.90:1 on
+      the page ground.
+    - `accent-deep` — solid accent fills that carry light text (nav CTA,
+      Scope's submit button, the About closing CTA). White on --color-accent
+      is 4.29:1; on this it's 5.98:1. The value is the design-reference's own
+      crimson, so it's in-system rather than invented.
+  */
+  --color-accent-ink: #ef2168;
+  --color-accent-deep: #c20a62;
+
+  /* Reference dark scale — text tiers, from brightest to faintest. */
+  --color-ink: #f5f4f1;
+  --color-ink-max: #ffffff;
+  --color-t1: #d9d7d1;
+  --color-t2: #b0ada5;
+  --color-t3: #a3a099;
+  --color-t4: #9b9891;
+  --color-t5: #949189;
+  --color-t6: #8e8b84;
+  --color-t7: #8a8780;
+  --color-t8: #87847d;
+  --color-t9: #3a3a40;
+
+  /*
+    Warm mono-strip greys, straight from the page-hero exports (ANTA
+    Work/Build/About .dc.html). The t1-t9 ramp had no entries at these
+    values, and the generic --color-fg-muted / --color-fg-faint that the
+    page heroes were reaching for are white-alpha, which reads cool-grey
+    against the warm ground instead of matching the reference.
+  */
+  --color-t-bright: #c9c7c1;
+  --color-t-dim: #6e6c66;
+  --color-t-dimmer: #5e5c57;
+
+  --color-line: #26262a;
+  --color-line-2: #1c1c1e;
+  --color-line-3: #232327;
+
+  /* Primary button: light chip on the dark ground (inverted CTA). */
+  --color-cta-bg: #f5f4f1;
+  --color-cta-fg: #0a0a0b;
+
+  /*
+    Neutral near-black the reference paints behind every full-bleed dark
+    band (page heroes, the About shift/why-us/CTA sections). Distinct from
+    --color-bg (#0a0508), which is the warmer plum-black of the site ground.
+  */
+  --color-bg-deep: #0a0a0b;
+
+  --nav-bg: rgba(11, 11, 12, 0.86);
+  --nav-bg-dense: rgba(11, 11, 12, 0.95);
+
+  /*
+    Hairline colour for the page-wide diagonal texture (components/
+    PageAmbience.tsx). The reference sets this from script as `--tex`; this is
+    its dark-theme value, since we ship dark-only.
+  */
+  --tex: rgba(245, 244, 241, 0.045);
 }
 
 @theme inline {
   --color-bg: var(--color-bg);
   --color-bg-raised: var(--color-bg-raised);
+  --color-bg-alt: var(--color-bg-alt);
+  --color-bg-deep: var(--color-bg-deep);
+  --color-surface: var(--color-surface);
+  --color-surface-2: var(--color-surface-2);
+
   --color-fg: var(--color-fg);
   --color-fg-muted: var(--color-fg-muted);
   --color-fg-faint: var(--color-fg-faint);
+
   --color-accent: var(--color-accent);
   --color-accent-hot: var(--color-accent-hot);
+  --color-accent-ink: var(--color-accent-ink);
+  --color-accent-deep: var(--color-accent-deep);
   --color-border: var(--color-border);
+
+  --color-ink: var(--color-ink);
+  --color-ink-max: var(--color-ink-max);
+  --color-t1: var(--color-t1);
+  --color-t2: var(--color-t2);
+  --color-t3: var(--color-t3);
+  --color-t4: var(--color-t4);
+  --color-t5: var(--color-t5);
+  --color-t6: var(--color-t6);
+  --color-t7: var(--color-t7);
+  --color-t8: var(--color-t8);
+  --color-t9: var(--color-t9);
+  --color-t-bright: var(--color-t-bright);
+  --color-t-dim: var(--color-t-dim);
+  --color-t-dimmer: var(--color-t-dimmer);
+
+  --color-line: var(--color-line);
+  --color-line-2: var(--color-line-2);
+  --color-line-3: var(--color-line-3);
+
+  --color-cta-bg: var(--color-cta-bg);
+  --color-cta-fg: var(--color-cta-fg);
 
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
@@ -34,12 +160,88 @@
   --font-display: var(--font-display);
 }
 
+html {
+  scroll-behavior: smooth;
+  background: var(--color-bg);
+  /*
+    The nav (components/Nav.tsx) is fixed at 64px tall, so an unadjusted jump
+    to #scope / #tools / #team / #contact parks the section heading behind it.
+    Keep in sync with the nav height.
+  */
+  scroll-padding-top: 64px;
+}
+
 body {
   background: var(--color-bg);
   color: var(--color-fg);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 ::selection {
   background: var(--color-accent);
   color: #fff;
+}
+
+/*
+  Site-wide keyboard focus ring, from design-reference/ANTA Site.dc.html's
+  own `:focus-visible` rule. Components also set `focus-visible:outline-*`
+  utilities individually, but those were never complete — the nav links, the
+  hamburger and the nav CTA had none — and a global floor is the only way to
+  guarantee every interactive element stays keyboard-visible as pages grow.
+  Per-component utilities still win where a tighter offset is wanted.
+*/
+:focus-visible {
+  outline: 2px solid var(--color-accent-hot);
+  outline-offset: 3px;
+}
+
+/*
+  The About FAQ (components/about/Faq.tsx) uses native <details> so the
+  answers stay in the DOM with no client JS. Both rules below suppress the
+  default disclosure triangle — the standard one and WebKit's older
+  pseudo-element — so the `+` / `×` marker in the summary is the only
+  affordance, as in design-reference/ANTA About.dc.html.
+*/
+details > summary {
+  list-style: none;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+/*
+  Slow pulse on the small square "live" indicators (Work page hero strip,
+  featured-case terminal bar). From the `anta-breathe` keyframes in the
+  design-reference exports. Always apply via `motion-safe:` so it stops
+  under prefers-reduced-motion.
+*/
+@keyframes anta-breathe {
+  0%,
+  100% {
+    opacity: 0.28;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/*
+  Pixel-grid shimmer on the hero's "AI" glyph — the 4x4 accent matrix in the
+  headline. `anta-px` keyframes from the design-reference exports; individual
+  cells stagger via animation-delay and carry their own base opacity.
+*/
+@keyframes anta-px {
+  0%,
+  100% {
+    opacity: 0.18;
+  }
+  50% {
+    opacity: 1;
+  }
 }

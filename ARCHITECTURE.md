@@ -84,10 +84,9 @@ lib/                       — business logic + integrations, framework-
                             agnostic where possible.
   seo/                     — site.ts (identity constants), jsonld.ts
                             (structured data builders)
-  scope/                   — prompt template, Claude call, response schema,
-                            rate-limit check (Phase 6 of BUILD_PLAN.md)
-  leads/                   — Supabase client + typed insert helpers for
-                            contact_submissions / project_submissions /
+  scope/                   — prompt template, provider selection + the two
+                            model calls, response schema, rate-limit check
+  leads/                   — Supabase client + typed insert helper for
                             scope_submissions
   email/                   — Resend client + templates
 
@@ -120,11 +119,18 @@ export real per-page `metadata`.
 2. POST /api/scope
 3. Route handler checks Upstash Redis rate limit by IP
    → over limit: return 429, UI shows a friendly "try again" state
-4. Route handler calls Claude (Anthropic SDK) with a structured-output
-   tool-use schema: { issue, recommendedFix, alternativeApproach,
-   timeline, budgetFraming }
-5. Response streams back to the client (Vercel AI SDK) for the
-   progressive "analyzing..." UI
+4. Route handler calls the configured model provider
+   (lib/scope/provider.ts) with a structured-output schema:
+   { issue, name, verdict, steps[3], stack[] } — the panel's render
+   shape, see lib/scope/schema.ts for why it isn't the sketch this
+   document originally carried
+   → provider declines: ScopeRefusedError; nothing configured:
+     ScopeUnavailableError. Both end as an error event, and the client
+     falls back to a hand-written scope rather than an error state
+5. Route streams NDJSON it writes itself back to the client for the
+   progressive "analyzing..." UI. Status events come from a server-side
+   heartbeat, not from model tokens — which is why there is no
+   Vercel AI SDK here and no token streaming from the provider
 6. On completion, the route handler writes the submission (query +
    response + timestamp, no auth required) to Supabase
    `scope_submissions` — this is the lead, whether or not the visitor
@@ -140,22 +146,23 @@ contact form.
 
 ## 4. Data model (Supabase / Postgres)
 
-Two tables already exist in the current repo and are being ported forward
-as-is (schema is fine, only the frontend is being rebuilt):
-
-- `contact_submissions` — name, email, startup_name, phone, idea,
-  description, budget, timeline
-- `project_submissions` — first/last name, email, phone, company, title,
-  services[], budget, timeline, description, experience, goals[]
-
-One new table to add during Phase 6 of `BUILD_PLAN.md`:
+A fresh Supabase project with **one table**, because the site makes exactly
+one server-side write:
 
 - `scope_submissions` — id, query (text), response (jsonb — the
-  {issue, recommendedFix, alternativeApproach, timeline, budgetFraming}
-  object), ip_hash (for rate-limit/abuse review, not raw IP), created_at.
-  This is the Scope-it-live lead log described above.
+  `{ issue, name, verdict, steps[], stack[] }` object the panel renders and
+  `lib/scope/schema.ts` defines), email (optional), ip_hash (for
+  rate-limit/abuse review, not raw IP), created_at. This is the
+  Scope-it-live lead log described above.
 
-No ORM. Three tables doesn't justify one — use the Supabase JS client with
+The old project's `contact_submissions` and `project_submissions` are **not**
+carried forward. Nothing in this codebase reads or writes them: the contact
+section is a `mailto:` link, not a form, and `/api/scope` is the only route
+handler. Their schema is kept unapplied in `supabase/legacy/` as a record of
+where the historical submissions still live. See §7 for why the project
+itself is new.
+
+No ORM. One table doesn't justify one — use the Supabase JS client with
 hand-written, typed query functions in `lib/leads/`.
 
 ## 5. External integrations
@@ -163,7 +170,7 @@ hand-written, typed query functions in `lib/leads/`.
 | Integration | Purpose | Notes |
 | --- | --- | --- |
 | Vercel | Hosting, edge network, preview deploys | Already connected to this repo and `theanta.com` — no migration needed |
-| Supabase | Postgres for lead/scope storage | Already provisioned, schema ported forward |
+| Supabase | Postgres for the scope lead log | Fresh project (§7), one table, applied from `supabase/migrations/` |
 | Anthropic API | Claude — powers Scope-it-live | Phase 6; needs its own rate limiting, see §3 |
 | Upstash Redis | Rate limiting for `/api/scope` | Serverless-friendly, generous free tier |
 | Resend | Transactional email (lead notifications, optional scope-to-email) | Replaces `nodemailer` from the old repo — HTTP API fits Vercel's serverless functions better than SMTP connection pooling |
@@ -182,18 +189,52 @@ hand-written, typed query functions in `lib/leads/`.
 - **Production** — `main` branch → `theanta.com`, via Vercel's existing
   git integration (no CI system to build/maintain separately)
 
-Secrets (`ANTHROPIC_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY`,
-`UPSTASH_REDIS_REST_URL/TOKEN`, `RESEND_API_KEY`) live only in Vercel
+Secrets (`ANTHROPIC_API_KEY` **or** `GEMINI_API_KEY`,
+`SUPABASE_SERVICE_ROLE_KEY`, `UPSTASH_REDIS_REST_URL/TOKEN`,
+`RESEND_API_KEY`, optionally `IP_HASH_SALT`) live only in Vercel
 project settings — never in the repo, never in `NEXT_PUBLIC_*` vars unless
 a value is genuinely safe to expose to the browser.
 
 ## 7. Decisions worth recording (ADR-lite)
 
+- **Two model providers behind one contract, selected by which API key
+  is set** — the paid path (`claude-opus-5`) is the better answer on
+  register: this endpoint is the site's proof that ANTA can architect, and
+  a visitor reads the output as a work sample. The free path
+  (`gemini-2.5-flash`, Google AI Studio) exists because pre-revenue a
+  public unauthenticated endpoint calling a paid API is a bill with no
+  ceiling, and the Upstash limiter caps abuse, not cost. Selection is by
+  credential rather than a mode flag so switching is one Vercel env var
+  with no deploy. Two trade-offs accepted on the free path, both recorded
+  in `.env.local.example`: free-tier prompts may be used to improve
+  Google's products, and flash-class output is looser on voice. The
+  hand-written scopes in `lib/scope/static-scopes.ts` remain the floor
+  under both.
+- **Plain `fetch` over `@google/genai` for the free provider** — the whole
+  surface needed is one POST. The SDK would add an auth layer, a streaming
+  layer and a files API to carry it. The cost is a hand-written schema
+  translation (`toGeminiSchema`) from the one JSON Schema in
+  `lib/scope/schema.ts`, since Gemini rejects `additionalProperties` and
+  uppercases its type names — a translation, deliberately, rather than a
+  second copy of the schema that could drift.
 - **Next.js App Router over a separate API service** — one operator, one
   deploy target beats a clean split that has to be run, versioned, and
   paid for separately.
-- **Supabase over a custom Postgres + ORM setup** — already provisioned
-  from the old repo, has a usable JS client, no infra to manage.
+- **Supabase over a custom Postgres + ORM setup** — usable JS client, no
+  infra to manage, and the free tier covers a lead log comfortably.
+- **A fresh Supabase project, reversing the original "port the old one
+  forward" decision** — the earlier call assumed the rebuild inherited the
+  old site's form tables. It doesn't. The rebuilt site's only server-side
+  write is `scope_submissions`; its contact section is a `mailto:` link and
+  `/api/scope` is its only route handler, so `contact_submissions` and
+  `project_submissions` would arrive with no reader and no writer. A clean
+  project means the schema of record is one file that has actually been
+  applied, rather than a transcription of the old repo's migration that was
+  never verified against the live database. The cost, accepted: historical
+  form submissions stay in the old project. They are not deleted and remain
+  exportable from its dashboard — see `supabase/README.md`. This does *not*
+  extend to the domain, Vercel project, or GA4 property, which are still
+  ported forward exactly as below.
 - **No shadcn/Radix component library** — the design is fully custom
   (Dark Terminal system), not composed from a component kit. Pulling in
   the full Radix suite the old repo had (20+ packages) would be dead

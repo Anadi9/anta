@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
+import { Footer } from "@/components/Footer";
+import { ContactSection } from "@/components/home/ContactSection";
 import { HeroSection } from "@/components/home/HeroSection";
+import { ProcessSection } from "@/components/home/ProcessSection";
+import { ProofSection } from "@/components/home/ProofSection";
+import { ScopeSection } from "@/components/home/ScopeSection";
+import { ToolkitsSection } from "@/components/home/ToolkitsSection";
 import { SITE } from "@/lib/seo/site";
 
 export const metadata: Metadata = {
@@ -8,20 +14,21 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-// Server component — stays thin. All interactivity lives in HeroSection
-// and (once built) the other section components. Real copy is in
-// design-reference/ANTA Site.dc.html.
+// Server component — stays thin. Interactivity lives in the leaf section
+// components (HeroSection, ScopeSection, ToolkitsSection); the static ones
+// stay server-rendered. Real copy is in design-reference/ANTA Site.dc.html.
 export default function Home() {
   return (
     <>
       <HeroSection />
-
-      {/* TODO — build against design-reference/ANTA Site.dc.html:
-          - "Scope it live" interactive tool (id="scope")
-          - "How the studio operates" process section
-          - Proof-of-work strip
-          - Contact / footer (id="contact")
-          See BUILD_PLAN.md for the page-by-page order and prompts. */}
+      <main>
+        <ScopeSection />
+        <ToolkitsSection />
+        <ProofSection />
+        <ProcessSection />
+        <ContactSection />
+      </main>
+      <Footer />
     </>
   );
 }

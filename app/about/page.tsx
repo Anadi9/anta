@@ -1,38 +1,57 @@
 import type { Metadata } from "next";
-import { Nav } from "@/components/Nav";
+import { CardGrid } from "@/components/CardGrid";
+import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
+import { AboutHero } from "@/components/about/AboutHero";
+import { AdoptionCurve } from "@/components/about/AdoptionCurve";
+import { CtaBanner } from "@/components/about/CtaBanner";
+import { Faq } from "@/components/about/Faq";
+import { WhyAnta } from "@/components/about/WhyAnta";
+import { FAQ, HOW_WE_HELP } from "@/lib/about/content";
 import { faqJsonLd } from "@/lib/seo/jsonld";
 
 export const metadata: Metadata = {
   title: "Studio",
   description:
-    "We design and build the AI systems your team needs, so you scale without adding headcount — one process, no handoffs, no delay.",
+    "Why ANTA exists: the AI adoption curve is three stages in, and the gap compounds every quarter. Custom AI software, workflow redesign, automation and team enablement — one process, no handoffs, code yours from the first commit.",
   alternates: { canonical: "/about" },
 };
 
-// Stub — build against design-reference/ANTA About.dc.html and
-// "ANTA About Options.dc.html" (alternate layout). Copy is already
-// written there: "the shift" framing, "how we help" pillars, and an
-// objection-handling FAQ ("questions that come up before the first call").
-//
-// When the FAQ section is built, populate faqJsonLd() below with the real
-// Q&A pairs from the reference — don't leave it empty, FAQPage schema is
-// one of the highest-value schema types for both classic SEO snippets and
-// AI answer engines.
-export default function About() {
-  const faqItems: { question: string; answer: string }[] = [
-    // TODO: fill from design-reference/ANTA About.dc.html
-  ];
+const ON_THIS_PAGE = [
+  { href: "#shift", label: "The shift" },
+  { href: "#how", label: "How we help" },
+  { href: "#faq", label: "FAQ" },
+  { href: "#contact", label: "Contact" },
+];
 
+// Server component — see ARCHITECTURE.md §2. This page has no client leaf at
+// all: the FAQ runs on native <details>, so nothing here ships JS beyond the
+// shared Nav and the Reveal wrappers. Built against
+// design-reference/ANTA About.dc.html, with the adoption-curve section from
+// option 5a of "ANTA About Options.dc.html" (reasoning in lib/about/content.ts).
+export default function About() {
   return (
     <>
-      <Nav />
-      {faqItems.length > 0 && <JsonLd data={faqJsonLd(faqItems)} />}
-      <main className="min-h-screen bg-bg px-6 pt-32 text-white">
-        <h1 className="font-mono text-xs uppercase tracking-widest text-fg-muted">
-          Studio — TODO
-        </h1>
+      {/* FAQPage schema and the rendered FAQ read the same array, so they
+          can't drift — BUILD_PLAN Phase 3. */}
+      <JsonLd data={faqJsonLd(FAQ)} />
+      <AboutHero />
+      <main>
+        <AdoptionCurve />
+        <CardGrid
+          id="how"
+          label={"02 / How we help"}
+          heading="We build the system you'd build, if you had the time."
+          intro="Custom AI software, workflows, and automation — built into how your team already works, not bolted on top of it."
+          cards={HOW_WE_HELP}
+          minColumn={230}
+          headingWidth="20ch"
+        />
+        <WhyAnta />
+        <Faq />
+        <CtaBanner />
       </main>
+      <Footer onThisPage={ON_THIS_PAGE} />
     </>
   );
 }

@@ -1,6 +1,6 @@
 /** Shared design tokens for the hero background system. */
 export const tokens = {
-  bg: "#0a0508",
+  bg: "#0b0b0c",
   accent: "#ec1a63",
   accentRgb: "236,26,99",
   accentHot: "#ff3d81",

@@ -1,32 +1,54 @@
 import type { Metadata } from "next";
-import { Nav } from "@/components/Nav";
+import { Footer } from "@/components/Footer";
+import { JsonLd } from "@/components/JsonLd";
+import { ContactSection } from "@/components/home/ContactSection";
+import { FeaturedCase } from "@/components/work/FeaturedCase";
+import { SystemLog } from "@/components/work/SystemLog";
+import { WorkHero } from "@/components/work/WorkHero";
+import { caseStudyJsonLd } from "@/lib/seo/jsonld";
+import { SITE } from "@/lib/seo/site";
+import { FEATURED } from "@/lib/work/cases";
 
 export const metadata: Metadata = {
   title: "Work",
   description:
-    "Proof of work, not pitch decks — real ANTA builds, including the Lead Intelligence Agent (B2B lead scoring, cold email generation, outreach sequencing).",
+    "The ANTA Lead Intelligence Agent, in production: B2B lead scoring, cold-email generation and outreach sequencing on Next.js, Postgres, Vercel, the Claude API, Apollo, HubSpot and Lemlist — plus six more systems already scoped.",
   alternates: { canonical: "/work" },
 };
 
-// Stub — build against design-reference/ANTA Work.dc.html.
-// Real case study content already written there: the Lead Intelligence
-// Agent (stack: Next.js, Postgres, Vercel, Claude API, Apollo, HubSpot,
-// Lemlist), a "System log" terminal-feed component, and a "fit score" /
-// "reply rate" stats block. Reuse real numbers from that build — don't
-// invent metrics.
+const ON_THIS_PAGE = [
+  { href: "#index", label: "System log" },
+  { href: "#contact", label: "Contact" },
+  { href: "/#scope", label: "Scope it live" },
+];
+
+// Server component — see ARCHITECTURE.md §2. Only SystemLog is a client
+// leaf (filter + accordion state). Built against
+// design-reference/ANTA Work.dc.html.
 //
-// Once there's more than one case study, split this into /work (index)
-// and /work/[slug] (individual case studies) so each one is independently
-// linkable and indexable — add BreadcrumbList schema at that point too.
+// One case study, so this stays a single /work page. When there's a second,
+// split into /work (index) + /work/[slug] and add BreadcrumbList schema —
+// don't do it preemptively.
 export default function Work() {
   return (
     <>
-      <Nav />
-      <main className="min-h-screen bg-bg px-6 pt-32 text-white">
-        <h1 className="font-mono text-xs uppercase tracking-widest text-fg-muted">
-          Work — TODO
-        </h1>
+      <JsonLd
+        data={caseStudyJsonLd({
+          headline: `${FEATURED.title} — ANTA case study`,
+          description: FEATURED.whatItDoes,
+          url: `${SITE.url}/work`,
+          applicationName: FEATURED.title,
+          stack: FEATURED.stack,
+        })}
+      />
+      <WorkHero />
+      <main>
+        <FeaturedCase />
+        <SystemLog />
+        {/* non-breaking spaces around the slash, matching the other eyebrows */}
+        <ContactSection label={"03 / Contact"} />
       </main>
+      <Footer onThisPage={ON_THIS_PAGE} />
     </>
   );
 }

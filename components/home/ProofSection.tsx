@@ -48,7 +48,7 @@ export function ProofSection() {
         </div>
         <p className="max-w-[38ch] text-pretty text-[15px] leading-[1.7] text-fg-muted">
           The studio&apos;s own lead engine, running in production. Shown the
-          way it actually runs — the interface, the pipeline behind it, and the
+          way it actually runs: the interface, the pipeline behind it, and the
           stack it sits on.
         </p>
       </Reveal>

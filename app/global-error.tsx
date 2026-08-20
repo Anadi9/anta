@@ -35,7 +35,7 @@ export default function GlobalError({
 
   return (
     <html lang="en">
-      <title>Something went wrong — ANTA</title>
+      <title>Something went wrong | ANTA</title>
       <body
         style={{
           margin: 0,
@@ -123,7 +123,7 @@ export default function GlobalError({
               Try again
             </button>
             <a
-              href={`mailto:${SITE.email}?subject=${encodeURIComponent("ANTA — site down")}`}
+              href={`mailto:${SITE.email}?subject=${encodeURIComponent("ANTA site down")}`}
               style={{
                 border: "1px solid rgba(255,255,255,0.12)",
                 color: "#d9d7d1",

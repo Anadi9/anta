@@ -46,7 +46,7 @@ export function BuildHero() {
           </nav>
 
           <h1 className="max-w-[19ch] text-balance text-[clamp(36px,6.6vw,84px)] font-bold leading-[0.98] tracking-[-0.04em] text-ink-max">
-            What we build — and how it actually runs.
+            What we build, and how it actually runs.
           </h1>
           <p className="mt-[clamp(20px,2.6vw,30px)] max-w-[54ch] text-pretty text-[clamp(15px,1.5vw,18px)] leading-[1.7] text-t7">
             Four kinds of system, and five workflows drawn the way they execute

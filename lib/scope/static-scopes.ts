@@ -131,7 +131,7 @@ export const SCOPES: Record<ScopeKey, ScopeResult> = {
     ],
     stack: ["Claude API", "Apollo", "Node", "Postgres", "Lemlist", "HubSpot"],
     needs: [
-      "Your ICP in writing — who is a fit and who is not",
+      "Your ICP in writing: who is a fit and who is not",
       "CRM access, or an export of what you have already worked",
       "One person who can approve outbound copy",
     ],
@@ -141,7 +141,7 @@ export const SCOPES: Record<ScopeKey, ScopeResult> = {
     verdict:
       "One service owns the record. Your tools read and write through it instead of through a person and a spreadsheet.",
     steps: [
-      { day: "D1–2", text: "Map the seams — who owns which field, and when" },
+      { day: "D1–2", text: "Map the seams: who owns which field, and when" },
       { day: "D3–10", text: "API-level sync service with reconciliation and audit trail" },
       { day: "D11–16", text: "Cutover, monitoring, runbook handed to your team" },
     ],
@@ -171,7 +171,7 @@ export const SCOPES: Record<ScopeKey, ScopeResult> = {
   content: {
     name: "Content Production Line",
     verdict:
-      "Research, draft and repurpose in your voice on a schedule — measured on replies and pipeline, never on impressions.",
+      "Research, draft and repurpose in your voice on a schedule, measured on replies and pipeline, never on impressions.",
     steps: [
       { day: "D1–2", text: "Voice spec and source library assembled" },
       { day: "D3–8", text: "Draft pipeline with retrieval and a review queue" },
@@ -219,7 +219,7 @@ export const SCOPES: Record<ScopeKey, ScopeResult> = {
   reporting: {
     name: "Client Reporting Pipeline",
     verdict:
-      "Numbers are pulled from every platform on a schedule and assembled into the deck you already send — with the narrative drafted, not just the charts. You edit and send.",
+      "Numbers are pulled from every platform on a schedule and assembled into the deck you already send, with the narrative drafted, not just the charts. You edit and send.",
     steps: [
       { day: "D1–3", text: "Metric definitions agreed and template mapped field by field" },
       { day: "D4–10", text: "Connectors, aggregation and narrative generation built" },
@@ -275,7 +275,7 @@ export const SCOPES: Record<ScopeKey, ScopeResult> = {
     ],
     stack: ["Claude API", "Next.js", "Postgres", "pgvector", "Slack API", "Vercel"],
     needs: [
-      "The docs, wherever they are — Notion, Drive, Slack",
+      "The docs, wherever they are: Notion, Drive, Slack",
       "An owner per source who can mark it stale",
       "Twenty questions people actually ask",
     ],
@@ -315,7 +315,7 @@ export const SCOPES: Record<ScopeKey, ScopeResult> = {
   custom: {
     name: "Scoped in one call",
     verdict:
-      "No template match — which is normal, and fine. Describe it in two paragraphs and you get a real architecture back, not a discovery questionnaire.",
+      "No template match, which is normal, and fine. Describe it in two paragraphs and you get a real architecture back, not a discovery questionnaire.",
     steps: [
       { day: "D0", text: "One call. No deck, no discovery phase" },
       { day: "D1–2", text: "Written spec with a fixed surface area you approve" },
@@ -408,18 +408,18 @@ export function scopeMailHref(asked: string, result: ScopeResult): string {
     `Proposed system: ${result.name}`,
     result.verdict,
     "",
-    ...result.steps.map((s) => `${s.day} — ${s.text}`),
+    ...result.steps.map((s) => `${s.day}: ${s.text}`),
     "",
     `Stack: ${result.stack.join(", ")}`,
     "",
     "What you'd need to bring:",
     ...result.needs.map((n) => `- ${n}`),
     "",
-    "—",
+    "---",
     "Scoped at theanta.com. Estimate, not a quote.",
   ].join("\n");
 
   return `mailto:${SITE.email}?subject=${encodeURIComponent(
-    `ANTA — ${result.name}`,
+    `ANTA: ${result.name}`,
   )}&body=${encodeURIComponent(body)}`;
 }

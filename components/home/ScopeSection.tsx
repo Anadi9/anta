@@ -405,7 +405,7 @@ export function ScopeSection() {
           </h2>
           <p className="mt-5 max-w-[46ch] text-pretty text-[15px] leading-[1.75] text-fg-muted">
             Tell the engineer where your week is going. It answers with what we
-            would put in a written spec — the system, the sequence, the stack.
+            would put in a written spec: the system, the sequence, the stack.
             No email gate, no discovery questionnaire.
           </p>
           <ul className="mt-[clamp(26px,3.4vw,38px)] flex flex-col gap-[11px] font-mono text-[11px] tracking-[0.05em] text-fg-faint">
@@ -610,7 +610,7 @@ export function ScopeSection() {
                     </div>
                     <p className="font-mono text-[10.5px] leading-[1.7] text-fg-faint">
                       Returns a real architecture, timeline and stack. No email,
-                      no form. The chips are optional — they just sharpen it.
+                      no form. The chips are optional. They just sharpen it.
                     </p>
                   </motion.div>
                 )}

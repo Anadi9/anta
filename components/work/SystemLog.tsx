@@ -38,7 +38,7 @@ export function SystemLog() {
 
   const note = shown.length
     ? `Filter shows ${shown.length} of ${CASES.length} scoped systems · the shipped case above makes ${CASES.length + 1}.`
-    : "Nothing scoped under that filter yet — the pattern usually still applies. Send the two-paragraph version.";
+    : "Nothing scoped under that filter yet, though the pattern usually still applies. Send the two-paragraph version.";
 
   return (
     <section
@@ -53,7 +53,7 @@ export function SystemLog() {
           </h2>
         </div>
         <p className="max-w-[36ch] text-pretty text-[15px] leading-[1.7] text-fg-muted">
-          Six systems already scoped — architecture, sequence and stack worked
+          Six systems already scoped, with architecture, sequence and stack worked
           out. Filter by the team that owns the bottleneck. Open a row for the
           detail.
         </p>

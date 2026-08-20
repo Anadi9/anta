@@ -26,7 +26,7 @@ export const TOOLKITS: Toolkit[] = [
     label: "Sales & RevOps",
     tag: "Sales & RevOps · lead intelligence",
     title: "Research, scoring and first touch, running unattended.",
-    body: "Your CRM stays the system of record. A pipeline in front of it sources, enriches and scores accounts, then drafts the first touch in your voice — queued for one operator to approve.",
+    body: "Your CRM stays the system of record. A pipeline in front of it sources, enriches and scores accounts, then drafts the first touch in your voice, queued for one operator to approve.",
     existing: ["HubSpot", "Apollo", "Lemlist"],
     layer: ["Claude API", "ICP scoring model", "Enrichment pipeline"],
     changes: [

@@ -13,7 +13,7 @@ import { faqJsonLd } from "@/lib/seo/jsonld";
 export const metadata: Metadata = {
   title: "Studio",
   description:
-    "Why ANTA exists: the AI adoption curve is three stages in, and the gap compounds every quarter. Custom AI software, workflow redesign, automation and team enablement — one process, no handoffs, code yours from the first commit.",
+    "Why ANTA exists: the AI adoption curve is three stages in, and the gap compounds every quarter. Custom AI software, workflow redesign, automation and team enablement in one process, with no handoffs and code yours from the first commit.",
   alternates: { canonical: "/about" },
 };
 
@@ -42,7 +42,7 @@ export default function About() {
           id="how"
           label={"02 / How we help"}
           heading="We build the system you'd build, if you had the time."
-          intro="Custom AI software, workflows, and automation — built into how your team already works, not bolted on top of it."
+          intro="Custom AI software, workflows, and automation, built into how your team already works rather than bolted on top of it."
           cards={HOW_WE_HELP}
           minColumn={230}
           headingWidth="20ch"

@@ -26,7 +26,7 @@ export function ContactSection({ label = "Contact" }: { label?: string }) {
 
         <div className="min-w-0 flex-[1_1_320px]">
           <a
-            href={`mailto:${SITE.email}?subject=${encodeURIComponent("ANTA — project inquiry")}`}
+            href={`mailto:${SITE.email}?subject=${encodeURIComponent("ANTA project inquiry")}`}
             className="block border border-border p-[clamp(24px,3vw,34px)] transition-colors hover:border-accent hover:bg-white/[0.03] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             <div className="mb-3.5 font-mono text-[10.5px] uppercase tracking-[0.16em] text-fg-faint">

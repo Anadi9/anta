@@ -113,11 +113,62 @@ export const PROCESS: Card[] = [
  * renders both from this one array so the schema can never drift from what's
  * actually on screen (BUILD_PLAN Phase 3).
  */
+/**
+ * DELIBERATE DEVIATION from design-reference/ANTA About.dc.html: the
+ * reference ships five entries, all objection-handling ("We're not big
+ * enough to need this yet."). Those are kept verbatim below — they're
+ * approved copy and they close doubt for someone already reading the page.
+ *
+ * The six entries above them are additions, and they serve a different job.
+ * An objection is not a query: nobody types "we're not big enough to need
+ * this yet" into Google or asks Claude that. FAQPage schema is matched
+ * against how buyers actually phrase questions, and this array is what
+ * app/about/page.tsx feeds to faqJsonLd() — so the reference's copy alone
+ * produced schema that could never match a real search.
+ *
+ * Ordering is intentional: query-shaped entries first (they're what someone
+ * arrives looking for and what an answer engine extracts), objections after
+ * (they're what closes the reader already here). Every answer front-loads
+ * the direct answer in its first sentence, because that first sentence is
+ * what gets lifted into a snippet or an AI answer — the elaboration after it
+ * is for the human.
+ */
 export const FAQ: { question: string; answer: string }[] = [
+  {
+    question: "How much does it cost to build a custom AI tool?",
+    answer:
+      "A first engagement is a fixed-price pilot, typically $3,000–$6,000 for two to three weeks and one narrowly scoped system. Ongoing work after that runs as a monthly retainer rather than an hourly rate, because hourly bills you for our learning curve and invites scope creep. You get the price before we start, not a range that moves.",
+  },
+  {
+    question: "How long does it take to build a custom AI tool?",
+    answer:
+      "Scope is written in days and a first deploy typically lands in two to three weeks. That's a real system in production against your data, not a demo. The pilot is deliberately narrow so it ships, gets used, and proves the case before anyone commits to a larger build.",
+  },
+  {
+    question: "Should we hire an AI engineer or work with a studio?",
+    answer:
+      "Hire when you already know exactly what to build and will keep building it for years. Bring in a studio when you don't yet, or when it's one system rather than a roadmap. A senior AI hire is a six-month search and a permanent salary line before anything ships. A pilot puts a working system in front of your team in weeks, and if it justifies a hire, you'll be recruiting against a spec you've already validated instead of a guess.",
+  },
+  {
+    question: "Who owns the code and the data?",
+    answer:
+      "You do, from the first commit. The repository is yours, it runs in your accounts on your infrastructure, and your data never becomes part of anyone else's product. There's no per-seat licence, no platform to stay subscribed to, and nothing that stops working if we stop working together.",
+  },
+  {
+    question:
+      "Do you build on existing AI models, or train something custom?",
+    answer:
+      "We build on frontier models like Claude and GPT, through their APIs. The engineering goes into everything around them: your data, your rules, your workflows, and the integrations into tools your team already uses. Training a model from scratch is almost never the right answer at this size. The value sits in the system around the model, and that's where the work goes.",
+  },
+  {
+    question: "What does a first engagement actually look like?",
+    answer:
+      "A short call to find the one workflow worth automating first, a written scope with a fixed price, then two to three weeks to build and deploy it with your team using it as we go. You end up with a working system, the repository, and enough evidence to decide whether there's a second one worth doing.",
+  },
   {
     question: "We're not big enough to need this yet.",
     answer:
-      "Size isn't the trigger — repetition is. If work is repeating manually somewhere in your team, it's already worth automating. Waiting for scale just means automating a bigger mess later.",
+      "Size isn't the trigger. Repetition is. If work is repeating manually somewhere in your team, it's already worth automating. Waiting for scale just means automating a bigger mess later.",
   },
   {
     question: "How is this different from hiring an agency?",
@@ -127,7 +178,7 @@ export const FAQ: { question: string; answer: string }[] = [
   {
     question: "What if we're locked into legacy tools?",
     answer:
-      "We build around your existing stack, not against it. Most engagements start by wiring AI into tools you already use — the legacy layer is the constraint, not the blocker.",
+      "We build around your existing stack, not against it. Most engagements start by wiring AI into tools you already use. The legacy layer is the constraint, not the blocker.",
   },
   {
     question: "Will our team actually use it?",

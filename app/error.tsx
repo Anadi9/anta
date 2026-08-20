@@ -52,7 +52,7 @@ export default function Error({
 
         <p className="mb-[clamp(32px,4vw,48px)] max-w-[52ch] text-pretty text-[clamp(16px,1.6vw,19px)] leading-[1.6] text-fg-muted">
           Not your browser, not your connection. The error is logged and I&apos;ll
-          see it. Retrying often works — if it doesn&apos;t, email me and
+          see it. Retrying often works. If it doesn&apos;t, email me and
           I&apos;ll fix it today.
         </p>
 
@@ -72,7 +72,7 @@ export default function Error({
           </Link>
           <a
             href={`mailto:${SITE.email}?subject=${encodeURIComponent(
-              `ANTA — site error${error.digest ? ` (${error.digest})` : ""}`,
+              `ANTA site error${error.digest ? ` (${error.digest})` : ""}`,
             )}`}
             className="border border-border px-[18px] py-3 font-mono text-[11.5px] uppercase tracking-[0.09em] text-t1 transition-colors hover:border-accent hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >

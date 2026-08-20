@@ -9,7 +9,7 @@ import { PROCESS, SYSTEMS } from "@/lib/build/workflows";
 export const metadata: Metadata = {
   title: "Build",
   description:
-    "What ANTA builds: custom AI applications, workflow automation, stack consolidation, and lead-gen and content tooling — with five workflows drawn the way they execute, from trigger to output.",
+    "What ANTA builds: custom AI applications, workflow automation, stack consolidation, and lead-gen and content tooling, with five workflows drawn the way they execute, from trigger to output.",
   alternates: { canonical: "/build" },
 };
 

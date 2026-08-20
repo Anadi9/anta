@@ -52,7 +52,7 @@ export function WorkHero() {
             Proof of work, not pitch decks.
           </h1>
           <p className="mt-[clamp(20px,2.6vw,30px)] max-w-[54ch] text-pretty text-[clamp(15px,1.5vw,18px)] leading-[1.7] text-t7">
-            Shipped systems, shown the way they actually run — the interface,
+            Shipped systems, shown the way they actually run: the interface,
             the pipeline behind it, and the stack it sits on.
           </p>
         </div>

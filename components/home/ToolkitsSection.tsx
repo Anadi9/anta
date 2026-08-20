@@ -76,7 +76,7 @@ export function ToolkitsSection() {
             })}
           </div>
           <p className="px-4 pt-[18px] font-mono text-[10.5px] leading-[1.8] text-fg-faint">
-            Not on the list? The pattern usually still applies — send the
+            Not on the list? The pattern usually still applies. Send the
             two-paragraph version.
           </p>
         </Reveal>
@@ -111,7 +111,7 @@ export function ToolkitsSection() {
                 <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))]">
                   <div className="border-r border-border px-[clamp(22px,3vw,36px)] py-[clamp(20px,2.4vw,28px)]">
                     <div className="mb-3.5 font-mono text-[9.5px] uppercase tracking-[0.14em] text-fg-faint">
-                      Stays — your stack
+                      Stays: your stack
                     </div>
                     <div className="flex flex-wrap gap-1.5">
                       {tool.existing.map((e) => (
@@ -126,7 +126,7 @@ export function ToolkitsSection() {
                   </div>
                   <div className="bg-white/[0.03] px-[clamp(22px,3vw,36px)] py-[clamp(20px,2.4vw,28px)]">
                     <div className="mb-3.5 font-mono text-[9.5px] uppercase tracking-[0.14em] text-accent-ink">
-                      Added — the AI layer
+                      Added: the AI layer
                     </div>
                     <div className="flex flex-wrap gap-1.5">
                       {tool.layer.map((l) => (

@@ -49,7 +49,7 @@ export default function NotFound() {
           </h1>
 
           <p className="mb-[clamp(32px,4vw,48px)] max-w-[52ch] text-pretty text-[clamp(16px,1.6vw,19px)] leading-[1.6] text-fg-muted">
-            The URL doesn&apos;t resolve to anything here — either it moved, or
+            The URL doesn&apos;t resolve to anything here. Either it moved, or
             it never existed. Everything the studio publishes is on one of the
             four pages below.
           </p>
@@ -65,7 +65,7 @@ export default function NotFound() {
               </Link>
             ))}
             <a
-              href={`mailto:${SITE.email}?subject=${encodeURIComponent("ANTA — broken link")}`}
+              href={`mailto:${SITE.email}?subject=${encodeURIComponent("ANTA broken link")}`}
               className="border border-border bg-accent-deep px-[18px] py-3 font-mono text-[11.5px] font-bold uppercase tracking-[0.06em] text-[#FBFAF8] transition-shadow duration-[250ms] hover:shadow-[0_0_0_1px_var(--color-accent),0_0_28px_rgba(236,26,99,0.28)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               Tell me what broke

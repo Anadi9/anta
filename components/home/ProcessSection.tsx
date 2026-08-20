@@ -12,7 +12,7 @@ const STAGES = [
     num: "01",
     name: "DESIGN",
     heading: "Research, prototyping, product strategy",
-    body: "We map the workflow before we touch code — who does what, where it breaks, what a system actually needs to replace. Prototypes get tested against real inputs, not demos.",
+    body: "We map the workflow before we touch code: who does what, where it breaks, what a system actually needs to replace. Prototypes get tested against real inputs, not demos.",
   },
   {
     num: "02",
@@ -36,7 +36,7 @@ const STAGES = [
     num: "05",
     name: "AUTOMATE",
     heading: "Continuous feedback loop",
-    body: "Every deploy feeds the next one — usage, edge cases, and founder notes get folded back into the system on a standing weekly review, not a quarterly one.",
+    body: "Every deploy feeds the next one. Usage, edge cases, and founder notes get folded back into the system on a standing weekly review, not a quarterly one.",
   },
 ] as const;
 
@@ -60,7 +60,7 @@ export function ProcessSection() {
 
       <div className="relative mx-auto max-w-[1320px] px-[clamp(18px,4vw,56px)] py-[clamp(56px,7vw,100px)]">
         <Reveal className="mb-[clamp(28px,4vw,46px)]">
-          <SectionLabel>04&nbsp;/&nbsp;TEAM&nbsp;—&nbsp;SYSTEM_MAP</SectionLabel>
+          <SectionLabel>04&nbsp;/&nbsp;TEAM&nbsp;:&nbsp;SYSTEM_MAP</SectionLabel>
           <h2 className="max-w-[20ch] text-balance text-[clamp(30px,4.4vw,56px)] font-bold leading-[1.02] tracking-[-0.03em] text-white">
             How the studio operates
           </h2>

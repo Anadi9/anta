@@ -12,7 +12,7 @@ import { FEATURED } from "@/lib/work/cases";
 export const metadata: Metadata = {
   title: "Work",
   description:
-    "The ANTA Lead Intelligence Agent, in production: B2B lead scoring, cold-email generation and outreach sequencing on Next.js, Postgres, Vercel, the Claude API, Apollo, HubSpot and Lemlist — plus six more systems already scoped.",
+    "The ANTA Lead Intelligence Agent, in production: B2B lead scoring, cold-email generation and outreach sequencing on Next.js, Postgres, Vercel, the Claude API, Apollo, HubSpot and Lemlist, plus six more systems already scoped.",
   alternates: { canonical: "/work" },
 };
 
@@ -34,7 +34,7 @@ export default function Work() {
     <>
       <JsonLd
         data={caseStudyJsonLd({
-          headline: `${FEATURED.title} — ANTA case study`,
+          headline: `${FEATURED.title}: an ANTA case study`,
           description: FEATURED.whatItDoes,
           url: `${SITE.url}/work`,
           applicationName: FEATURED.title,

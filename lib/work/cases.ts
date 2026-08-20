@@ -68,7 +68,7 @@ export const CASES: CaseEntry[] = [
     summary:
       "One service owns the record. The tools around it read and write through an API instead of through a person and a spreadsheet, and every write leaves an audit trail.",
     mechanics: [
-      { n: "01", t: "Field ownership mapped — who writes what, and when" },
+      { n: "01", t: "Field ownership mapped: who writes what, and when" },
       { n: "02", t: "Sync service with reconciliation, retries and audit log" },
       { n: "03", t: "Cutover with monitoring and a runbook handed to your team" },
     ],
@@ -100,7 +100,7 @@ export const CASES: CaseEntry[] = [
     cat: "Ops",
     status: "scoped",
     summary:
-      "Inbound agreements are parsed into a structured record, checked against your standard positions, and summarised with the exact clauses that deviate — so review starts at the exceptions.",
+      "Inbound agreements are parsed into a structured record, checked against your standard positions, and summarised with the exact clauses that deviate, so review starts at the exceptions.",
     mechanics: [
       { n: "01", t: "Clause library and standard positions encoded once" },
       { n: "02", t: "Extraction and deviation check on every inbound document" },
@@ -220,7 +220,7 @@ export const SCORED_ACCOUNTS: ScoredAccount[] = [
 export const GENERATED_DRAFT = {
   account: "Harborline",
   subject: "subj: your 3 ops eng reqs",
-  body: "Saw you're hiring three ops engineers. Half that scope is routing and status chasing — we've automated it before in 9 days. Worth 20 minutes?",
+  body: "Saw you're hiring three ops engineers. Half that scope is routing and status chasing. We've automated it before in 9 days. Worth 20 minutes?",
   tags: ["tone: peer", "42 words"],
 } as const;
 

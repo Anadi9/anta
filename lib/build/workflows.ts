@@ -161,7 +161,7 @@ export const FLOWS: Flow[] = [
       { id: "c", col: 2, x: 50, y: 50, kind: "gate", label: "Reminder ladder", desc: "Tone escalates with days overdue", tools: ["Claude"] },
       { id: "d", col: 3, x: 70, y: 19, kind: "step", label: "Nudge", desc: "Polite mail at +3, +7, and +14", tools: ["Mail", "WhatsApp API"] },
       { id: "e", col: 3, x: 70, y: 81, kind: "out", label: "Escalate", desc: "Owner pinged in Slack at +30", tools: ["Slack"] },
-      { id: "f", col: 4, x: 89.5, y: 50, kind: "out", label: "Paid — close", desc: "Thread archived, ledger reconciled", tools: ["MongoDB"] },
+      { id: "f", col: 4, x: 89.5, y: 50, kind: "out", label: "Paid: close", desc: "Thread archived, ledger reconciled", tools: ["MongoDB"] },
     ],
     edges: [
       { from: "a", to: "b" },
@@ -272,12 +272,12 @@ export const SYSTEMS: Card[] = [
   {
     num: "01",
     title: "Custom AI applications",
-    body: "Product-grade systems with a model at the core — retrieval, evals, guardrails, UI. Not a chatbot bolted onto a CRUD app.",
+    body: "Product-grade systems with a model at the core: retrieval, evals, guardrails, UI. Not a chatbot bolted onto a CRUD app.",
   },
   {
     num: "02",
     title: "Workflow automation",
-    body: "Your tools already hold the data. We make them act on it — API-level integrations, not brittle no-code chains someone has to babysit.",
+    body: "Your tools already hold the data. We make them act on it with API-level integrations, not brittle no-code chains someone has to babysit.",
   },
   {
     num: "03",

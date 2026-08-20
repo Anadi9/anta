@@ -31,8 +31,8 @@ export function AdoptionCurve() {
             Adopt, or get dragged out by whoever did.
           </h2>
           <p className="max-w-[34ch] text-pretty text-[15px] leading-[1.7] text-fg-muted">
-            This isn&apos;t a hype cycle. It&apos;s a market redraw — already
-            three stages in.
+            This isn&apos;t a hype cycle. It&apos;s a market redraw that is
+            already three stages in.
           </p>
         </Reveal>
 

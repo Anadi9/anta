@@ -35,7 +35,7 @@ function body(query: string, scope: GeneratedScope): string {
     "",
     `The bottleneck: ${scope.issue}`,
     "",
-    `Proposed system — ${scope.name}`,
+    `Proposed system: ${scope.name}`,
     scope.verdict,
     "",
     "Build sequence:",
@@ -46,7 +46,7 @@ function body(query: string, scope: GeneratedScope): string {
     "What you'd need to bring:",
     ...scope.needs.map((n) => `  - ${n}`),
     "",
-    "This is an estimate, not a quote — the specifics move once I've seen how",
+    "This is an estimate, not a quote. The specifics move once I've seen how",
     "your team actually works. Reply to this email with the two-paragraph",
     "version of the problem and you'll get a real technical response.",
     "",
@@ -72,7 +72,7 @@ export async function sendScopeEmail(
     from: FROM,
     to,
     replyTo: REPLY_TO,
-    subject: `Your scope — ${scope.name}`,
+    subject: `Your scope: ${scope.name}`,
     text: body(query, scope),
   });
 

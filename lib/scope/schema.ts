@@ -44,7 +44,7 @@ export const SCOPE_JSON_SCHEMA = {
     name: {
       type: "string",
       description:
-        "The proposed system's name, 2–4 words, title case. Names the system, not the problem — e.g. 'Lead Intelligence Agent'.",
+        "The proposed system's name, 2–4 words, title case. Names the system, not the problem. For example, 'Lead Intelligence Agent'.",
     },
     verdict: {
       type: "string",
@@ -70,7 +70,7 @@ export const SCOPE_JSON_SCHEMA = {
           detail: {
             type: "string",
             description:
-              "One sentence on what actually happens in that window — the concrete work, or what it depends on. Shown when the visitor expands the step, so it must add information the one-clause summary doesn't already carry.",
+              "One sentence on what actually happens in that window: the concrete work, or what it depends on. Shown when the visitor expands the step, so it must add information the one-clause summary doesn't already carry.",
           },
         },
         required: ["day", "text", "detail"],
@@ -86,7 +86,7 @@ export const SCOPE_JSON_SCHEMA = {
     needs: {
       type: "array",
       description:
-        "Exactly three things the client must supply for day one — access, data, or a named decision-maker. Concrete and specific to their situation. Never generic project-management asks like 'clear requirements'.",
+        "Exactly three things the client must supply for day one: access, data, or a named decision-maker. Concrete and specific to their situation. Never generic project-management asks like 'clear requirements'.",
       items: { type: "string" },
     },
   },

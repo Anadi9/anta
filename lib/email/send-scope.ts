@@ -1,6 +1,7 @@
 import "server-only";
 import { Resend } from "resend";
 import type { GeneratedScope } from "@/lib/scope/schema";
+import { SITE } from "@/lib/seo/site";
 
 /**
  * "Send me this scope" — the optional email step (ARCHITECTURE.md §3, step 7).
@@ -11,8 +12,8 @@ import type { GeneratedScope } from "@/lib/scope/schema";
  * and a text email lands in the inbox instead of the promotions tab.
  */
 
-const FROM = process.env.RESEND_FROM ?? "ANTA <anadi@theanta.com>";
-const REPLY_TO = "anadi@theanta.com";
+const FROM = process.env.RESEND_FROM ?? `ANTA <${SITE.email}>`;
+const REPLY_TO = SITE.email;
 
 let client: Resend | null = null;
 
@@ -42,12 +43,15 @@ function body(query: string, scope: GeneratedScope): string {
     "",
     `Stack: ${scope.stack.join(", ")}`,
     "",
+    "What you'd need to bring:",
+    ...scope.needs.map((n) => `  - ${n}`),
+    "",
     "This is an estimate, not a quote — the specifics move once I've seen how",
     "your team actually works. Reply to this email with the two-paragraph",
     "version of the problem and you'll get a real technical response.",
     "",
     "— Anadi, ANTA",
-    "theanta.com · cal.com/anta/intro",
+    `theanta.com · ${SITE.bookingLabel}`,
   ].join("\n");
 }
 

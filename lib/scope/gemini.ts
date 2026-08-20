@@ -1,4 +1,8 @@
-import { SCOPE_SYSTEM_PROMPT, scopeUserPrompt } from "@/lib/scope/prompt";
+import {
+  SCOPE_SYSTEM_PROMPT,
+  buildUserPrompt,
+  type ScopeAsk,
+} from "@/lib/scope/prompt";
 import { ScopeRefusedError, ScopeUnavailableError } from "@/lib/scope/errors";
 import {
   SCOPE_JSON_SCHEMA,
@@ -28,13 +32,15 @@ import {
  *      two worked examples carry most of the voice, and the hand-written
  *      scopes in lib/scope/static-scopes.ts remain the floor.
  *
- * Thinking is disabled (`thinkingBudget: 0`) for the same reason claude.ts ran
- * at `effort: "low"`: one bounded generation against a schema, with a visitor
- * watching a cursor blink.
+ * Thinking is held at the floor (`thinkingLevel: "low"`) for the same reason
+ * claude.ts ran at `effort: "low"`: one bounded generation against a schema,
+ * with a visitor watching a cursor blink. Note that Gemini 3.x removed
+ * `thinkingBudget: 0` — sending it is a hard 400 ("invalid argument"), not a
+ * warning, so this cannot go back to disabling thinking outright.
  */
 
 const ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models";
-const DEFAULT_MODEL = "gemini-2.5-flash";
+const DEFAULT_MODEL = "gemini-3.6-flash";
 const MAX_TOKENS = 4000;
 
 /** Finish reasons that mean "the model declined", not "the model broke". */
@@ -119,7 +125,7 @@ type GeminiResponse = {
  * bought nothing here except a second parser to maintain.
  */
 export async function generateScope(
-  query: string,
+  ask: ScopeAsk,
   { signal }: { signal?: AbortSignal } = {},
 ): Promise<GeneratedScope> {
   const key = process.env.GEMINI_API_KEY;
@@ -131,12 +137,12 @@ export async function generateScope(
     signal,
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: SCOPE_SYSTEM_PROMPT }] },
-      contents: [{ role: "user", parts: [{ text: scopeUserPrompt(query) }] }],
+      contents: [{ role: "user", parts: [{ text: buildUserPrompt(ask) }] }],
       generationConfig: {
         maxOutputTokens: MAX_TOKENS,
         responseMimeType: "application/json",
         responseSchema: RESPONSE_SCHEMA,
-        thinkingConfig: { thinkingBudget: 0 },
+        thinkingConfig: { thinkingLevel: "low" },
       },
     }),
   });

@@ -1,6 +1,10 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { ScopeRefusedError, ScopeUnavailableError } from "@/lib/scope/errors";
-import { SCOPE_SYSTEM_PROMPT, scopeUserPrompt } from "@/lib/scope/prompt";
+import {
+  SCOPE_SYSTEM_PROMPT,
+  buildUserPrompt,
+  type ScopeAsk,
+} from "@/lib/scope/prompt";
 import {
   SCOPE_JSON_SCHEMA,
   isGeneratedScope,
@@ -58,7 +62,7 @@ export function isScopeConfigured(): boolean {
  * forwarded — the panel renders fields, not a half-written object.
  */
 export async function generateScope(
-  query: string,
+  ask: ScopeAsk,
   { signal }: { signal?: AbortSignal } = {},
 ): Promise<GeneratedScope> {
   const stream = getClient().messages.stream(
@@ -70,7 +74,7 @@ export async function generateScope(
         effort: "low",
         format: { type: "json_schema", schema: SCOPE_JSON_SCHEMA },
       },
-      messages: [{ role: "user", content: scopeUserPrompt(query) }],
+      messages: [{ role: "user", content: buildUserPrompt(ask) }],
     },
     { signal },
   );

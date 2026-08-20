@@ -152,7 +152,7 @@ operates" process section, the "Scope it live" tool, and contact/footer.
 > studio operates" section ("Every input, owner, and failure point mapped
 > before a line of code exists" / "Deploy, monitor, iterate" / "Continuous
 > feedback loop"), the "Scope it live" panel, and a contact/footer section
-> with the cal.com/anta/intro link and "replies in 24h". Use Framer Motion
+> with the cal.com/antaconsulting/intro link and "replies in 24h". Use Framer Motion
 > for scroll-triggered reveals consistent with the hero. Pull real copy from
 > the reference file — don't paraphrase it. Put each major section in its
 > own file under `components/home/` (following the `HeroSection.tsx`
@@ -328,7 +328,7 @@ originally written, the code carries the reasoning in a header comment.
 - `lib/scope/claude.ts` — paid path. `@anthropic-ai/sdk`, `claude-opus-5`,
   `effort: "low"`, structured outputs (`output_config.format`), streamed to
   `finalMessage()`, `stop_reason: "refusal"` handled as its own class.
-- `lib/scope/gemini.ts` — free path. Google AI Studio `gemini-2.5-flash`
+- `lib/scope/gemini.ts` — free path. Google AI Studio `gemini-3.6-flash`
   over plain `fetch`, no SDK, `responseSchema` translated from the same
   JSON Schema, `thinkingBudget: 0`, safety finish reasons mapped to a
   refusal. Read the free-tier caveats in `.env.local.example` before

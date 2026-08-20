@@ -1,4 +1,5 @@
 import { Reveal, SectionLabel } from "@/components/Reveal";
+import { SITE } from "@/lib/seo/site";
 
 /**
  * Contact block — copy verbatim from design-reference/ANTA Site.dc.html.
@@ -25,14 +26,14 @@ export function ContactSection({ label = "Contact" }: { label?: string }) {
 
         <div className="min-w-0 flex-[1_1_320px]">
           <a
-            href="mailto:anadi@theanta.com?subject=ANTA%20—%20project%20inquiry"
+            href={`mailto:${SITE.email}?subject=${encodeURIComponent("ANTA — project inquiry")}`}
             className="block border border-border p-[clamp(24px,3vw,34px)] transition-colors hover:border-accent hover:bg-white/[0.03] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             <div className="mb-3.5 font-mono text-[10.5px] uppercase tracking-[0.16em] text-fg-faint">
               Direct&nbsp;·&nbsp;replies in 24h
             </div>
             <div className="break-all font-mono text-[clamp(15px,1.8vw,21px)] text-accent-ink">
-              anadi@theanta.com
+              {SITE.email}
             </div>
             <div className="mt-5 flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.08em] text-fg-faint">
               <span>Write the email</span>
@@ -45,15 +46,14 @@ export function ContactSection({ label = "Contact" }: { label?: string }) {
             <div>
               booking&nbsp;·&nbsp;
               <a
-                href="https://cal.com/anta/intro"
+                href={SITE.bookingUrl}
                 target="_blank"
                 rel="noopener"
                 className="text-accent-ink transition-colors hover:text-accent-hot focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
               >
-                cal.com/anta/intro
+                {SITE.bookingLabel}
               </a>
             </div>
-            <div>timezone&nbsp;·&nbsp;overlaps&nbsp;ET&nbsp;09:00–17:00</div>
           </div>
         </div>
       </Reveal>

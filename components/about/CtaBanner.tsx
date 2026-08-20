@@ -1,4 +1,5 @@
 import { Reveal } from "@/components/Reveal";
+import { SITE } from "@/lib/seo/site";
 
 /**
  * Closing CTA — design-reference/ANTA About.dc.html, "CTA banner" screen.
@@ -25,7 +26,7 @@ export function CtaBanner() {
           real technical response, not a discovery questionnaire.
         </p>
         <a
-          href="mailto:anadi@theanta.com?subject=ANTA%20—%20project%20inquiry"
+          href={`mailto:${SITE.email}?subject=${encodeURIComponent("ANTA — project inquiry")}`}
           className="inline-flex items-center gap-3 bg-accent-deep px-[30px] py-4 font-mono text-[13px] font-bold uppercase tracking-[0.08em] text-white transition-shadow hover:shadow-[0_0_0_1px_var(--color-accent),0_0_34px_rgba(236,26,99,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
           Start a conversation

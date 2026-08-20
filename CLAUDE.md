@@ -49,7 +49,7 @@ reader here. Setup steps in `supabase/README.md`, reasoning in
 - **AI:** two interchangeable providers behind one contract
   (`lib/scope/provider.ts`), for the "Scope it live" tool — **built**, see
   `BUILD_PLAN.md` Phase 6. Paid path: Anthropic SDK (`@anthropic-ai/sdk`),
-  `claude-opus-5`. Free path: Google AI Studio (`gemini-2.5-flash`) over
+  `claude-opus-5`. Free path: Google AI Studio (`gemini-3.6-flash`) over
   plain `fetch`, no SDK. Whichever API key is present wins,
   `ANTHROPIC_API_KEY` first; `SCOPE_PROVIDER` pins one explicitly. The
   Vercel AI SDK is **not** used and is not a dependency — the route streams

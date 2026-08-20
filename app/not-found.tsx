@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
-import { NAV_PAGES } from "@/lib/seo/site";
+import { NAV_PAGES, SITE } from "@/lib/seo/site";
 
 export const metadata: Metadata = {
   title: "Not found",
@@ -65,7 +65,7 @@ export default function NotFound() {
               </Link>
             ))}
             <a
-              href="mailto:anadi@theanta.com?subject=ANTA%20—%20broken%20link"
+              href={`mailto:${SITE.email}?subject=${encodeURIComponent("ANTA — broken link")}`}
               className="border border-border bg-accent-deep px-[18px] py-3 font-mono text-[11.5px] font-bold uppercase tracking-[0.06em] text-[#FBFAF8] transition-shadow duration-[250ms] hover:shadow-[0_0_0_1px_var(--color-accent),0_0_28px_rgba(236,26,99,0.28)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               Tell me what broke

@@ -10,9 +10,12 @@ import type { ScopeResult } from "@/lib/scope/static-scopes";
  * that, plus `issue`. Generating fields nothing renders would only add latency
  * and tokens to a public, unauthenticated endpoint; timeline and budget framing
  * are already carried by the steps and by the panel's "estimate, not a quote"
- * line. `issue` is not rendered but is generated: it's the one-line restatement
- * of the visitor's bottleneck, and it's what makes a row in
- * `scope_submissions` readable as a lead without re-reading the raw query.
+ * line. `needs` and each step's `detail` were added later, when the panel grew
+ * an expandable result surface — both are rendered, so both are required here.
+ * `issue` is both rendered (the panel opens the result by restating the
+ * bottleneck, so the visitor can see they were understood before reading the
+ * fix) and logged — it's what makes a row in `scope_submissions` readable as a
+ * lead without re-reading the raw query.
  *
  * `ScopeResult` (the render shape) stays the source of truth — `GeneratedScope`
  * extends it rather than redefining it, so a change to the panel's data shape
@@ -64,8 +67,13 @@ export const SCOPE_JSON_SCHEMA = {
             description:
               "What ships in that window. One clause, under 70 characters, no trailing period.",
           },
+          detail: {
+            type: "string",
+            description:
+              "One sentence on what actually happens in that window — the concrete work, or what it depends on. Shown when the visitor expands the step, so it must add information the one-clause summary doesn't already carry.",
+          },
         },
-        required: ["day", "text"],
+        required: ["day", "text", "detail"],
         additionalProperties: false,
       },
     },
@@ -75,8 +83,14 @@ export const SCOPE_JSON_SCHEMA = {
         "Four to six concrete technologies, each 1–2 words. Real product names only.",
       items: { type: "string" },
     },
+    needs: {
+      type: "array",
+      description:
+        "Exactly three things the client must supply for day one — access, data, or a named decision-maker. Concrete and specific to their situation. Never generic project-management asks like 'clear requirements'.",
+      items: { type: "string" },
+    },
   },
-  required: ["issue", "name", "verdict", "steps", "stack"],
+  required: ["issue", "name", "verdict", "steps", "stack", "needs"],
   additionalProperties: false,
 } as const;
 
@@ -104,9 +118,8 @@ export function isGeneratedScope(value: unknown): value is GeneratedScope {
   );
   if (!stepsOk) return false;
 
-  return (
-    Array.isArray(v.stack) &&
-    v.stack.length > 0 &&
-    v.stack.every((s) => typeof s === "string")
-  );
+  const listOk = (x: unknown) =>
+    Array.isArray(x) && x.length > 0 && x.every((i) => typeof i === "string");
+
+  return listOk(v.stack) && listOk(v.needs);
 }

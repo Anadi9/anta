@@ -75,7 +75,32 @@ export type RateLimitVerdict = {
   retryAfter: number;
 };
 
+/**
+ * Local development bypasses the limiter entirely.
+ *
+ * Not a convenience — a correctness fix for testing. The window is keyed on a
+ * hash of the client IP, and every request from a dev machine (browser, curl,
+ * an agent probing the endpoint) collapses to one identity, so five requests
+ * exhaust the hour. Worse, the panel's failure mode is a silent one: it falls
+ * back to a static scope from lib/scope/static-scopes.ts with no on-screen
+ * tell, so a rate-limited developer sees a plausible canned answer and
+ * concludes the model is broken. That happened.
+ *
+ * Gated on NODE_ENV rather than the request IP: in dev there is no
+ * `x-forwarded-for`, so `clientIp` returns "unknown" and a loopback check
+ * would never match. Vercel sets NODE_ENV=production for preview deployments
+ * as well as production, so neither is affected — the public endpoint is
+ * never uncapped by this.
+ */
+function bypassForDevelopment(): boolean {
+  return process.env.NODE_ENV !== "production";
+}
+
 export async function checkRateLimit(ipHash: string): Promise<RateLimitVerdict> {
+  // Checked before getLimiter() so dev traffic costs no Upstash commands
+  // either — the free tier meters requests, not just rejections.
+  if (bypassForDevelopment()) return { allowed: true, retryAfter: 0 };
+
   const rl = getLimiter();
   if (!rl) return { allowed: true, retryAfter: 0 };
 

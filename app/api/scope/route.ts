@@ -1,5 +1,6 @@
 import { sendScopeEmail, isEmailConfigured } from "@/lib/email/send-scope";
 import { logScopeSubmission } from "@/lib/leads/scope-submissions";
+import type { ScopeAsk } from "@/lib/scope/prompt";
 import {
   ScopeRefusedError,
   ScopeUnavailableError,
@@ -37,9 +38,80 @@ export const runtime = "nodejs";
 export const maxDuration = 60;
 
 const MAX_QUERY = 600;
+/** A correction is a sentence, not a second brief — anything longer is abuse. */
+const MAX_INSTRUCTION = 240;
+/** Enough for a real stack, short enough that the list can't become a payload. */
+const MAX_TOOLS = 8;
+const MAX_TOOL_LEN = 32;
+const MAX_SIZE_LEN = 16;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-type ScopeRequest = { query?: unknown; email?: unknown };
+type ScopeRequest = {
+  query?: unknown;
+  email?: unknown;
+  context?: unknown;
+  refine?: unknown;
+};
+
+/**
+ * Everything below arrives from a public, unauthenticated form and is
+ * interpolated into a model prompt, so each field is length-capped and
+ * type-checked here rather than trusted. Anything malformed is dropped, not
+ * rejected: a visitor with a broken client should still get a scope.
+ */
+function parseContext(raw: unknown): ScopeAsk["context"] {
+  if (!raw || typeof raw !== "object") return undefined;
+  const r = raw as { size?: unknown; tools?: unknown };
+
+  const size =
+    typeof r.size === "string" && r.size.trim().length <= MAX_SIZE_LEN
+      ? r.size.trim() || undefined
+      : undefined;
+
+  const tools = Array.isArray(r.tools)
+    ? r.tools
+        .filter(
+          (t): t is string =>
+            typeof t === "string" && t.trim().length > 0 && t.length <= MAX_TOOL_LEN,
+        )
+        .map((t) => t.trim())
+        .slice(0, MAX_TOOLS)
+    : undefined;
+
+  if (!size && !tools?.length) return undefined;
+  return { size, tools: tools?.length ? tools : undefined };
+}
+
+function parseRefine(raw: unknown): ScopeAsk["refine"] {
+  if (!raw || typeof raw !== "object") return undefined;
+  const r = raw as { previous?: unknown; instruction?: unknown };
+
+  const instruction =
+    typeof r.instruction === "string" ? r.instruction.trim().slice(0, MAX_INSTRUCTION) : "";
+  if (!instruction) return undefined;
+
+  const prev = r.previous as
+    | { name?: unknown; verdict?: unknown; stack?: unknown }
+    | undefined;
+  if (!prev || typeof prev !== "object") return undefined;
+  if (typeof prev.name !== "string" || typeof prev.verdict !== "string") {
+    return undefined;
+  }
+
+  return {
+    previous: {
+      name: prev.name.slice(0, 80),
+      verdict: prev.verdict.slice(0, 400),
+      stack: Array.isArray(prev.stack)
+        ? prev.stack
+            .filter((t): t is string => typeof t === "string")
+            .slice(0, 8)
+            .map((t) => t.slice(0, MAX_TOOL_LEN))
+        : [],
+    },
+    instruction,
+  };
+}
 
 function event(payload: Record<string, unknown>): Uint8Array {
   return new TextEncoder().encode(`${JSON.stringify(payload)}\n`);
@@ -68,6 +140,12 @@ export async function POST(request: Request) {
     typeof payload.email === "string" && EMAIL_RE.test(payload.email.trim())
       ? payload.email.trim()
       : null;
+
+  const ask: ScopeAsk = {
+    query,
+    context: parseContext(payload.context),
+    refine: parseRefine(payload.refine),
+  };
 
   if (!isScopeConfigured()) {
     // No API key: the client keeps its hardcoded scopes, which still work.
@@ -103,7 +181,7 @@ export async function POST(request: Request) {
       try {
         controller.enqueue(event({ type: "status", step: 0 }));
 
-        const scope = await generateScope(query, { signal: request.signal });
+        const scope = await generateScope(ask, { signal: request.signal });
         clearInterval(ticker);
         controller.enqueue(event({ type: "result", scope }));
 

@@ -77,18 +77,18 @@ export function Footer({
             Direct
           </h2>
           <a
-            href="mailto:anadi@theanta.com"
+            href={`mailto:${SITE.email}`}
             className="font-mono text-xs text-fg-muted transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
-            anadi@theanta.com
+            {SITE.email}
           </a>
           <a
-            href="https://cal.com/anta/intro"
+            href={SITE.bookingUrl}
             target="_blank"
             rel="noopener"
             className="font-mono text-xs text-fg-muted transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
-            cal.com/anta/intro
+            {SITE.bookingLabel}
           </a>
           <span className="font-mono text-xs text-fg-faint">replies in 24h</span>
         </div>
@@ -99,9 +99,6 @@ export function Footer({
           </h2>
           <span className="font-mono text-xs text-fg-muted">
             Detroit, MI&nbsp;·&nbsp;U.S.
-          </span>
-          <span className="font-mono text-xs text-fg-muted">
-            overlaps&nbsp;ET&nbsp;09:00–17:00
           </span>
           <span className="font-mono text-xs text-fg-muted">theanta.com</span>
         </div>

@@ -24,19 +24,34 @@ export type ScopeOutcome =
   | { ok: true; scope: ScopeResult }
   | { ok: false; reason: "unconfigured" | "rate_limited" | "refused" | "failed" };
 
+export type ScopeSend = {
+  /** Optional context from the panel's chips, folded into the prompt server-side. */
+  context?: { size?: string; tools?: string[] };
+  /** Set on a follow-up: the scope on screen plus what the visitor corrected. */
+  refine?: {
+    previous: { name: string; verdict: string; stack: string[] };
+    instruction: string;
+  };
+};
+
 export async function streamScope(
   query: string,
   {
     signal,
     onStatus,
-  }: { signal?: AbortSignal; onStatus?: (step: number) => void } = {},
+    context,
+    refine,
+  }: {
+    signal?: AbortSignal;
+    onStatus?: (step: number) => void;
+  } & ScopeSend = {},
 ): Promise<ScopeOutcome> {
   let response: Response;
   try {
     response = await fetch("/api/scope", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ query }),
+      body: JSON.stringify({ query, context, refine }),
       signal,
     });
   } catch {

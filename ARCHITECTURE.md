@@ -174,7 +174,7 @@ hand-written, typed query functions in `lib/leads/`.
 | Anthropic API | Claude — powers Scope-it-live | Phase 6; needs its own rate limiting, see §3 |
 | Upstash Redis | Rate limiting for `/api/scope` | Serverless-friendly, generous free tier |
 | Resend | Transactional email (lead notifications, optional scope-to-email) | Replaces `nodemailer` from the old repo — HTTP API fits Vercel's serverless functions better than SMTP connection pooling |
-| Cal.com | Booking embed (`cal.com/anta/intro`) | No integration work — iframe/embed only |
+| Cal.com | Booking embed (`cal.com/antaconsulting/intro`) | No integration work — iframe/embed only |
 | GA4 | Traffic analytics | Existing property (`G-BF6M3EFFKH`) — port forward, don't recreate |
 | Vercel Analytics + Speed Insights | Core Web Vitals, zero-config with Vercel hosting | New — the animation-heavy design makes this worth having |
 | Sentry | Error tracking | New — a silent error in `/api/scope` is a silently lost lead |
@@ -201,7 +201,7 @@ a value is genuinely safe to expose to the browser.
   is set** — the paid path (`claude-opus-5`) is the better answer on
   register: this endpoint is the site's proof that ANTA can architect, and
   a visitor reads the output as a work sample. The free path
-  (`gemini-2.5-flash`, Google AI Studio) exists because pre-revenue a
+  (`gemini-3.6-flash`, Google AI Studio) exists because pre-revenue a
   public unauthenticated endpoint calling a paid API is a bill with no
   ceiling, and the Upstash limiter caps abuse, not cost. Selection is by
   credential rather than a mode flag so switching is one Vercel env var

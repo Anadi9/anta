@@ -24,6 +24,16 @@ export const SITE = {
   // as the absolute URL of the homepage card, for the places that need a
   // concrete image URL rather than a meta tag: JSON-LD `image`, llms.txt.
   ogImage: "https://theanta.com/opengraph-image",
+  // The Zoho mailbox is `anadit@theanta.com` — the design references and the
+  // first pass of this build both wrote `anadit@theanta.com`, which is not a
+  // real address on the account and bounces. Every mailto on the site reads
+  // from here, so an alias change is a one-line edit.
+  email: "anadit@theanta.com",
+  // Cal.com handle is `antaconsulting`, not `anta` — `anta` was not available
+  // at signup. Every booking link on the site reads from here, so if the
+  // handle is ever renamed in Cal.com settings this is the only edit.
+  bookingUrl: "https://cal.com/antaconsulting/intro",
+  bookingLabel: "cal.com/antaconsulting/intro",
 } as const;
 
 export const NAV_PAGES = [

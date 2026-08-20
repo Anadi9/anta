@@ -97,10 +97,24 @@ export const metadata: Metadata = {
     title: SITE.title,
     description: SITE.tagline,
   },
-  // Fill in once Google Search Console gives you the real code — see
-  // BUILD_PLAN.md. Leaving this unset until it's real; a placeholder
-  // string is worse than nothing.
-  // verification: { google: "" },
+  /*
+    Google Search Console verification, read from the environment rather
+    than hardcoded — the code is deployment config, not source, and this
+    keeps it out of the repo and swappable without a code change (GSC
+    reissues it if the property is ever removed and re-added).
+
+    Spread-if-set, deliberately: an empty or missing value emits no tag at
+    all. A `<meta name="google-site-verification" content="">` on every
+    page is worse than nothing — GSC reads it as a failed verification
+    attempt rather than an absent one.
+
+    Set GOOGLE_SITE_VERIFICATION in Vercel (Production), redeploy, then hit
+    Verify in Search Console and submit /sitemap.xml. It's read at build
+    time, so setting it without a redeploy does nothing.
+  */
+  ...(process.env.GOOGLE_SITE_VERIFICATION
+    ? { verification: { google: process.env.GOOGLE_SITE_VERIFICATION } }
+    : {}),
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

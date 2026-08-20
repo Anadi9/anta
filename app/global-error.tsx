@@ -2,6 +2,7 @@
 
 import * as Sentry from "@sentry/nextjs";
 import { useEffect } from "react";
+import { SITE } from "@/lib/seo/site";
 
 /**
  * Last-resort boundary: catches errors thrown by the root layout itself,
@@ -122,7 +123,7 @@ export default function GlobalError({
               Try again
             </button>
             <a
-              href="mailto:anadi@theanta.com?subject=ANTA%20%E2%80%94%20site%20down"
+              href={`mailto:${SITE.email}?subject=${encodeURIComponent("ANTA — site down")}`}
               style={{
                 border: "1px solid rgba(255,255,255,0.12)",
                 color: "#d9d7d1",
@@ -134,7 +135,7 @@ export default function GlobalError({
                 textDecoration: "none",
               }}
             >
-              anadi@theanta.com
+              {SITE.email}
             </a>
           </div>
 

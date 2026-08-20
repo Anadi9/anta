@@ -3,6 +3,7 @@
 import * as Sentry from "@sentry/nextjs";
 import Link from "next/link";
 import { useEffect } from "react";
+import { SITE } from "@/lib/seo/site";
 
 /**
  * Route-segment error boundary — wraps every page under the root layout, so
@@ -70,7 +71,7 @@ export default function Error({
             Home
           </Link>
           <a
-            href={`mailto:anadi@theanta.com?subject=${encodeURIComponent(
+            href={`mailto:${SITE.email}?subject=${encodeURIComponent(
               `ANTA — site error${error.digest ? ` (${error.digest})` : ""}`,
             )}`}
             className="border border-border px-[18px] py-3 font-mono text-[11.5px] uppercase tracking-[0.09em] text-t1 transition-colors hover:border-accent hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"

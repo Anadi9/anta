@@ -1,0 +1,103 @@
+I use Apollo.io for prospecting on my own pipeline, on the free plan, and I
+went in expecting to drive it through the API. That is not how it works, and
+the boundary is not obvious from the pricing page.
+
+This is what I found from a working account. Everything below reflects the
+plan structure as of August 2026, and pricing pages change, so verify the
+numbers against theirs before making a decision on them.
+
+## The short version
+
+You can search, filter and view prospect data in the web interface on the free
+plan. You cannot drive prospecting search programmatically. The search API and
+the enrichment context features sit behind a paid tier, and there is no
+partial or metered access to them from free.
+
+That single distinction is the one that matters, because it decides whether
+your prospecting workflow can be automated at all or has to stay manual.
+
+## Credits are two different things, and the difference bites
+
+This is the part that confused me longest, so it is worth stating plainly.
+
+**Lead credits** are what you spend to reveal a contact's details inside the
+interface. On the free plan you get an allowance of these, and they work as
+advertised. You run a search, you find someone who fits, you reveal them, you
+see the contact information.
+
+**Export credits** are what you spend to get that data *out* in bulk, as a
+file. These are a separate pool with a separate allowance, and on my free
+account that pool is zero.
+
+So the free plan lets you find and see prospects, and does not let you bulk
+extract them. You can read the data. You cannot easily take it with you at
+volume. Those feel like the same capability until you try to build a pipeline
+on top of the second one.
+
+## What the paid step up actually costs
+
+Getting programmatic search access is not a small increment. At the time of
+writing it means the Organization plan, which is around $119 per user per
+month and carries a three seat minimum.
+
+That is the number people miss. It is not "$119 to unlock the API." The seat
+minimum makes the real annual figure meaningfully larger, and for a solo
+operator or a two person team the extra seats are pure overhead bought to
+reach a feature.
+
+## What I decided, and why
+
+I stayed on free.
+
+The reasoning is not that the paid tier is bad value. For a team running
+volume outbound with several people in the tool daily, it is probably
+straightforwardly worth it. The reasoning is that I am pre-revenue, and a
+recurring cost bought to speed up an unvalidated process is exactly the kind
+of spend that feels like progress while being none.
+
+The honest trade is that my sourcing is slower and manual. I do not think it
+is much worse in quality, and it may be slightly better, because the manual
+pass means I actually look at every company rather than scoring a list I never
+read. That is not an argument for staying manual forever. It is an argument
+for staying manual until there is revenue to weigh the cost against.
+
+## The manual workflow that replaces the API
+
+If you land in the same position, this is the loop that works:
+
+1. **Search in the web interface**, using the firmographic filters, which are
+   genuinely good and are not the gated part.
+2. **Filter on a real trigger rather than static attributes.** In my case that
+   is job postings: a company hiring for a role whose duties are the thing I
+   would automate. This is the single highest-signal filter I have found, and
+   it works the same on free as on paid.
+3. **Reveal the contacts you actually want** with lead credits, rather than
+   revealing broadly and filtering after. Credits are the scarce resource, so
+   the qualification decision has to happen before the reveal, not after.
+4. **Copy the list out manually** into whatever you score with. This is the
+   step the export credits would have automated, and it is genuinely tedious.
+5. **Score and draft outside Apollo**, against a written profile of who you
+   sell to, then send from your own mail account.
+
+Step four is the tax. Everything else is roughly what I would do anyway.
+
+## What I would tell someone deciding
+
+Pay for it when the constraint is genuinely throughput. If you have a
+repeatable process that converts, and the only limit is how many good-fit
+companies you can get in front of per week, then the seat cost is trivially
+worth it and you should stop reading.
+
+Do not pay for it to accelerate a process you have not validated. Automating
+outbound before you know which segment replies means you will simply reach a
+wrong conclusion faster and with a subscription attached.
+
+The intermediate position, which is where I am: run manual until a segment
+demonstrably works, then automate the segment that works rather than the whole
+funnel. The manual phase also produces something the API phase does not, which
+is that you have personally read every company you contacted, and that shows
+up in the copy.
+
+I use the manual list as the input to a scoring system I built for my own
+pipeline. That part, and specifically where it fails, is written up in
+[scoring B2B leads with an LLM](/blog/scoring-b2b-leads-with-an-llm).

@@ -8,6 +8,14 @@
 - [Work](https://theanta.com/work): case studies, including the ANTA Lead Intelligence Agent (B2B lead scoring, cold email generation, outreach sequencing, built with Next.js, Postgres, Vercel, Claude API, Apollo, HubSpot, Lemlist)
 - [Build](https://theanta.com/build): what ANTA builds (custom AI applications, workflow automation, stack consolidation, team enablement) and how the process works
 - [Studio](https://theanta.com/about): who ANTA is, why it exists, FAQ
+- [Notes](https://theanta.com/blog): written answers to specific buyer questions, each post answering one question
+
+## Notes (each answers one question)
+
+- [What a $3,000 AI pilot actually buys you](https://theanta.com/blog/what-a-3000-dollar-ai-pilot-actually-buys): answers "how much does it cost to build a custom AI tool for my business". Itemises what a fixed-price $3,000-$6,000, two-to-three-week pilot includes and excludes, and why it is fixed price rather than hourly.
+- [Build vs. buy for an internal AI tool, at 5-50 people](https://theanta.com/blog/build-vs-buy-internal-ai-tool): answers "should we build or buy an internal AI tool". Includes the cases where buying an existing SaaS product is the correct answer.
+- [Scoring B2B leads with an LLM, and where it fell over](https://theanta.com/blog/scoring-b2b-leads-with-an-llm): answers "how to score B2B leads with an LLM". A teardown of the ANTA Lead Intelligence Agent including three named failure modes and an explicit statement of what has not been proven.
+- [Seven questions to ask an AI agency before you sign](https://theanta.com/blog/what-to-ask-an-ai-agency): answers "what to ask an AI agency before signing a contract". Covers repo ownership, monthly operating cost, model failure behaviour, scope exclusions, handover.
 
 ## Contact
 

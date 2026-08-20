@@ -30,7 +30,7 @@ export function AboutHero() {
           className="pointer-events-none absolute -top-[34%] left-[6%] h-[46vw] w-[46vw] opacity-[0.14] [background:radial-gradient(circle,var(--color-accent-deep)_0%,transparent_62%)]"
         />
 
-        <div className="relative mx-auto max-w-[1280px] px-[clamp(18px,4vw,56px)] pt-[calc(64px+clamp(56px,8vw,104px))]">
+        <div className="relative mx-auto max-w-[1280px] px-[clamp(18px,4vw,56px)] pt-[calc(64px+clamp(32px,4.5vw,60px))]">
           <nav
             aria-label="Breadcrumb"
             className="mb-[clamp(26px,4vw,44px)] flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-t-dim"

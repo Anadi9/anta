@@ -1,0 +1,123 @@
+The homepage of this site has a tool that takes a description of a problem and
+returns an architecture for it. It calls a frontier model. It has no login, no
+paywall and no email gate, and the URL is public.
+
+That is, on paper, the worst possible cost profile: an unauthenticated endpoint
+that spends real money per request. It has been up without incident, and the
+reason is not luck. It is five specific controls, each covering a different
+failure, and one design decision that matters more than the other four
+combined.
+
+Here is the whole arrangement.
+
+## 1. A hard per-IP rate limit, treated as required
+
+Five requests per hour per IP, on a sliding window, backed by Redis.
+
+Two details matter more than the number. First, sliding rather than fixed: a
+fixed window lets someone burst the full allowance at the end of one window
+and again at the start of the next, doubling the effective rate at the seam.
+Second, and more important, the limiter is not optional in production. If the
+rate limit store is not configured, the route refuses to serve at all and
+returns a 503.
+
+That is deliberate and it is worth copying. The tempting behaviour is to
+degrade gracefully: if the limiter is missing, serve anyway. That turns one
+missing environment variable into an uncapped public endpoint on a paid API,
+which is not a degraded mode, it is an incident. Better for the feature to be
+loudly off than quietly unlimited.
+
+The IP is hashed with SHA-256 and a server-side salt before it reaches storage.
+Correlating requests from one source does not require holding the address, and
+not holding it means the table is not personal data I have to manage.
+
+## 2. A bounded output, always
+
+`max_tokens` is capped at 4,000. Output tokens are the expensive half of most
+model pricing, and an unbounded generation is an unbounded line item.
+
+Setting this deliberately is also a design forcing function. If the response
+does not fit in the cap, the shape of what is being asked for is wrong, and
+that is better discovered while writing the prompt than on a bill.
+
+## 3. Structured outputs instead of parse-and-pray
+
+The response is constrained to a schema at the API level rather than requested
+in prose and parsed afterwards.
+
+The cost argument for this is not obvious until you have shipped without it.
+Asking a model to "reply in JSON" produces valid JSON almost always, and the
+almost is what costs money: every malformed response is either a retry, which
+is a second full-price call, or a failure the user sees. Schema-constrained
+output turns a probabilistic contract into an enforced one, and the retries
+stop being a budget line.
+
+## 4. Reasoning effort held at the floor
+
+The paid path runs at low reasoning effort. The free path holds thinking at its
+minimum level.
+
+Reasoning tokens are billed and they are not free latency either. For this
+workload, one bounded generation against a fixed schema with a visitor
+watching a cursor blink, high effort buys very little and costs on both axes.
+Worth calibrating per feature rather than defaulting to maximum: the reflex to
+turn everything up is expensive and often not better.
+
+One implementation note, because it cost me a debugging session: on the Gemini
+side, thinking cannot be disabled outright any more. Sending a zero thinking
+budget is a hard 400, not a warning. The floor is a low thinking level, not
+zero.
+
+## 5. A provider swap that costs one environment variable
+
+There are two implementations behind one interface: a paid path on Claude and
+a free-tier path on Gemini Flash. Whichever API key is present wins, and an
+explicit variable pins one if both are set.
+
+This is a cost control, not just an architecture preference. It means that if
+spend becomes a problem, the response is a variable change with no redeploy,
+rather than a refactor negotiated under pressure. Having the cheap path built
+and tested *before* you need it is the difference between a switch and a
+project. I wrote about [how that abstraction is put
+together](/blog/swapping-claude-for-gemini-behind-one-interface) separately.
+
+## The decision that matters more than all of them
+
+Every one of those controls is a way of failing. Rate limited, quota
+exhausted, provider down, response refused, no key configured. Five controls
+means five new ways for a visitor to hit a broken feature.
+
+So the actual invariant is this: **every failure path resolves to a real
+result rather than an error.** Behind the live model sit hand-written scopes,
+composed by me, covering the common problem shapes. Rate limited, unconfigured,
+refused, quota exhausted, provider down: the visitor still sees a coherent
+architecture. They do not see a spinner that never resolves and they do not see
+a stack trace.
+
+This inverts the usual relationship between cost control and product quality.
+Normally the two fight: every cap you add is a worse experience at the
+boundary. With a credible fallback, they stop fighting, because the cost
+controls can be genuinely aggressive when tripping one is not a visible
+failure.
+
+It also means the honest description of the feature is "an interactive scoping
+tool that usually runs live," not "an AI-powered tool," and I am fine with
+that. The widget is the site's proof of work. It is never allowed to look
+broken, and a static-but-correct answer serves that better than a live one that
+sometimes is not there.
+
+## The short version
+
+If you are putting an LLM behind a public endpoint:
+
+- Rate limit per IP, sliding window, and make the limiter mandatory rather
+  than best-effort.
+- Cap output tokens explicitly. Unbounded generation is an unbounded bill.
+- Constrain the response with a schema so malformed output does not become
+  paid retries.
+- Match reasoning effort to the actual task instead of defaulting to maximum.
+- Build the cheap provider path before you need it, behind the same interface.
+- Then make every one of those controls invisible by giving the feature
+  something real to fall back to.
+
+The last one is what lets the first five be strict.

@@ -1,0 +1,119 @@
+Small freight brokerages and 3PLs post a particular job ad. The title varies,
+accounts payable admin, billing coordinator, operations assistant, but the
+duties are recognisable: receive documents from carriers, check them against
+the load, key the details into the system, chase what is missing, file it.
+
+That ad is a description of a workflow, and about half of it is automatable
+with current tools. The other half is not, and the failure mode in this
+category is a vendor who cannot tell you which half is which. So here is the
+split.
+
+Two things to state up front. I have scoped this workflow and built the
+document-handling patterns it depends on, but I have not yet delivered one of
+these in a 3PL. Where I am reasoning from the general shape of document
+intake rather than from a specific delivered system, I say so.
+
+## What the documents are
+
+**The bill of lading (BOL)** is the document that travels with the freight. It
+records what is being shipped, who is shipping it, who is receiving it, and
+under what terms. It is the contract of carriage.
+
+**The proof of delivery (POD)** is the signed confirmation that the freight
+arrived. It is the document that makes the load billable, which is why it is
+the one everyone chases.
+
+The operational reality is that both arrive as email attachments, mostly PDFs,
+frequently scans, sometimes photographs of paper taken in a truck cab. Each
+carrier's format is different. Nothing is standardised, and this is the entire
+difficulty.
+
+## The half that automates well
+
+**Classification.** Deciding whether an inbound attachment is a BOL, a POD, an
+invoice, a rate confirmation, or something irrelevant. Models are reliable at
+this even on poor scans, because it is a judgement about document type rather
+than an exact reading.
+
+**Field extraction.** Pulling the load reference, dates, carrier, addresses,
+piece count, weight from a layout the system has never seen before. This is
+where the current generation genuinely changed things. Template-based
+extraction required a template per carrier and broke when anyone changed their
+form. A model reads an unfamiliar layout without one, which is what makes the
+long tail of small carriers tractable.
+
+**Matching to the load.** Taking the extracted reference and finding the
+corresponding record. Mostly ordinary lookup logic, with fuzzy matching for
+the reference numbers people mistype.
+
+**Chasing what is missing.** Noticing that a load delivered four days ago has
+no POD attached, and sending the carrier a reminder naming the load. Not
+sophisticated, and it recovers a surprising amount of time, because it is the
+task humans deprioritise when busy.
+
+**Exception triage.** Sorting the problems into "someone must look at this"
+versus "this is fine," so the human queue is short and genuinely needs a
+human.
+
+## The half that must stay deterministic
+
+This is the part that matters, and where I would be sceptical of anyone
+promising full automation.
+
+**Anything that becomes money.** The extracted values must not flow
+unreviewed into an invoice. Not because extraction is bad, but because the
+error mode is silent: a plausible wrong weight or piece count produces a
+plausible wrong invoice, and you find out from a customer dispute weeks later.
+Extraction proposes, a rule validates, and a human approves anything outside
+tolerance.
+
+**Validation rules.** Does the piece count on the POD match the BOL. Is the
+delivery date after the pickup date. Is the weight within a sane band for the
+equipment type. These are ordinary business rules and they should be code, not
+prompts. Deterministic checks are cheap, testable and explainable, and they
+catch the exact category of error that fluent extraction produces.
+
+**The confidence boundary.** Every extracted field needs a confidence, and
+below a threshold it goes to a person. A system without an explicit "I am not
+sure" path will confidently key a bad value, which is worse than not
+automating at all, because it removes the human who would have noticed.
+
+**Anything with a compliance dimension.** Hazmat, temperature-controlled
+chains, customs. Adjacent to legal exposure, and not where to be clever.
+
+## Getting it back into the TMS
+
+This is where the project is won or lost, and where most estimates go wrong.
+
+If the TMS has a decent API, the write-back is routine. Many of the systems in
+this segment do not, or expose a subset that excludes exactly the fields you
+need to update. When that happens you are looking at a database integration,
+a file-based interface on a schedule, or driving the interface directly.
+
+That variance is why I will not quote this workflow without knowing the
+specific TMS. The document handling is fairly predictable. The write-back
+ranges from an afternoon to the majority of the build, and the honest answer
+to "how long does this take" is that the answer depends on a question I have
+to ask first.
+
+## How I would scope a first version
+
+Not the whole workflow. One document type, one direction.
+
+POD intake specifically: classify inbound attachments, extract the load
+reference and delivery details, match to the load, flag anything below the
+confidence threshold for review, and mark the load ready to bill. Leave BOL
+handling, invoice generation and carrier chasing for a second pass.
+
+The reason to start there is that POD is the document that gates billing, so
+the value is immediate and measurable in days-to-invoice rather than in a
+vague efficiency claim. It is also the narrowest slice that produces a real
+outcome, which makes it a genuine two to three week
+[fixed-price pilot](/blog/what-a-3000-dollar-ai-pilot-actually-buys) rather
+than a phased programme.
+
+If you are running this workflow with a person keying documents, I would want
+to know which TMS you are on and what share of your carriers send scans versus
+digital PDFs. Those two answers determine most of the estimate. You can
+[email me](mailto:anadit@theanta.com) with them, or run the workflow through
+the [Scope it live](/#scope) tool and see the architecture it returns.

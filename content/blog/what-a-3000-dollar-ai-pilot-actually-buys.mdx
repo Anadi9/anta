@@ -1,0 +1,130 @@
+Most quotes you will get for "an AI tool for our business" are a range with no
+scope attached. Somewhere between $15,000 and "let's start with a discovery
+phase." That is not a price, it is a way of not answering the question until
+you are already invested.
+
+So here is the direct answer. A first engagement with me is a fixed price
+between $3,000 and $6,000, it runs two to three weeks, and it produces one
+narrowly scoped system that is running in production at the end of it. Not a
+prototype, not a deck, not a roadmap. Something your team opens on a Monday
+and uses.
+
+Below is what that money actually covers, what it does not, and why the
+number is fixed rather than hourly.
+
+## What is in the $3,000 to $6,000
+
+**One workflow, end to end.** The scope is deliberately a single job: the
+document that gets read and filed, the lead that gets scored, the report that
+gets assembled every Friday. Not "an AI layer for operations." One workflow,
+picked because it is the one your team complains about most, and taken all
+the way from input to the place the output has to land.
+
+**The integration into where the work already happens.** A tool nobody opens
+is worth nothing, so this is not a standalone app with its own login unless
+there is a reason for one. It writes into the CRM, posts into the Slack
+channel, drops the file into the shared drive, updates the row in the sheet.
+The integration is not a phase two.
+
+**The unglamorous reliability work.** Retries, rate limits, a cap on model
+spend, and a defined behaviour for every failure path. This is the part that
+separates a demo from a system, and it is the part most often quietly left
+out of a cheaper quote. If the model is down, or slow, or refuses, the tool
+still has to do something sensible rather than show your operations manager a
+stack trace.
+
+**The repository, in your account, from day one.** Not at the end, not on
+final payment. You own the code, it runs on your infrastructure, and if we
+never speak again you keep a working system. There is no per-seat licence and
+no platform subscription to me.
+
+**A written handover.** What it does, what it costs to run per month, where
+the API keys live, what breaks first as volume grows, and what the next
+sensible thing to build is. Two pages, plain English, written for whoever
+inherits it and not for me.
+
+**Direct access to the person building it.** There is no account manager
+layer, because there is no account manager. You are talking to the developer,
+which is the main reason a two week timeline is possible at all.
+
+## What is deliberately not in it
+
+**Custom model training.** I build on frontier model APIs. If your problem
+genuinely requires a fine-tuned or self-hosted model, a pilot is the wrong
+shape of engagement and I will say so before you pay anything.
+
+**A multi-tenant product.** A pilot builds a system for your company, not a
+SaaS you could resell. Those are different builds with different costs, and
+conflating them is how a $5,000 project becomes a $50,000 one.
+
+**Unlimited revisions.** Two rounds of feedback are in scope. Past that, we
+are designing a different system, and the honest move is to price it
+separately rather than absorb it and resent it.
+
+**Data cleanup.** If the CRM has four years of duplicates, that is real work
+and it is not two weeks of it. I will tell you what shape the data needs to
+be in, and that is usually work your team can do faster and cheaper than I
+can.
+
+**Ongoing operation.** A pilot ends. If you want someone watching it, changing
+it, and building the next three things, that is a retainer, and it starts at
+$4,000 a month. But nothing about the pilot obligates you to it, and that is
+the point.
+
+## Why it is fixed price and not hourly
+
+Hourly billing punishes the person who is fast, which is a strange thing to
+select for when you are buying software. It also makes every clarifying
+question feel expensive to you, which is exactly the conversation that
+determines whether the build is any good.
+
+More practically: an hourly quote transfers all the estimation risk onto you.
+If I misjudge the work, you pay for my misjudgement. Fixed price puts that
+risk on me, which is where it belongs, because I am the one who is supposed to
+know how long this takes. The trade is that the scope has to be genuinely
+narrow, and I will hold that line during the project.
+
+## Why there is a floor, and why it is not free
+
+I do not do free discovery calls that produce a written proposal. That
+sounds like a small thing but it is the single biggest filter in this
+business. Free scoping work attracts people who are collecting quotes to
+benchmark an internal hire, or who wanted a free consultation and framed it
+as a project. Both are real, both are expensive, and neither ends in a build.
+
+A small paid pilot filters for the buyer who has an actual problem and a
+budget line, and it shortens the sales cycle from months to about a week. It
+is also, frankly, the fairest version: you risk $3,000 to find out whether
+working together produces anything, instead of risking $40,000 on a proposal
+that reads well.
+
+## How the number moves inside the range
+
+The $3,000 end is one clearly defined input, one clearly defined output, and
+a system you already have an API for. Scoring inbound leads against a rubric
+and writing the result back to HubSpot sits here.
+
+The $6,000 end is where there are multiple input formats, a system with no
+usable API that has to be driven another way, or a compliance constraint that
+changes how data is allowed to move. Document intake from email attachments in
+four different vendor formats sits here.
+
+If it does not fit in $6,000 and three weeks, I will tell you that before you
+pay, and I will tell you what the smaller first version looks like. Splitting a
+large build into a pilot plus a follow-on is almost always better than
+compressing it, because the follow-on gets designed with three weeks of real
+usage data behind it instead of guesses.
+
+## The honest caveat
+
+I am a solo studio. That means you get the person who wrote the code on every
+call, and it also means I take a limited number of these at a time and I am
+not the right choice if you need twelve people staffed by Monday. If what you
+actually need is a team, say so early and I will tell you plainly that this
+is not the right fit rather than stretch to take the work.
+
+If you want to see what a scoped build looks like before talking to anyone,
+the [Scope it live](/#scope) tool on the homepage will take a problem
+description and hand back the architecture, the sequence and the stack, for
+free and without a form. That is the same thinking that goes into a pilot,
+minus the building.

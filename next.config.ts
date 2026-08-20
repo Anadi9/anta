@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import createMDX from "@next/mdx";
 import { withSentryConfig } from "@sentry/nextjs";
 
 const nextConfig: NextConfig = {
@@ -42,8 +43,30 @@ const sentryConfigured = Boolean(
   process.env.SENTRY_ORG && process.env.SENTRY_PROJECT,
 );
 
+/*
+  MDX, for /blog only (BUILD_PLAN.md Phase 5.5).
+
+  Note what is deliberately NOT here: `pageExtensions`. The docs' default
+  setup adds 'md'/'mdx' so that an .mdx file *is* a route. This build imports
+  MDX as components instead — every post is `content/blog/<slug>.mdx`, pulled
+  in by the single `app/blog/[slug]` route. That way the article chrome,
+  <title>, canonical and Article JSON-LD are written once in one TSX file
+  rather than repeated at the top of eight prose files, and a stray .mdx
+  dropped in app/ can never silently become a live URL.
+
+  No remark/rehype plugins: @next/mdx doesn't parse frontmatter, and rather
+  than add remark-frontmatter, post metadata lives in lib/blog/posts.ts as
+  typed TS — which is what the index page, sitemap and JSON-LD need to read
+  anyway, and which the compiler checks. Same pattern as lib/work/cases.ts.
+  Any plugin added later must be referenced by string name, not imported —
+  Turbopack can't pass JS functions to Rust.
+*/
+const withMDX = createMDX({});
+
+const configWithMDX = withMDX(nextConfig);
+
 export default sentryConfigured
-  ? withSentryConfig(nextConfig, {
+  ? withSentryConfig(configWithMDX, {
       org: process.env.SENTRY_ORG,
       project: process.env.SENTRY_PROJECT,
       // Keep the build log readable; real failures still surface.
@@ -57,4 +80,4 @@ export default sentryConfigured
       sourcemaps: { deleteSourcemapsAfterUpload: true },
       disableLogger: true,
     })
-  : nextConfig;
+  : configWithMDX;

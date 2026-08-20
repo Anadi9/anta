@@ -1,0 +1,135 @@
+The scoping tool on this site runs on Claude when there is a paid key
+available and on Gemini Flash when there is not. Switching between them is one
+environment variable and no redeploy.
+
+That sounds like a tidy abstraction story, and the tidy part is genuinely
+boring: define an interface, write two implementations, pick one at runtime.
+The interesting part is the three things that refused to abstract cleanly,
+because those are the ones that will show up in your version too.
+
+## Why bother at all
+
+Not for portability as a virtue. Two concrete reasons.
+
+**Cost, under pressure.** A public endpoint calling a paid API has a spend
+profile that can change faster than you can refactor. Having the cheap path
+already built and tested means the response to a cost problem is a variable
+change, not a project scoped while the bill is running.
+
+**Availability.** Providers have incidents. A second implementation that is
+already exercised is a meaningfully different position from one you would have
+to write during an outage.
+
+What it is explicitly not for: model-agnostic idealism. The two paths are not
+equal, and pretending they are is how you ship the worse one by accident. More
+on that below.
+
+## The shape
+
+One module owns selection, and nothing else in the codebase knows which
+provider ran:
+
+- If an explicit provider variable is set, it wins. This is the escape hatch,
+  and it matters more than the automatic logic.
+- Otherwise, whichever API key is present is used, with the paid key taking
+  precedence when both exist.
+- If neither is present, the feature reports itself unconfigured, and the
+  caller falls back to hand-written results.
+
+Both implementations return the same typed result and throw the same two error
+classes, which is the part that actually earns the abstraction. If each threw
+its own error shapes, every `instanceof` check upstream would need to know
+which provider ran, and the abstraction would be a fiction maintained by the
+caller.
+
+Everything above this line, the HTTP route, the logging, the fallback, is
+written once.
+
+## Thing one: the schema does not port
+
+Both providers support constrained output, so on paper this is the easy part.
+In practice they take different objects.
+
+One accepts a JSON Schema in its own structured-output configuration. The
+other takes a response schema in its generation config, and it supports a
+*subset* of JSON Schema, with its own handling of nullability and optional
+fields.
+
+So there is a translation step: one canonical schema definition, and a
+function that renders it into the second provider's dialect. That is the
+correct place for the mess, one function with a comment explaining the
+divergence, rather than two hand-maintained schemas that will drift the first
+time the response shape changes.
+
+Do not skip the canonical definition and write both by hand. The failure is
+silent: the two paths start returning slightly different shapes, and you find
+out from a rendering bug that only reproduces on the free tier.
+
+## Thing two: refusal is not an error, and each provider says it differently
+
+A model declining to answer is not a bug, and it must not be handled as one.
+
+But the two report it completely differently. One returns a specific stop
+reason on an otherwise successful response. The other returns a finish reason
+from a set of safety-related values, also on a successful response. Neither is
+an HTTP error, which means naive code treats both as success and then falls
+over on the missing content.
+
+The abstraction here is a shared error class. Each implementation detects its
+own provider's refusal signal and raises the same thing, so the route has one
+branch for "the model declined" and one for "the call failed," and it does not
+need to know which model was behind either.
+
+Getting this wrong is subtle and expensive: a refusal misread as a transient
+failure gets retried, and a retry of a refusal is a second full-price call
+that will refuse again.
+
+## Thing three: the reasoning controls have different names, different values, and a trap
+
+Both need reasoning held low for this workload. That is where the similarity
+ends.
+
+One takes a named effort level in its output configuration. The other takes a
+thinking configuration in its generation config, with its own vocabulary.
+
+And a specific trap worth writing down, because it cost me a debugging
+session: on the Gemini side, thinking can no longer be turned off outright.
+The parameter that used to disable it is now rejected with a hard 400 and an
+"invalid argument" message, not a deprecation warning. The floor is a low
+thinking level, not zero. If you are porting code that predates that change,
+it will not warn you, it will just fail every request.
+
+## The part I chose not to abstract
+
+Output quality is not equal, and no interface fixes that.
+
+The paid model is materially better at the register this particular feature
+needs, which is writing like an architect rather than like a chatbot. The free
+path is a real fallback, not a peer, and the codebase says so in a comment
+rather than pretending the two are interchangeable.
+
+Two things follow. The prompt carries worked examples, which is what drags the
+weaker model's voice closest to acceptable. And the hand-written static
+results remain the floor beneath both, so the honest quality ordering is: paid
+model, free model, hand-written, and the last of those is still good enough to
+show a visitor.
+
+Naming that gap in the code is the difference between an abstraction that
+tells the truth and one that hides a downgrade. The interface makes them
+substitutable. It does not make them equivalent, and the comment saying so is
+load-bearing.
+
+## What transfers
+
+- Put provider selection in exactly one module. Nothing downstream should
+  branch on which one ran.
+- Give both paths the same error classes, not just the same success type. This
+  is what makes the abstraction real rather than nominal.
+- Keep one canonical schema and translate it, rather than maintaining two.
+- Always include an explicit override variable. The automatic selection will
+  eventually be wrong at exactly the wrong moment.
+- Write down where the paths are not equal. An abstraction that conceals a
+  quality difference will ship the worse one silently.
+
+For how this fits into the wider cost picture, see [shipping a public LLM
+endpoint without a surprise bill](/blog/llm-api-costs-without-surprises).

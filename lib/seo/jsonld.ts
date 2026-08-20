@@ -174,3 +174,86 @@ export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
     })),
   };
 }
+
+/**
+ * Article schema for a /blog post.
+ *
+ * Separate from caseStudyJsonLd rather than a shared builder with optional
+ * fields: that one models a *system* (its `about` is a SoftwareApplication,
+ * `mentions` is a stack), this one models a *piece of writing* answering a
+ * question. Merging them would produce a builder where half the arguments
+ * are inert on any given call.
+ *
+ * Two fields carry most of the weight for AI answer engines:
+ *
+ * - `about` as a Question with the post's target query. This is the whole
+ *   AEO thesis in one field — it states, machine-readably, which question
+ *   this document answers, so a retrieval system matching a user's query
+ *   doesn't have to infer it from the prose.
+ * - `author` by reference to the founder node, not an inline string. A named
+ *   person with corroborating sameAs profiles (lib/seo/site.ts PROFILES) is
+ *   an entity an engine can verify; a bare byline string is not.
+ *
+ * `dateModified` falls back to `datePublished` — an unedited post is
+ * accurately described as unmodified, and emitting today's date on every
+ * build would be a freshness signal the content hasn't earned.
+ */
+export function articleJsonLd(opts: {
+  headline: string;
+  description: string;
+  url: string;
+  datePublished: string;
+  dateModified?: string;
+  query: string;
+  keywords: readonly string[];
+  wordCountMinutes: number;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: opts.headline,
+    description: opts.description,
+    url: opts.url,
+    mainEntityOfPage: { "@type": "WebPage", "@id": opts.url },
+    inLanguage: "en-US",
+    datePublished: opts.datePublished,
+    dateModified: opts.dateModified ?? opts.datePublished,
+    author: { "@id": `${SITE.url}/#founder` },
+    publisher: { "@id": `${SITE.url}/#organization` },
+    keywords: opts.keywords.join(", "),
+    timeRequired: `PT${opts.wordCountMinutes}M`,
+    about: {
+      "@type": "Question",
+      name: opts.query,
+    },
+  };
+}
+
+/**
+ * ItemList for the /blog index. Gives an engine crawling the index the full
+ * set of posts and their target questions in one pass, rather than requiring
+ * it to fetch and parse eight separate article pages to learn what's there.
+ */
+export function blogIndexJsonLd(
+  posts: { title: string; description: string; url: string; date: string }[],
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "@id": `${SITE.url}/blog#blog`,
+    name: `${SITE.name} — Notes`,
+    description:
+      "Working notes on building custom AI systems: pricing, architecture, cost control, and teardowns of systems actually in production.",
+    url: `${SITE.url}/blog`,
+    publisher: { "@id": `${SITE.url}/#organization` },
+    author: { "@id": `${SITE.url}/#founder` },
+    blogPost: posts.map((p) => ({
+      "@type": "BlogPosting",
+      headline: p.title,
+      description: p.description,
+      url: p.url,
+      datePublished: p.date,
+      author: { "@id": `${SITE.url}/#founder` },
+    })),
+  };
+}

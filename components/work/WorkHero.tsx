@@ -27,9 +27,19 @@ export function WorkHero() {
           className="pointer-events-none absolute -top-[34%] left-[6%] h-[46vw] w-[46vw] opacity-[0.14] [background:radial-gradient(circle,var(--color-accent-deep)_0%,transparent_62%)]"
         />
 
-        {/* Reference top padding is clamp(56px,8vw,104px); the fixed 64px nav
-            is added on top, same as the homepage hero. */}
-        <div className="relative mx-auto max-w-[1280px] px-[clamp(18px,4vw,56px)] pt-[calc(64px+clamp(56px,8vw,104px))]">
+        {/* The 64px is clearance for the fixed nav, which is out of flow.
+            The clamp is the gap between the nav's bottom edge and the
+            breadcrumb.
+
+            Deliberate deviation from the reference, applied 21 Aug 2026: the
+            exports specify clamp(56px,8vw,104px), tightened here to
+            clamp(32px,4.5vw,60px) (104px -> 60px on desktop) to lift the hero
+            and get more of the h1 above the fold. The same value is set on
+            BuildHero, AboutHero and BlogHero — these four are one system, so
+            change them together or they visibly desync. Article headers
+            (app/blog/[slug]/page.tsx) run their own tighter value on purpose;
+            see the note there. */}
+        <div className="relative mx-auto max-w-[1280px] px-[clamp(18px,4vw,56px)] pt-[calc(64px+clamp(32px,4.5vw,60px))]">
           <nav
             aria-label="Breadcrumb"
             className="mb-[clamp(26px,4vw,44px)] flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-t-dim"

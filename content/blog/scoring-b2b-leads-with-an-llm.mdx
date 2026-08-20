@@ -1,0 +1,128 @@
+I built a lead scoring system for my own outreach because the scores I was
+getting out of the box were not usable. It is called the ANTA Lead
+Intelligence Agent, it runs in production, and I use it every week on my own
+pipeline before I ever sold it to anyone.
+
+That last part is the reason this post is worth reading. I am not describing a
+client engagement from a safe distance. I am describing the thing I depend
+on, which means I can tell you precisely where it falls over.
+
+## The problem with off-the-shelf lead scores
+
+Generic scoring products weight what they know about everyone: headcount,
+industry code, revenue band, technologies detected, funding events. Those are
+real signals. They are also the same signals every other vendor's customer is
+scoring on, which means acting on them puts you in the same queue as everyone
+else, contacting the same companies in the same week.
+
+Worse, for my business they were weighting the wrong things. A generic scorer
+loves a recent funding round. But a company that just raised is often in the
+middle of hiring a team to do internally exactly what I would be proposing to
+do for them. Meanwhile a bootstrapped 20 person company that just posted a job
+listing for an accounts payable admin whose whole day is processing documents
+is, for me, a far better prospect. No generic scorer will ever rank it that
+way, because that judgement is specific to what I sell.
+
+That gap is the entire thesis of the tool. The firmographics are table stakes
+and a data vendor can supply them. The judgement about what those facts mean
+*for my offer* is the part that has to be encoded, and that turns out to be a
+language problem rather than a numeric one.
+
+## What actually replaced it
+
+The rough shape, in order:
+
+1. **Source the raw list.** Companies and contacts pulled from a data
+   provider, filtered on the coarse firmographic criteria that a database is
+   genuinely good at: country, headcount band, industry.
+2. **Gather the unstructured context.** The parts that carry the real signal
+   and do not fit in a column: job postings, site copy, what the company says
+   it does versus what its hiring implies it is struggling with.
+3. **Score against a written profile, not a formula.** This is the actual
+   change. Rather than assign point values to fields, the model reads the
+   context against a written definition of a good fit, including an explicit
+   anti-profile of who to reject, and returns a score with a stated reason.
+4. **Generate the outreach off the reason, not the company.** The email is
+   drafted from the specific evidence that produced the score, which is what
+   makes it read as researched rather than merged.
+5. **Sequence and hand off.** Ordering, timing, and the record of what went
+   where.
+
+The critical design decision is number three, and specifically that the model
+must return *why*. A bare number is unauditable. A number attached to "this
+company posted a role whose described duties are document intake and manual
+data entry" is a claim I can check in ten seconds, and reject when it is
+wrong.
+
+## Where it fell over
+
+Three failure modes, all of which showed up on real accounts.
+
+**It was agreeable.** Early on, the scores clustered high. Ask a model to
+evaluate fit and it will find a way to argue for fit, because that is the
+shape of the request. Two things helped: writing an explicit anti-profile, an
+actual list of who is *not* a customer and why, and forcing the output into a
+fixed structure with a required disqualifying-evidence field, so the model has
+to look for reasons against rather than only reasons for. The scores still
+skew generous. I read the reasoning, not the number.
+
+**It hallucinated plausible context.** Given a thin company page, it would
+generate a confident description of what the company does that was mostly
+inference. On a scoring pass that is tolerable. On an outreach draft it is
+lethal, because a cold email containing a specific and wrong claim about
+someone's business is worse than no email. The fix was structural rather than
+a prompt tweak: the draft may only reference evidence that was actually passed
+into it, and anything not in the source context does not get to appear in the
+email.
+
+**The unstructured signal is often just missing.** The job posting angle works
+beautifully when there is a job posting. Plenty of good-fit companies are not
+hiring this month, and for those the tool has little more to work with than
+the generic scorer did. I have not solved this. It means the system is good at
+ranking the companies that are broadcasting a signal and roughly average at
+everything else, which is a real limitation and not a temporary one.
+
+## What I cannot claim
+
+I am going to be exact here, because this is where most posts like this start
+inventing numbers.
+
+I have not proven this converts better. I have sent a small number of
+sequences off it, in the dozens, not the thousands, and I do not have a
+statistically meaningful reply rate to report. Anyone quoting a precise uplift
+percentage off a sample that size is quoting noise.
+
+What I can say is narrower and true: the scoring surfaces companies that the
+firmographic filter ranked as unremarkable, and the reasoning it attaches is
+specific enough to check. The sharpest email I have sent came from a vertical
+I had not originally targeted at all, which the system flagged off a job
+posting. That is a real outcome, and it is an anecdote, and I am labelling it
+as one.
+
+The other honest caveat: it currently runs as a single-user beta on a free
+hosting tier. It is not multi-tenant, so there is no self-serve login to hand
+you. If you want to see it, I will walk you through it live rather than send
+you a link that does not work.
+
+## What transfers to your version
+
+If you build something like this, three things carry over regardless of
+industry.
+
+**Write the profile before writing the prompt.** Most of the quality lives in
+how precisely you can describe a good customer, including the anti-profile.
+That document is the asset. The code around it is comparatively easy.
+
+**Require the reasoning as a first-class output.** Not for interpretability
+theatre. Because it is the only way you will catch the model being confidently
+wrong, and it is what turns a score into something a salesperson can open an
+email with.
+
+**Never let the outreach draft exceed the evidence.** Constrain it structurally
+so it cannot reference facts that were not supplied. Prompting it to be
+accurate is not the same as making it unable to invent.
+
+If you want the architecture for a version pointed at your own ICP, the
+[Scope it live](/#scope) tool will produce one, or read
+[what a fixed-price pilot includes](/blog/what-a-3000-dollar-ai-pilot-actually-buys)
+if you would rather know the commercial shape first.

@@ -2,16 +2,26 @@ import Link from "next/link";
 import { Nav } from "@/components/Nav";
 
 /**
- * Build page hero — design-reference/ANTA Build.dc.html lines 62–87
- * ("Build hero" screen), matched element for element. Same construction as
- * components/work/WorkHero.tsx; see that file for the ground/grey notes.
+ * /blog hero. There is no .dc.html reference for this section — the design
+ * exports cover four pages and none of them is a blog — so it is assembled
+ * from the Work hero's structure (components/work/WorkHero.tsx: bg-deep
+ * band, vertical rule texture, accent bloom, breadcrumb, oversized h1,
+ * mono strip on a top border) rather than invented. Same tokens, same
+ * clamp scale, same breadcrumb markup. Deviating here would make /blog the
+ * one page that doesn't look like the site.
  *
- * Copy fix: the reference sub-headline reads "Four kinds of system, and five
- * of them drawn the way they execute" — four and five refer to two different
- * things (system categories vs. workflows), so as written it's a broken
- * sentence. Reworded to name both counts explicitly; the rest is verbatim.
+ * The strip carries a live/scheduled count instead of Work's shipped/scoped
+ * split, for the same reason that one is split: it's the honest number, and
+ * it sets the expectation that more are coming rather than implying a
+ * larger archive than exists.
  */
-export function BuildHero() {
+export function BlogHero({
+  liveCount,
+  scheduledCount,
+}: {
+  liveCount: number;
+  scheduledCount: number;
+}) {
   return (
     <>
       <Nav />
@@ -20,7 +30,6 @@ export function BuildHero() {
           aria-hidden
           className="pointer-events-none absolute inset-0 [background-image:repeating-linear-gradient(90deg,rgba(245,244,241,0.055)_0_1px,transparent_1px_104px)] [mask-image:linear-gradient(to_bottom,#000,transparent_82%)]"
         />
-        {/* Accent bloom, top-left (reference line 64). */}
         <div
           aria-hidden
           className="pointer-events-none absolute -top-[34%] left-[6%] h-[46vw] w-[46vw] opacity-[0.14] [background:radial-gradient(circle,var(--color-accent-deep)_0%,transparent_62%)]"
@@ -41,16 +50,17 @@ export function BuildHero() {
               /
             </span>
             <span aria-current="page" className="text-ink">
-              Build
+              Notes
             </span>
           </nav>
 
-          <h1 className="max-w-[19ch] text-balance text-[clamp(36px,6.6vw,84px)] font-bold leading-[0.98] tracking-[-0.04em] text-ink-max">
-            What we build, and how it actually runs.
+          <h1 className="max-w-[16ch] text-balance text-[clamp(38px,7.4vw,96px)] font-bold leading-[0.96] tracking-[-0.04em] text-ink-max">
+            Notes from inside the build.
           </h1>
           <p className="mt-[clamp(20px,2.6vw,30px)] max-w-[54ch] text-pretty text-[clamp(15px,1.5vw,18px)] leading-[1.7] text-t7">
-            Four kinds of system, and five workflows drawn the way they execute
-            in production. Pick a workflow and follow it from trigger to output.
+            What things cost, what breaks, and what I&rsquo;d ask before
+            signing. Written from systems that are actually running, not from
+            a content calendar.
           </p>
         </div>
 
@@ -61,15 +71,19 @@ export function BuildHero() {
                 aria-hidden
                 className="h-[7px] w-[7px] bg-accent motion-safe:animate-[anta-breathe_2.4s_ease-in-out_infinite]"
               />
-              <span>four&nbsp;system&nbsp;types</span>
+              <span>
+                {liveCount}&nbsp;published
+                {scheduledCount > 0 ? (
+                  <>&nbsp;·&nbsp;{scheduledCount}&nbsp;scheduled</>
+                ) : null}
+              </span>
             </span>
-            <span>five&nbsp;workflows&nbsp;·&nbsp;live&nbsp;trace</span>
-            {/* accent-ink rather than the reference's #C20A62 — see WorkHero. */}
+            <span>one&nbsp;question&nbsp;per&nbsp;post</span>
             <a
-              href="#flows"
+              href="#index"
               className="text-accent-ink transition-colors hover:text-accent-hot focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
-              Open the explorer&nbsp;↓
+              Jump to the index&nbsp;↓
             </a>
           </div>
         </div>

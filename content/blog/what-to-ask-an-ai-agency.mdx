@@ -1,0 +1,122 @@
+I want you to ask me these. That is the whole reason the list exists. A vendor
+who has thought about their own answers will find these easy, and one who has
+not will get vague in a way you can hear.
+
+If you have hired an agency before and got a deck, a Figma file and an
+invoice, you already know the failure mode this list is designed to catch.
+
+## 1. Who owns the repository, and when?
+
+The answer you want is: you do, in your own account, from the first commit.
+
+Watch for "we hand over the code at project completion," which sounds
+reasonable and is not the same thing. It means that for the entire build you
+cannot have anyone else look at the work, and it means the handover is a
+negotiating position at exactly the moment your leverage is lowest.
+
+Also ask where it runs. If the tool only functions while deployed on the
+agency's infrastructure, on their API keys, you did not buy a system. You
+started renting one with extra steps.
+
+## 2. What does this cost to operate per month, after you are gone?
+
+Any system built on model APIs has a running cost. A vendor who has not
+calculated it has not thought about the volumes you actually run at, which
+means the number will surprise you in month two.
+
+The good answer is specific and has a shape: roughly this much per document,
+per lead, per run, at roughly this volume, and here is what happens if volume
+triples. The bad answer is "it depends on usage," delivered as if that ends
+the conversation rather than begins it.
+
+Ask specifically what stops the cost running away. Rate limits, a spend cap,
+a cheaper model on the high-volume path. If none of those exist, the cost
+control is your credit card.
+
+## 3. What happens when the model is down, slow, or refuses?
+
+This is the question that separates people who have shipped from people who
+have demoed, which is why it is the one worth getting cagey-detector on.
+
+Every LLM feature has failure paths: the provider is degraded, the request
+times out, the rate limit trips, the model refuses the input, the response
+comes back malformed. Each one needs a defined behaviour. A good answer names
+them and tells you what the user sees in each case.
+
+For a concrete example of what I mean, the scoping tool on this site's
+homepage calls a frontier model from a public endpoint with no login. Every
+failure path in it resolves to a hand-written fallback result rather than an
+error, because a tool that occasionally shows a broken state is worse than a
+slightly less impressive tool that never does. That is the level of specificity
+you should expect back.
+
+## 4. What is explicitly out of scope?
+
+Ask it in exactly those words, and treat a thin answer as a red flag.
+
+A vendor who has scoped honestly will have a list ready, because knowing what
+you are not building is most of what makes a fixed timeline possible. Data
+cleanup, migrations, multi-tenancy, mobile, unlimited revisions: someone who
+has done this before knows which of these eat projects.
+
+"We are flexible, we will figure it out as we go" is not accommodating. It
+means the scope conversation has been deferred to the point where it becomes a
+change order.
+
+## 5. Who is actually writing the code?
+
+Not who is on the call. Who types.
+
+Agencies sell with senior people and often deliver with whoever is available.
+This is not automatically disqualifying, but you should know before you sign,
+not in week three when the technical answers on calls get noticeably worse.
+
+If it is a solo operator, the honest version of this question is the reverse:
+what happens if you are unavailable for two weeks, and what state is the
+project in if we stop. Ask me that one. The answer should be that the code is
+in your account and documented well enough for someone else to continue, and
+if it is not, that is a real risk you are taking on for the speed.
+
+## 6. What does the handover look like?
+
+The realistic test: could a developer you hire six months from now pick this
+up without talking to the vendor?
+
+That needs written documentation of what the system does, where the keys and
+config live, what breaks first as volume grows, and what the next sensible
+change is. Two pages is plenty. Zero pages is common.
+
+If handover is not a named deliverable with a definition, it will become an
+email thread that trails off.
+
+## 7. What happens if the pilot does not work?
+
+The most useful question, and the one that is most uncomfortable to ask.
+
+There is a right answer and it is not "that will not happen." Some builds do
+not deliver the value everyone hoped. You want a vendor who says so, and who
+has thought about what you keep regardless: the code, the documentation, and a
+clear account of what was learned about the workflow.
+
+Related: what makes them say no. A vendor who takes every project is telling
+you they are optimising for utilisation, not for fit. I turn down work where
+the honest recommendation is an existing product, and I would rather do that
+than take a build that should have been a subscription. Ask what their last
+"no" was.
+
+## The one that is not on the list
+
+Notice there is nothing here about which models or frameworks they use.
+
+That question feels technical and it is nearly useless as a filter, because
+everyone has a reasonable-sounding answer and the specific choice is one of the
+easier things to change later. The questions that predict whether you end up
+with a working system are about ownership, operating cost, failure behaviour
+and handover. Those are much harder to bluff.
+
+If you would rather see how a vendor thinks before booking a call, the
+[Scope it live](/#scope) tool on the homepage will scope a real problem for
+free and show you the architecture it would use. And
+[what a $3,000 pilot actually buys](/blog/what-a-3000-dollar-ai-pilot-actually-buys)
+is my own answer to questions one, two, four and six, written down in advance
+so you can hold me to it.

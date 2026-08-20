@@ -1,0 +1,122 @@
+I make money when you build. So take the following with that in mind, and
+note that a good chunk of it is me telling you to go buy the subscription.
+
+The build vs. buy question gets argued badly because both sides answer a
+different question than the one you asked. Vendors compare their polished
+product to a hypothetical bad internal build. Developers compare a
+hypothetical elegant internal build to the worst SaaS you have ever used.
+Neither is your situation.
+
+Here is the version I use when scoping, for a B2B company somewhere between
+five and fifty people.
+
+## Buy, and do not think about it twice
+
+**The problem is not specific to you.** Email, payroll, accounting, calendars,
+video calls, e-signature, helpdesk ticketing. There is nothing about how your
+company does these that is a competitive advantage, and there are mature
+products with a decade of edge cases already handled. Building here is a
+hobby, not a strategy.
+
+**A product already fits, and fits without configuration gymnastics.** If you
+can trial something on Monday and be live on Thursday, that speed is worth
+more than any customisation you are imagining. The customisation is usually
+imaginary anyway. Most teams that insisted on a bespoke version ended up using
+the same 20 percent of it that the product already had.
+
+**The workflow is still changing every month.** Do not commit code to a
+process you are still arguing about. Buy something flexible, let the process
+settle, and revisit in two quarters. Building against a moving target is how
+you end up maintaining a system that encodes a decision you have since
+reversed.
+
+**You have nobody who can maintain it.** This is the one people skip. Custom
+software has an owner or it has a slow death. If there is no one in the
+building who can change it, and no budget line to pay someone outside to,
+then the honest total cost of a build is higher than the invoice.
+
+## Build, and the case is usually strong
+
+**The workflow is the business.** Not adjacent to it, the actual thing. How a
+freight brokerage matches loads, how a staffing firm screens for one specific
+niche, how a clinic handles its particular intake. When the workflow is the
+product, running it on a generic tool means running it the way the generic
+tool's median customer does, and you are not median.
+
+**You are paying per seat for something ten people touch twice a week.** This
+is the most common one I see. Per-seat pricing is a fine model when everyone
+lives in the tool all day, and a terrible one when most of your seats are
+occasional users. The moment you find yourself rationing logins to control the
+bill, the pricing model and your usage pattern have diverged and it is worth
+running the numbers on a build.
+
+**The integration cost has quietly exceeded the tool cost.** Watch for this
+shape: you bought three products, none of them talk, so someone is copying
+between them, or you are paying for a fourth product to connect the first
+three. The glue is now the system, and the glue is the thing worth owning.
+
+**You need something that does not exist as a product.** This sounds rare and
+it is not. The moment a workflow crosses two domains, for instance reading
+unstructured documents *and* writing to a system with no public API, the
+product category usually thins out to nothing.
+
+**The tool encodes judgement you have and the vendor does not.** Off-the-shelf
+lead scoring is my own example of this. Every generic scorer weights the same
+firmographics because that is all it knows about anyone. It cannot know that
+for your business, a company that just posted a specific job opening is worth
+more than one that raised a round. That judgement is the whole value, and it
+is exactly the part a product cannot ship.
+
+## The comparison people get wrong
+
+The instinct is to compare the build quote to the annual subscription. $5,000
+to build versus $400 a month, so it pays back in about a year. That is roughly
+right but it is missing three things, two of which favour buying.
+
+**Against the build:** software has a maintenance tail. Model APIs change,
+dependencies age out, the CRM alters an endpoint. Budget something real for
+this. On a small internal tool it is not large, but it is not zero, and a
+build quote that implies zero is not being straight with you.
+
+**Also against the build:** the vendor is amortising their engineering across
+thousands of customers. You are not. For anything commoditised, that maths is
+simply unbeatable and no amount of enthusiasm changes it.
+
+**For the build:** the subscription is not fixed. It scales with headcount,
+usually right when you are growing and least want a new variable cost. And
+your switching cost grows every month as more of your operating history moves
+inside someone else's database. A system you own has no renewal conversation
+and no migration project at the end of it.
+
+## What I actually recommend, most of the time
+
+Not all of one or the other. Buy the commodity layer, own the judgement layer.
+
+Concretely: keep the CRM, keep the email platform, keep the accounting
+software. Do not rebuild those. Build the thin, specific system that sits
+between them and does the thing only your company knows how to do, then have
+it write its output into the tools you already bought.
+
+That is a much smaller build than "replace our stack," it takes weeks rather
+than quarters, and it targets the one place where custom software actually
+compounds: the part of the workflow that reflects a decision you make
+differently from everyone else in your industry.
+
+## A test that usually settles it
+
+Ask what happens if the tool disappears on Friday.
+
+If the answer is "we sign up for a competitor next week and re-import," buy
+it. That is a commodity and you should treat it like one.
+
+If the answer is "we lose the way we do the thing that makes us money," then
+you are describing core infrastructure, and renting core infrastructure on a
+per-seat contract with an annual renewal is a strategic position you should at
+least be choosing on purpose rather than by default.
+
+If you want a second opinion on which side a specific workflow falls on, the
+[Scope it live](/#scope) tool will take a description and return an
+architecture, including the cases where the honest architecture is "use the
+product that already exists." Or [email me](mailto:anadit@theanta.com) and I
+will tell you directly. I would rather say no to a build than take one that
+should have been a subscription.

@@ -27,8 +27,7 @@ unconditionally, and in that mode its `drawFrame` clears the canvas every frame
 Each of the five `HeroVariant` words maps to a scene of three parts:
 
 1. **Glows** — 2–3 absolutely-positioned radial gradients in the accent.
-2. **Art plates** — PNGs from `public/scene/` (19 files, byte-identical to the
-   export's bundled assets). Each is placed by `cx`/`cy`/`w` as a % of the hero
+2. **Art plates** — WebP from `public/scene/` (19 files). Each is placed by `cx`/`cy`/`w` as a % of the hero
    box, edge-feathered with a two-axis gradient mask so no crop rectangle
    prints, and given a slow yoyo float (`fx`/`fy`/`rot` over `dur` seconds) plus
    a one-shot entry tween. `z` sets how hard it reacts to pointer parallax.
@@ -61,8 +60,19 @@ The reference's `--scene-filter: invert(1) hue-rotate(180deg)` is a
 
 ### Deliberate deviations
 
-- Art is served from `/scene/*.png` rather than the export's bundled
-  `assets/scene/*.png?v=6` + `window.__resources` lookup.
+- Art is served from `/scene/*.webp` rather than the export's bundled
+  `assets/scene/*.png?v=6` + `window.__resources` lookup. The export's PNGs
+  were 5,182K across the 19 plates; the WebP set is 1,086K (-79%), and the
+  `design` scene — the only one built at first paint, and so the hero's LCP
+  payload — went 1,043K to 188K. Re-encoded with
+  `cwebp -q 90 -alpha_q 100 -m 6`: every plate carries a knocked-out matte and
+  the feathering above is a mask over that alpha, so a lossy alpha channel
+  prints visible crop edges. q90 rather than the usual q82 because
+  `ship_streaks` and `auto_core` are soft gradients that measured SSIM 0.81 /
+  0.83 at q82.
+- The PNG masters are **not** in the tree. They were deleted once the
+  conversion was verified rather than shipped as 5 MB of bytes no browser
+  fetches; recover them from git commit `6d9cb73` if a re-encode is needed.
 - The accent is read from the `--color-accent` CSS variable instead of the
   reference's hardcoded `#C20A62`, so the art tracks `tokens.ts` /
   `app/globals.css`. `HeroCanvas` follows the same rule.

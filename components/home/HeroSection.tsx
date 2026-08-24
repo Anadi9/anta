@@ -97,7 +97,12 @@ export function HeroSection() {
           animate="show"
           variants={{ show: { transition: { staggerChildren: 0.09 } } }}
         >
-          <motion.h1
+
+          <h1 className="sr-only">
+            Custom AI development studio growth-stage teams
+          </h1>
+
+          <motion.p
             variants={fadeUp}
             className="m-0 text-balance text-[clamp(32px,5.4vw,68px)] font-bold leading-[1.06] tracking-[-0.03em]"
           >
@@ -112,7 +117,7 @@ export function HeroSection() {
             </span>
             <span className="block text-t7">the future with</span>
             <HumanAndAi />
-          </motion.h1>
+          </motion.p>
 
           <motion.p
             variants={fadeUp}

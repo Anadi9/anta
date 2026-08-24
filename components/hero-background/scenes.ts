@@ -16,8 +16,15 @@
  * is the thin component that mounts and drives it.
  *
  * DELIBERATE DEVIATIONS from the reference module:
- * - Art is served from `/scene/*.png` (Next's `public/`) rather than the
+ * - Art is served from `/scene/*.webp` (Next's `public/`) rather than the
  *   export's `assets/scene/*.png?v=6` bundle paths + `window.__resources` map.
+ *   WebP, not the reference's PNG: 5.1 MB -> 1.1 MB across the 19 plates.
+ *   The .webp files ARE the shipped masters — the PNG originals were removed
+ *   from public/scene once the conversion was verified, since carrying both
+ *   put 5 MB of never-fetched bytes in every deploy. To re-encode at a
+ *   different quality, recover them from git (they were last present in
+ *   commit 6d9cb73) and re-run: cwebp -q 90 -alpha_q 100 -m 6 in.png -o out.webp
+ *   `-alpha_q 100` is not optional — see the note on img.src below.
  * - The accent is read from the `--color-accent` CSS variable by the caller
  *   instead of defaulting to the reference's hardcoded `#C20A62`, so the art
  *   tracks `tokens.ts` / `app/globals.css` (same rule `HeroCanvas` follows).
@@ -30,6 +37,49 @@ import type { HeroVariant } from "./types";
 
 const NS = "http://www.w3.org/2000/svg";
 const ART = "/scene/";
+
+/**
+ * Intrinsic pixel size of every art plate in `public/scene/`, used to set
+ * each <img>'s width/height attributes.
+ *
+ * Why this table exists: the plates are absolutely positioned and sized in
+ * *percent of the hero box* (LayerDef.w), with `height:auto` — so until the
+ * bytes arrive the browser has no idea how tall any of them is, lays them
+ * out at zero height, and reflows the whole scene as each one decodes. The
+ * width/height attributes give it the intrinsic aspect ratio up front, so
+ * the box is reserved at the right size from the first frame and nothing
+ * jumps. That is the standard CLS fix, and it is the reason these are
+ * attributes rather than CSS: the CSS `width:100%;height:auto` still wins
+ * for actual sizing, the attributes only supply the ratio.
+ *
+ * Keyed by `LayerDef.src`, not per layer, because several plates are reused
+ * across scenes at different sizes (build_node_high and ship_blob_top each
+ * appear twice) — the intrinsic size is a property of the file.
+ *
+ * If a plate is re-exported at a different size, update it here or the
+ * reserved box will be the wrong shape.
+ */
+const PLATE_SIZE: Record<string, [w: number, h: number]> = {
+  arch_curve: [620, 292],
+  arch_panel: [540, 340],
+  arch_sphere: [230, 206],
+  arch_star: [290, 310],
+  auto_core: [432, 450],
+  auto_in: [282, 405],
+  auto_out: [370, 680],
+  auto_ribbon: [520, 310],
+  build_cubes: [505, 670],
+  build_floor: [595, 400],
+  build_node_high: [322, 370],
+  build_node_low: [380, 360],
+  design_bottom_right: [720, 465],
+  design_ribbon: [400, 915],
+  design_top_right: [490, 330],
+  ship_arrow: [576, 430],
+  ship_blob_low: [528, 349],
+  ship_blob_top: [238, 369],
+  ship_streaks: [525, 880],
+};
 
 const rnd = (s: number) => {
   const x = Math.sin(s * 127.1) * 43758.5453;
@@ -218,6 +268,13 @@ export function createHeroScenes(
   let current: Scene | null = null;
   let token = 0;
   const live: Scene[] = [];
+
+  // The first scene built is the one on screen at first paint, so its plates
+  // are the hero's LCP candidates and are fetched at high priority. Every
+  // later scene is built only when the headline verb rotates to it (see
+  // setVariant) — that art is speculative, seconds away from being needed,
+  // and must not compete with anything the visitor is actually waiting on.
+  let firstBuild = true;
 
   const dv = (css: string, parent?: Element) => {
     const e = document.createElement("div");
@@ -977,6 +1034,8 @@ export function createHeroScenes(
   const build = (name: HeroVariant, host: HTMLElement, out: Out) => {
     const def = SCENES[name];
     if (!def) return;
+    const eager = firstBuild;
+    firstBuild = false;
     (def.glows || []).forEach((css) =>
       dv("position:absolute;pointer-events:none;" + css.split("$A").join(rgb), host),
     );
@@ -997,9 +1056,24 @@ export function createHeroScenes(
       const par = dv("position:relative;width:100%;", anchor);
       const wrap = dv("position:relative;width:100%;", par);
       const img = document.createElement("img");
-      img.src = ART + L.src + ".png";
+      // WebP, not the source PNGs: the 19 plates were 5.1 MB as PNG and are
+      // 1.1 MB as WebP at q90 (the design scene alone, which is what paints
+      // first, went 1043K -> 188K). Encoded with `-alpha_q 100` because every
+      // plate carries a knocked-out matte and the feathered edges below are
+      // masks over that alpha — a lossy alpha channel would print crop edges.
+      // Single format, no <picture> fallback: this builds bare <img> nodes,
+      // and WebP has no meaningful gap in the browsers this site targets.
+      img.src = ART + L.src + ".webp";
       img.alt = "";
       img.decoding = "async";
+      // Intrinsic size -> reserved box -> no reflow when the plate decodes.
+      // See PLATE_SIZE. Unknown src is left unsized rather than guessed.
+      const size = PLATE_SIZE[L.src];
+      if (size) {
+        img.width = size[0];
+        img.height = size[1];
+      }
+      img.fetchPriority = eager ? "high" : "low";
 
       const feRaw: Feather = L.feather == null ? 4 : L.feather;
       const isObj = typeof feRaw === "object";

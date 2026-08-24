@@ -28,21 +28,37 @@ const jetbrainsMono = JetBrains_Mono({
 
 // Decorative fonts — used sparingly (wordmark, signature accents only).
 // See design-reference/*.dc.html for exactly where these show up.
+//
+// `preload: false` on all three, deliberately. next/font preloads every
+// declared family by default, which puts five font files on the critical
+// path competing for the same early bandwidth as the hero art. These three
+// render a handful of glyphs in one headline line (HumanAndAi in
+// components/home/HeroSection.tsx) — they are not worth delaying the body
+// font or LCP for. They still self-host and still load; they just wait their
+// turn. `display: "swap"` (next/font's default, stated here because the
+// tradeoff is now load-bearing) means the line paints in the fallback and
+// re-renders when the face arrives, rather than holding invisible text.
 const dancingScript = Dancing_Script({
   variable: "--font-script",
   weight: "700",
   subsets: ["latin"],
+  preload: false,
+  display: "optional",
 });
 
 const silkscreen = Silkscreen({
   variable: "--font-pixel",
   weight: ["400", "700"],
   subsets: ["latin"],
+  preload: false,
+  display: "optional",
 });
 
 const bitcount = Bitcount_Prop_Single({
   variable: "--font-display",
   subsets: ["latin"],
+  preload: false,
+  display: "optional",
 });
 
 // Root metadata. Per-page metadata (in each app/**/page.tsx) should

@@ -201,7 +201,7 @@ body {
 }
 
 /*
-  The About FAQ (components/about/Faq.tsx) uses native <details> so the
+  The FAQ blocks (components/Faq.tsx) use native <details> so the
   answers stay in the DOM with no client JS. Both rules below suppress the
   default disclosure triangle — the standard one and WebKit's older
   pseudo-element — so the `+` / `×` marker in the summary is the only

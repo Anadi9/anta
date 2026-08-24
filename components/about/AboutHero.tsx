@@ -66,10 +66,9 @@ export function AboutHero() {
             before it becomes permanent.
           </p>
           <p className="mt-6 max-w-[62ch] text-pretty text-[14.5px] leading-[1.75] text-t-dim">
-            ANTA is an AI development studio, founded and run by Anadi, working
-            with a U.S. entity in Detroit, Michigan. It designs and builds
-            custom AI systems for U.S. growth-stage B2B companies, typically
-            5–50 people. That means internal tools, lead-generation engines,
+            ANTA is an AI development studio, founded and run by Anadi. It
+            designs and builds custom AI systems for growth-stage B2B
+            companies, typically 5–50 people. That means internal tools, lead-generation engines,
             content pipelines and workflow automation. Engagements start as a
             fixed-price pilot sprint and the code is the client&apos;s from the
             first commit.

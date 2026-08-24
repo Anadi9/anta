@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import { CardGrid } from "@/components/CardGrid";
+import { Faq } from "@/components/Faq";
 import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
 import { AboutHero } from "@/components/about/AboutHero";
 import { AdoptionCurve } from "@/components/about/AdoptionCurve";
 import { CtaBanner } from "@/components/about/CtaBanner";
-import { Faq } from "@/components/about/Faq";
 import { WhyAnta } from "@/components/about/WhyAnta";
 import { FAQ, HOW_WE_HELP } from "@/lib/about/content";
-import { faqJsonLd } from "@/lib/seo/jsonld";
+import { breadcrumbJsonLd, faqJsonLd } from "@/lib/seo/jsonld";
+import { SITE } from "@/lib/seo/site";
 
 export const metadata: Metadata = {
   title: "Studio",
@@ -35,6 +36,14 @@ export default function About() {
       {/* FAQPage schema and the rendered FAQ read the same array, so they
           can't drift — BUILD_PLAN Phase 3. */}
       <JsonLd data={faqJsonLd(FAQ)} />
+      {/* Two levels only — /about is top-level, and the nav is the visible
+          representation of the trail. The markup still places the page. */}
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", url: SITE.url },
+          { name: "Studio", url: `${SITE.url}/about` },
+        ])}
+      />
       <AboutHero />
       <main>
         <AdoptionCurve />
@@ -48,7 +57,11 @@ export default function About() {
           headingWidth="20ch"
         />
         <WhyAnta />
-        <Faq />
+        <Faq
+          items={FAQ}
+          label={"04 / FAQ"}
+          heading="Questions that come up before the first call."
+        />
         <CtaBanner />
       </main>
       <Footer onThisPage={ON_THIS_PAGE} />

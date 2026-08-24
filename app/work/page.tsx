@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
+import { Faq } from "@/components/Faq";
 import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
 import { ContactSection } from "@/components/home/ContactSection";
 import { FeaturedCase } from "@/components/work/FeaturedCase";
 import { SystemLog } from "@/components/work/SystemLog";
 import { WorkHero } from "@/components/work/WorkHero";
-import { caseStudyJsonLd } from "@/lib/seo/jsonld";
+import {
+  breadcrumbJsonLd,
+  caseStudyJsonLd,
+  faqJsonLd,
+} from "@/lib/seo/jsonld";
 import { SITE } from "@/lib/seo/site";
-import { FEATURED } from "@/lib/work/cases";
+import { FEATURED, WORK_FAQ } from "@/lib/work/cases";
 
 export const metadata: Metadata = {
   title: "Work",
@@ -18,6 +23,7 @@ export const metadata: Metadata = {
 
 const ON_THIS_PAGE = [
   { href: "#index", label: "System log" },
+  { href: "#faq", label: "FAQ" },
   { href: "#contact", label: "Contact" },
   { href: "/#scope", label: "Scope it live" },
 ];
@@ -27,8 +33,8 @@ const ON_THIS_PAGE = [
 // design-reference/ANTA Work.dc.html.
 //
 // One case study, so this stays a single /work page. When there's a second,
-// split into /work (index) + /work/[slug] and add BreadcrumbList schema —
-// don't do it preemptively.
+// split into /work (index) + /work/[slug] — don't do it preemptively. The
+// BreadcrumbList below gains a third level at that point.
 export default function Work() {
   return (
     <>
@@ -41,12 +47,27 @@ export default function Work() {
           stack: FEATURED.stack,
         })}
       />
+      {/* Same array the <Faq> below renders, so schema and page can't drift. */}
+      <JsonLd data={faqJsonLd(WORK_FAQ)} />
+      {/* Two levels only — /work is top-level, and the nav is the visible
+          representation of the trail. The markup still places the page. */}
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", url: SITE.url },
+          { name: "Work", url: `${SITE.url}/work` },
+        ])}
+      />
       <WorkHero />
       <main>
         <FeaturedCase />
         <SystemLog />
+        <Faq
+          items={WORK_FAQ}
+          label={"03 / FAQ"}
+          heading="What people ask about the work."
+        />
         {/* non-breaking spaces around the slash, matching the other eyebrows */}
-        <ContactSection label={"03 / Contact"} />
+        <ContactSection label={"04 / Contact"} />
       </main>
       <Footer onThisPage={ON_THIS_PAGE} />
     </>

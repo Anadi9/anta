@@ -6,10 +6,16 @@ import { PROFILES, SITE } from "./site";
  * tags for this elsewhere, so every schema block stays consistent and
  * type-checked.
  *
- * Order of importance per current AEO guidance: Organization + WebSite on
- * every page (via layout), FAQPage on /about once its FAQ is built, and
- * BreadcrumbList once there's more than one level of navigation depth
- * (e.g. a /work/[slug] case study page).
+ * What's emitted where: Organization + WebSite on every page (via the root
+ * layout); Service + Offer on /build, which is the page that answers "what
+ * does it cost"; FAQPage on /about, /build and /work, each from the array
+ * that page also renders; BreadcrumbList on every page below the root;
+ * Article on /work and on each /blog post.
+ *
+ * The one hard rule for FAQPage: never emit a question whose answer isn't
+ * on the page. Every caller passes the same array to faqJsonLd() and to
+ * <Faq>, which is what makes that structurally impossible rather than a
+ * thing to remember.
  */
 
 /**
@@ -104,7 +110,7 @@ export function websiteJsonLd() {
 
 export type FaqItem = { question: string; answer: string };
 
-export function faqJsonLd(items: FaqItem[]) {
+export function faqJsonLd(items: readonly FaqItem[]) {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -116,6 +122,84 @@ export function faqJsonLd(items: FaqItem[]) {
         text: item.answer,
       },
     })),
+  };
+}
+
+/**
+ * The studio's offer, as a machine-readable price.
+ *
+ * Why this exists: "how much does it cost" is the single most asked buyer
+ * question, and until now the answer lived only in prose (/about FAQ, the
+ * pilot post) and in llms.txt. Prose is extractable but ambiguous — an
+ * engine has to decide whether "$3,000–$6,000" is a price, an example, or a
+ * competitor's number. A PriceSpecification with min, max and currency is
+ * unambiguous, and it is what gets read back when someone asks an answer
+ * engine what ANTA charges.
+ *
+ * The numbers here are the real published band and must stay in sync with
+ * the /about FAQ, the /build FAQ and content/blog/what-a-3000-dollar-ai-
+ * pilot-actually-buys.mdx. If the band changes, it changes in all four.
+ *
+ * Deliberately NOT modelling the retainer as a second priced Offer: there is
+ * no published retainer number, and an Offer with no price is a weaker
+ * signal than no Offer at all. The retainer is described in `description`
+ * where it can be stated honestly as "scoped per engagement".
+ *
+ * `hasOfferCatalog` carries the four system categories from
+ * lib/build/workflows.ts so the *shape* of the work is machine-readable
+ * alongside the price — an engine answering "what does ANTA build" gets a
+ * list rather than having to parse four card headings out of the DOM.
+ */
+export function serviceJsonLd(opts: {
+  /** The four "what we build" categories — {title, body} from SYSTEMS. */
+  categories: readonly { title: string; body: string }[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${SITE.url}/build#service`,
+    name: "Custom AI system development",
+    serviceType: "Custom AI software development",
+    description:
+      "Design and build of custom AI systems for growth-stage companies: custom AI applications, workflow automation, stack consolidation, and lead-generation and content tooling. A first engagement is a fixed-price pilot of $3,000–$6,000 covering two to three weeks and one narrowly scoped system, shipped to production. Ongoing work afterwards runs as a monthly retainer scoped per engagement, not an hourly rate.",
+    url: `${SITE.url}/build`,
+    provider: { "@id": `${SITE.url}/#organization` },
+    areaServed: "US",
+    audience: {
+      "@type": "BusinessAudience",
+      name: "Growth-stage B2B companies, roughly 5–50 people",
+    },
+    offers: {
+      "@type": "Offer",
+      name: "Fixed-price AI pilot",
+      description:
+        "One narrowly scoped system, built and deployed to production in two to three weeks at a price agreed before work starts. Includes the integration into the tools the work already happens in, the reliability work (retries, rate limits, a cap on model spend, a defined behaviour on every failure path), and the repository in the client's own account from the first commit. Excludes open-ended discovery phases and per-seat licensing — there are none.",
+      category: "Fixed-price pilot engagement",
+      url: SITE.bookingUrl,
+      availability: "https://schema.org/InStock",
+      priceSpecification: {
+        "@type": "PriceSpecification",
+        "@id": `${SITE.url}/build#pilot-price`,
+        minPrice: 3000,
+        maxPrice: 6000,
+        priceCurrency: "USD",
+        valueAddedTaxIncluded: false,
+      },
+      seller: { "@id": `${SITE.url}/#organization` },
+    },
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "What ANTA builds",
+      itemListElement: opts.categories.map((c) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: c.title,
+          description: c.body,
+          provider: { "@id": `${SITE.url}/#organization` },
+        },
+      })),
+    },
   };
 }
 

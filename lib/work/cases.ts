@@ -230,3 +230,53 @@ export const SEQUENCE = [
   { step: "03  teardown", when: "d7", active: false },
   { step: "04  close loop", when: "d12", active: false },
 ] as const;
+
+/* -------------------------------------------------------------------- faq */
+
+/**
+ * "03 / FAQ" on /work. Also the source for the FAQPage JSON-LD there —
+ * app/work/page.tsx renders both from this one array.
+ *
+ * The job of this FAQ is different from the ones on /about (positioning and
+ * objections) and /build (scope and mechanics): this page is the evidence
+ * page, so these answer the questions a sceptical buyer asks about the
+ * evidence itself. That includes the uncomfortable one — how much has
+ * actually shipped — answered with the real number rather than around it.
+ *
+ * Read the header comment at the top of this file before editing: exactly
+ * one system has shipped, the other six entries in CASES are `scoped`. If
+ * that changes, the first answer here changes with the `status` fields and
+ * the counts in components/work/SystemLog.tsx.
+ */
+export const WORK_FAQ: { question: string; answer: string }[] = [
+  {
+    question: "How many systems has ANTA actually shipped?",
+    answer:
+      "One is in production: the Lead Intelligence Agent, built for ANTA's own pipeline first and since deployed for client use. The six other entries in the system log are marked scoped, which means the architecture, sequence and stack are worked out but they have not been built for anyone yet. The studio is new and would rather say that than dress up seven case studies it can't stand behind.",
+  },
+  {
+    question: "What does the Lead Intelligence Agent do?",
+    answer:
+      "It pulls accounts from Apollo, enriches them against firmographic and hiring signals, scores fit with a Claude-driven rubric tuned per ICP, writes a first-touch email in the founder's own voice, and pushes the sequence to Lemlist with replies synced back to HubSpot. One operator reviews before anything goes out; nothing sends unreviewed. It runs on Claude API, Next.js, Node, Postgres and Vercel.",
+  },
+  {
+    question: "What does “scoped” mean in the system log?",
+    answer:
+      "Scoped means designed but not delivered: the inputs, the sequence of steps, the failure points and the stack are all worked out, and none of it has been built for a paying client. It is an architecture ANTA is ready to build, not a claim about work already done. Anything that has actually shipped is labelled shipped and named.",
+  },
+  {
+    question: "Where does the 11.4% reply rate come from?",
+    answer:
+      "From ANTA's own outbound, run through the agent across roughly 2,400 runs and a few hundred scored accounts. Treat it as one sender's number against one ICP, not an industry benchmark — the honest teardown of what worked and what broke, including three named failure modes, is in the note on scoring B2B leads with an LLM.",
+  },
+  {
+    question: "Can you build the same system for us?",
+    answer:
+      "Yes, and it gets rebuilt against your ICP, your data and your CRM rather than cloned. The scoring rubric is the part that has to be yours: a rubric tuned for someone else's buyer is the reason most off-the-shelf lead scores are unusable. The repository ends up in your account like every other build.",
+  },
+  {
+    question: "Can we see it running before we commit?",
+    answer:
+      "Yes — ask for a walkthrough on the intro call and you'll see the real system score live accounts rather than a recorded demo. That call is also where the first scope gets sketched, so it doubles as the cheapest way to find out whether there's a pilot worth doing.",
+  },
+];

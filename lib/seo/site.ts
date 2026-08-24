@@ -10,11 +10,17 @@ export const SITE = {
   // Search/social title. Deliberately NOT the brand expansion ("Automating
   // Next Time-less Architecture", kept below as `brandline`): a title tag is
   // a retrieval surface, and nobody searches a brand koan. This one carries
-  // the category, the buyer, and the geo, which is what both Google and AI
-  // answer engines match a query against. The poetic line still does its
+  // the category and the buyer, which is what both Google and AI answer
+  // engines match a query against. The poetic line still does its
   // brand work in on-page copy — it just doesn't get to spend the one
   // highest-authority string on the site.
-  title: "ANTA | Custom AI Development Studio for U.S. Growth-Stage Teams",
+  //
+  // No geographic qualifier, deliberately. An earlier version read "for U.S.
+  // Growth-Stage Teams"; the studio does not want the category narrowed by
+  // demography or geography, so the buyer is described by *stage* only. The
+  // operational facts (where the founder is, which entity contracts) still
+  // live on /about and in the footer — they're logistics, not positioning.
+  title: "ANTA | Custom AI Development Studio for Growth-Stage Teams",
   // The wordmark expansion. On-page/brand use only — never a title tag.
   brandline: "Automating Next Time-less Architecture",
   tagline:
@@ -24,7 +30,7 @@ export const SITE = {
   // AI engines and search snippets need the direct version, not the poetic
   // one. Update if positioning changes.
   description:
-    "ANTA is an AI development studio that designs and builds custom AI systems for U.S. growth-stage companies: internal tools, lead-generation engines, content pipelines, and workflow automation. Founder-led, no client roster required to prove the work: every build ships to production.",
+    "ANTA is an AI development studio that designs and builds custom AI systems for growth-stage companies: internal tools, lead-generation engines, content pipelines, and workflow automation. Founder-led, no client roster required to prove the work: every build ships to production.",
   founder: "Anadi",
   twitter: "@theanta", // update if/when a real handle exists — remove field if not
   // Social cards are generated per route by app/**/opengraph-image.tsx (see

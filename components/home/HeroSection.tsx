@@ -99,7 +99,7 @@ export function HeroSection() {
         >
 
           <h1 className="sr-only">
-            Custom AI development studio growth-stage teams
+            Custom AI development studio for growth-stage teams
           </h1>
 
           <motion.p

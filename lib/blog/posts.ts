@@ -129,8 +129,6 @@ export const POSTS: Post[] = [
     tags: ["Buying", "Engagements"],
   },
 
-  // --- Drafted, scheduled. Flip `status` one at a time, roughly weekly. ---
-
   {
     slug: "llm-api-costs-without-surprises",
     title: "Shipping a public LLM endpoint without a surprise bill",
@@ -138,11 +136,14 @@ export const POSTS: Post[] = [
     description:
       "The cost controls on a public, unauthenticated AI endpoint in production: per-IP rate limiting, structured outputs, low reasoning effort, and a static fallback that keeps the feature working when every one of them trips.",
     dek: "The Scope tool on this site calls a frontier model, from an unauthenticated public route, with no login. Here is every guardrail holding that up.",
-    date: "2026-08-28",
-    status: "draft",
+    date: "2026-08-24",
+    status: "published",
     minutes: 5,
     tags: ["Engineering", "Cost control"],
   },
+
+  // --- Drafted, scheduled. Flip `status` one at a time, roughly weekly. ---
+
   {
     slug: "apollo-free-plan-limits",
     title: "What the Apollo.io free plan can't do (and what it costs to fix)",

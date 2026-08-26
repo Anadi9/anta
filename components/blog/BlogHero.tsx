@@ -50,12 +50,12 @@ export function BlogHero({
               /
             </span>
             <span aria-current="page" className="text-ink">
-              Notes
+              Briefs
             </span>
           </nav>
 
           <h1 className="max-w-[16ch] text-balance text-[clamp(38px,7.4vw,96px)] font-bold leading-[0.96] tracking-[-0.04em] text-ink-max">
-            Notes from inside the build.
+            Briefs from inside the build.
           </h1>
           <p className="mt-[clamp(20px,2.6vw,30px)] max-w-[54ch] text-pretty text-[clamp(15px,1.5vw,18px)] leading-[1.7] text-t7">
             What things cost, what breaks, and what I&rsquo;d ask before

@@ -96,5 +96,5 @@ export const NAV_PAGES = [
   { href: "/work", label: "Work" },
   { href: "/build", label: "Build" },
   { href: "/about", label: "Studio" },
-  { href: "/blog", label: "Notes" },
+  { href: "/blog", label: "Briefs" },
 ] as const;

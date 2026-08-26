@@ -46,7 +46,7 @@ export const LLMS_PAGES: { title: string; path: string; summary: string }[] = [
     summary: "Who ANTA is, why it exists, and the FAQ.",
   },
   {
-    title: "Notes",
+    title: "Briefs",
     path: "/blog",
     summary:
       "Written answers to specific buyer questions, one question per post.",

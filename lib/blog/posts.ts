@@ -113,7 +113,7 @@ export const POSTS: Post[] = [
     dek: "I built this for my own pipeline before I sold it to anyone. That means I know exactly where it breaks.",
     date: "2026-08-21",
     status: "published",
-    minutes: 6,
+    minutes: 8,
     tags: ["Case study", "Lead generation"],
   },
   {
@@ -138,7 +138,7 @@ export const POSTS: Post[] = [
     dek: "The Scope tool on this site calls a frontier model, from an unauthenticated public route, with no login. Here is every guardrail holding that up.",
     date: "2026-08-24",
     status: "published",
-    minutes: 5,
+    minutes: 11,
     tags: ["Engineering", "Cost control"],
   },
 

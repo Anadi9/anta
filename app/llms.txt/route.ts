@@ -13,7 +13,7 @@ import { SITE } from "@/lib/seo/site";
  *
  * Generated, not a file in public/, for the reason spelled out in
  * lib/seo/llms.ts: the static version silently fell a post behind and
- * described a service category the site does not offer. The Notes list here
+ * described a service category the site does not offer. The Briefs list here
  * is built from publishedPosts(), the same registry app/sitemap.ts and the
  * /blog pages read, so publishing a post is still one `status` flip and can
  * never leave this file stale. Drafts are excluded — they have no public URL.
@@ -32,7 +32,7 @@ export function GET() {
     "",
     `> ${SITE.description}`,
     "",
-    `Full text of every page and every published note, as one file: ${abs("/llms-full.txt")}`,
+    `Full text of every page and every published brief, as one file: ${abs("/llms-full.txt")}`,
     "",
     "## Pages",
     "",
@@ -40,7 +40,7 @@ export function GET() {
       (page) => `- [${page.title}](${abs(page.path)}): ${page.summary}`,
     ),
     "",
-    "## Notes (each answers one question)",
+    "## Briefs (each answers one question)",
     "",
     ...publishedPosts().map(
       (post) =>

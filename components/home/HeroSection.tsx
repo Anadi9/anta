@@ -34,6 +34,12 @@ const HERO_WORDS: HeroVariant[] = [
 const ROTATE_MS = 4200;
 const FADE_MS = 300;
 
+/** Width/position tween for the chip, matched to the word's fade window. */
+const LAYOUT_SLIDE = {
+  duration: FADE_MS / 1000,
+  ease: [0.22, 1, 0.36, 1] as const,
+};
+
 /**
  * Hero, built against design-reference/ANTA Site.dc.html (lines 114–160).
  *
@@ -106,15 +112,35 @@ export function HeroSection() {
             variants={fadeUp}
             className="m-0 text-balance text-[clamp(32px,5.4vw,68px)] font-bold leading-[1.06] tracking-[-0.03em]"
           >
-            <span className="flex items-baseline justify-center gap-[0.28em] whitespace-nowrap text-t7">
-              We{" "}
-              <span
+            {/*
+              The chip hugs its word, so the line re-centres on every rotation
+              and "We" slides with it. `layout` is what keeps that from reading
+              as a jitter: the width change is tweened over FADE_MS while the
+              word sits at opacity 0, so the shift glides instead of snapping
+              between two paints (which is what left "architect" ghosting under
+              "build"). Under reduced motion nothing rotates, so nothing moves.
+            */}
+            <motion.span
+              layout={!reduced}
+              transition={LAYOUT_SLIDE}
+              className="flex items-baseline justify-center gap-[0.28em] whitespace-nowrap text-t7"
+            >
+              <motion.span layout={!reduced} transition={LAYOUT_SLIDE}>
+                We
+              </motion.span>
+              <motion.span
+                layout={!reduced}
+                transition={LAYOUT_SLIDE}
                 className="inline-block rounded-[0.06em] bg-accent px-[0.16em] py-[0.02em] text-[#FBFAF8] transition-opacity duration-300"
                 style={{ opacity: visible ? 1 : 0 }}
               >
-                {word}
-              </span>
-            </span>
+                {/* Counter-scales the parent's width tween so the glyphs
+                    don't stretch while the chip resizes. */}
+                <motion.span layout={!reduced} transition={LAYOUT_SLIDE} className="inline-block">
+                  {word}
+                </motion.span>
+              </motion.span>
+            </motion.span>
             <span className="block text-t7">the future with</span>
             <HumanAndAi />
           </motion.p>

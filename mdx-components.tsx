@@ -1,6 +1,12 @@
 import type { MDXComponents } from "mdx/types";
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { Figure } from "@/components/blog/figures/Figure";
+import { Flow } from "@/components/blog/figures/Flow";
+import { Layers } from "@/components/blog/figures/Layers";
+import { Ledger } from "@/components/blog/figures/Ledger";
+import { Note } from "@/components/blog/figures/Note";
+import { Split } from "@/components/blog/figures/Split";
 import { slugifyHeading } from "@/lib/blog/toc";
 
 /**
@@ -21,6 +27,27 @@ import { slugifyHeading } from "@/lib/blog/toc";
  *
  * Note the signature: in this version of Next, `useMDXComponents` takes no
  * arguments — it does not receive and merge a caller-supplied map.
+ *
+ * ---
+ *
+ * THE FIGURE COMPONENTS (components/blog/figures/) are registered here too,
+ * which is what lets a post write <Flow steps={...} /> with no import line.
+ * That is the whole reason they're global rather than imported per file:
+ * an MDX file that opens with six import statements has stopped being prose
+ * and become a component, and the next person writing a post copies the
+ * imports they don't need.
+ *
+ * The cost of that convenience, stated plainly: these are in the map for
+ * every MDX file, so a typo'd component name fails at build with "Expected
+ * component X to be defined" rather than rendering as text. That is the
+ * better failure — the alternative is a post shipping with a literal
+ * `<Flwo …>` in the body.
+ *
+ * All six are server components with no client boundary. The articles are
+ * fully static (generateStaticParams + dynamicParams = false), and a figure
+ * that needed state would turn the whole route's prose into a hydrated
+ * tree for the sake of a hover — if one ever genuinely needs interaction,
+ * it gets its own "use client" island, not a boundary around the article.
  */
 
 /**
@@ -38,6 +65,14 @@ function toText(node: ReactNode): string {
 }
 
 const components: MDXComponents = {
+  // --- Figures. See the note above; usable in any post without importing.
+  Figure,
+  Flow,
+  Split,
+  Ledger,
+  Layers,
+  Note,
+
   // The id is derived with the same function the TOC uses (lib/blog/toc.ts),
   // not a local copy — if the two ever computed slugs differently the rail's
   // links would quietly scroll nowhere. scroll-mt clears the fixed 64px nav.

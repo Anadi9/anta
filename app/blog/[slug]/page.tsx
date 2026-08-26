@@ -4,8 +4,10 @@ import { notFound } from "next/navigation";
 import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
 import { Nav } from "@/components/Nav";
+import { PostBanner } from "@/components/blog/PostBanner";
 import { ArticleRail } from "@/components/blog/ArticleRail";
 import { ContactSection } from "@/components/home/ContactSection";
+import { bannerFor } from "@/lib/blog/banners";
 import { assertBody, bodyFor } from "@/lib/blog/bodies";
 import { formatPostDate, getPost, publishedPosts } from "@/lib/blog/posts";
 import { getToc } from "@/lib/blog/toc";
@@ -64,6 +66,7 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
   if (!post) notFound();
 
   const Body = await bodyFor(post.slug);
+  const banner = bannerFor(post.slug);
   const toc = getToc(post.slug);
   const others = publishedPosts()
     .filter((p) => p.slug !== post.slug)
@@ -85,7 +88,7 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
       <JsonLd
         data={breadcrumbJsonLd([
           { name: "Home", url: SITE.url },
-          { name: "Notes", url: `${SITE.url}/blog` },
+          { name: "Briefs", url: `${SITE.url}/blog` },
           { name: post.title, url: `${SITE.url}/blog/${post.slug}` },
         ])}
       />
@@ -122,7 +125,7 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
                   href="/blog"
                   className="transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                 >
-                  Notes
+                  Briefs
                 </Link>
               </nav>
 
@@ -145,6 +148,12 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
                 <span>{post.minutes} min read</span>
               </div>
             </div>
+
+            {/* Art band between the title block and the question strip, so
+                the strip stays adjacent to the prose it introduces. A post
+                with no composition registered renders the header exactly as
+                it did before banners existed — see bannerFor(). */}
+            {banner ? <PostBanner banner={banner} slug={post.slug} /> : null}
 
             {/* The question this post answers, stated on the page rather than
                 only in JSON-LD — see the note in components/blog/PostList. */}
@@ -183,7 +192,7 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
                 id="more-heading"
                 className="mb-[clamp(22px,3vw,34px)] font-mono text-[11px] uppercase tracking-[0.18em] text-t-dim"
               >
-                More notes
+                More briefs
               </h2>
               <ul className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-[clamp(18px,2.4vw,32px)]">
                 {others.map((other) => (
@@ -210,7 +219,7 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
       </main>
       <Footer
         onThisPage={[
-          { href: "/blog", label: "All notes" },
+          { href: "/blog", label: "All briefs" },
           { href: "#contact", label: "Contact" },
           { href: "/#scope", label: "Scope it live" },
         ]}

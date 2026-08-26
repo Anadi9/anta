@@ -24,7 +24,7 @@ export async function generateImageMetadata({
       id: "post",
       size: OG_SIZE,
       contentType: OG_CONTENT_TYPE,
-      alt: getPost(slug)?.title ?? "ANTA notes",
+      alt: getPost(slug)?.title ?? "ANTA briefs",
     },
   ];
 }
@@ -38,8 +38,8 @@ export default async function Image({
   const post = getPost(slug);
 
   return ogImage({
-    eyebrow: "Notes",
-    headline: post?.title ?? "Notes from inside the build.",
+    eyebrow: "Briefs",
+    headline: post?.title ?? "Briefs from inside the build.",
     footer: `theanta.com/blog/${slug}`,
   });
 }

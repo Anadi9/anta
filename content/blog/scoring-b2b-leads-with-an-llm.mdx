@@ -1,11 +1,13 @@
 I built a lead scoring system for my own outreach because the scores I was
 getting out of the box were not usable. It is called the ANTA Lead
-Intelligence Agent, it runs in production, and I use it every week on my own
+Intelligence Agent, it runs in production, and I used it every week on my own
 pipeline before I ever sold it to anyone.
 
 That last part is the reason this post is worth reading. I am not describing a
-client engagement from a safe distance. I am describing the thing I depend
-on, which means I can tell you precisely where it falls over.
+client engagement from a safe distance, where the failures are diplomatically
+described as learnings. I am describing the thing I depend on for my own
+pipeline, which means I know exactly where it falls over — and I have to keep
+using it anyway.
 
 ## The problem with off-the-shelf lead scores
 
@@ -13,116 +15,217 @@ Generic scoring products weight what they know about everyone: headcount,
 industry code, revenue band, technologies detected, funding events. Those are
 real signals. They are also the same signals every other vendor's customer is
 scoring on, which means acting on them puts you in the same queue as everyone
-else, contacting the same companies in the same week.
+else, contacting the same companies in the same week, with the same trigger in
+your opening line.
 
 Worse, for my business they were weighting the wrong things. A generic scorer
 loves a recent funding round. But a company that just raised is often in the
 middle of hiring a team to do internally exactly what I would be proposing to
-do for them. Meanwhile a bootstrapped 20 person company that just posted a job
-listing for an accounts payable admin whose whole day is processing documents
-is, for me, a far better prospect. No generic scorer will ever rank it that
-way, because that judgement is specific to what I sell.
+do for them — the money is a signal of *competition*, not of demand. Meanwhile
+a bootstrapped 20-person company that just posted a job listing for an accounts
+payable admin whose whole day is processing documents is, for me, a far better
+prospect. No generic scorer will ever rank it that way, because that judgement
+is specific to what I sell.
+
+<Figure
+  n={1}
+  label="Two ways to split the same account list"
+  caption="Neither column is wrong. The left is what a database can answer and the right is what actually decides whether I should send an email, and no amount of tuning the left produces the right."
+>
+  <Split
+    left={{
+      kicker: "What a database answers",
+      title: "Firmographics",
+      points: [
+        "Headcount band, industry code, revenue, geography",
+        "Detected technologies, funding events, growth rate",
+        "Cheap, structured, sortable, available to every competitor",
+        "Identical answers for two companies with opposite problems",
+      ],
+    }}
+    right={{
+      kicker: "What decides the send",
+      title: "Situation",
+      points: [
+        "What their open roles imply they are struggling to do manually",
+        "What their site claims they do vs. what they are hiring for",
+        "Whether they just funded an internal team to do my job",
+        "Whether there is a person whose week I can visibly give back",
+      ],
+    }}
+    verdict="Use firmographics to build the list. Never use them to rank it."
+  />
+</Figure>
 
 That gap is the entire thesis of the tool. The firmographics are table stakes
 and a data vendor can supply them. The judgement about what those facts mean
-*for my offer* is the part that has to be encoded, and that turns out to be a
-language problem rather than a numeric one.
+*for my offer* is the part that has to be encoded, and it turns out to be a
+language problem rather than a numeric one. Once you accept that, the choice of
+mechanism follows: you do not want a weighted sum, you want something that can
+read.
 
 ## What actually replaced it
 
-The rough shape, in order:
+<Figure
+  n={2}
+  wide
+  label="Pipeline, one run"
+  caption="A representative run is 312 accounts in about 41 seconds. The expensive stage is 03; everything before it exists to make sure stage 03 is reading something worth reading, and everything after it exists to make sure a human still owns the send."
+>
+  <Flow
+    steps={[
+      { title: "Source", detail: "Apollo, coarse firmographic filters only" },
+      { title: "Enrich", detail: "Job postings, site copy, hiring signals", fallback: "thin context → flagged, not guessed" },
+      { title: "Score", detail: "Written ICP rubric + anti-profile, structured out" },
+      { title: "Draft", detail: "First touch, from the scoring evidence only" },
+      { title: "Sequence", detail: "Lemlist send, replies synced to HubSpot", fallback: "nothing sends unreviewed" },
+    ]}
+  />
+</Figure>
 
-1. **Source the raw list.** Companies and contacts pulled from a data
-   provider, filtered on the coarse firmographic criteria that a database is
-   genuinely good at: country, headcount band, industry.
-2. **Gather the unstructured context.** The parts that carry the real signal
-   and do not fit in a column: job postings, site copy, what the company says
-   it does versus what its hiring implies it is struggling with.
-3. **Score against a written profile, not a formula.** This is the actual
-   change. Rather than assign point values to fields, the model reads the
-   context against a written definition of a good fit, including an explicit
-   anti-profile of who to reject, and returns a score with a stated reason.
-4. **Generate the outreach off the reason, not the company.** The email is
-   drafted from the specific evidence that produced the score, which is what
-   makes it read as researched rather than merged.
-5. **Sequence and hand off.** Ordering, timing, and the record of what went
-   where.
+The critical design decision is stage three, and specifically that the model
+must return *why*.
 
-The critical design decision is number three, and specifically that the model
-must return *why*. A bare number is unauditable. A number attached to "this
-company posted a role whose described duties are document intake and manual
-data entry" is a claim I can check in ten seconds, and reject when it is
-wrong.
+A bare number is unauditable. You cannot correct it, you cannot learn from it,
+and you certainly cannot defend it to a client who asks why their competitor
+scored higher. A number attached to "this company posted a role whose described
+duties are document intake and manual data entry" is a claim I can check in ten
+seconds and reject when it is wrong. That is the whole difference between a
+score I act on and a score I ignore.
+
+So the output is not a number. It is a record:
+
+<Figure
+  n={3}
+  label="Anatomy of one scored account"
+  caption="The score is the least important field. The two that changed my behaviour are the evidence list — which makes the score checkable — and the disqualifying field, which forces the model to have looked for reasons against."
+>
+  <Layers
+    layers={[
+      { name: "score", detail: "integer, 0–100" },
+      { name: "reason", detail: "one paragraph", spans: ["Written against the ICP definition", "Must cite the evidence below"] },
+      { name: "evidence", detail: "array of quoted spans", focus: true, spans: ["Sourced from the enrichment payload", "Nothing here that was not passed in"] },
+      { name: "disqualifying", detail: "required field, may be empty" },
+    ]}
+  />
+</Figure>
+
+The rubric itself is a written document, not a formula — a description of who
+is a good fit, in prose, including an explicit anti-profile of who to reject and
+why. That document is the actual asset. The code around it has been rewritten
+twice; the rubric has been edited about thirty times, and every edit came from
+reading a score I disagreed with and working out what the written definition
+failed to say.
+
+<Note kind="note" title="the rubric is the deliverable">
+When this gets built for a client, the engineering is roughly two days and the
+rubric is the rest of the engagement. That is not a scoping failure, it is the
+correct allocation — a perfect pipeline over a vague ICP definition produces
+confidently ranked noise. If a vendor proposes this system and does not want to
+spend most of the time on the rubric with you, they are selling you the cheap
+half.
+</Note>
 
 ## Where it fell over
 
-Three failure modes, all of which showed up on real accounts.
+Three failure modes, all of which showed up on real accounts, all still
+partially present.
 
-**It was agreeable.** Early on, the scores clustered high. Ask a model to
-evaluate fit and it will find a way to argue for fit, because that is the
-shape of the request. Two things helped: writing an explicit anti-profile, an
-actual list of who is *not* a customer and why, and forcing the output into a
-fixed structure with a required disqualifying-evidence field, so the model has
-to look for reasons against rather than only reasons for. The scores still
-skew generous. I read the reasoning, not the number.
+### It was agreeable
 
-**It hallucinated plausible context.** Given a thin company page, it would
-generate a confident description of what the company does that was mostly
-inference. On a scoring pass that is tolerable. On an outreach draft it is
-lethal, because a cold email containing a specific and wrong claim about
-someone's business is worse than no email. The fix was structural rather than
-a prompt tweak: the draft may only reference evidence that was actually passed
-into it, and anything not in the source context does not get to appear in the
-email.
+Early on, the scores clustered high. Ask a model to evaluate fit and it will
+find a way to argue for fit, because that is the shape of the request — you
+have asked "is this a good prospect?" and the cooperative answer is yes. On a
+run of 312 accounts, a scorer that says yes to most of them has sorted nothing.
 
-**The unstructured signal is often just missing.** The job posting angle works
-beautifully when there is a job posting. Plenty of good-fit companies are not
-hiring this month, and for those the tool has little more to work with than
-the generic scorer did. I have not solved this. It means the system is good at
-ranking the companies that are broadcasting a signal and roughly average at
-everything else, which is a real limitation and not a temporary one.
+Two things helped. Writing an explicit anti-profile — an actual list of who is
+*not* a customer and why, not a negation of the good-fit list — and forcing the
+output into a fixed structure with a required disqualifying-evidence field, so
+the model has to go looking for reasons against rather than only reasons for.
 
-## What I cannot claim
+The scores still skew generous. I read the reasoning, not the number, and I
+treat the ranking as an ordering rather than as an absolute. That is a real
+limitation, not a solved problem.
 
-I am going to be exact here, because this is where most posts like this start
-inventing numbers.
+### It hallucinated plausible context
 
-I have not proven this converts better. I have sent a small number of
-sequences off it, in the dozens, not the thousands, and I do not have a
-statistically meaningful reply rate to report. Anyone quoting a precise uplift
-percentage off a sample that size is quoting noise.
+Given a thin company page, it would generate a confident description of what
+the company does that was mostly inference. On a scoring pass that is
+tolerable, because a wrong inference produces a wrong rank and a wrong rank
+costs me one skipped account.
 
-What I can say is narrower and true: the scoring surfaces companies that the
-firmographic filter ranked as unremarkable, and the reasoning it attaches is
-specific enough to check. The sharpest email I have sent came from a vertical
-I had not originally targeted at all, which the system flagged off a job
-posting. That is a real outcome, and it is an anecdote, and I am labelling it
-as one.
+On an outreach draft it is lethal. A cold email containing a specific and wrong
+claim about someone's business is worse than no email — it is an active
+negative signal about the sender, and it is the exact thing that makes people
+hate this category of tooling.
 
-The other honest caveat: it currently runs as a single-user beta on a free
-hosting tier. It is not multi-tenant, so there is no self-serve login to hand
-you. If you want to see it, I will walk you through it live rather than send
-you a link that does not work.
+The fix was structural rather than a prompt tweak, and this is the part I would
+transplant into any similar system: **the draft may only reference evidence
+that was actually passed into it.** Anything not present in the source context
+does not get to appear in the email. The generation stage does not have access
+to the model's general knowledge of the company; it has access to an array of
+quoted spans, and if that array is thin the email is generic — or the account
+does not get one.
 
-## What transfers to your version
+<Note kind="limit" title="generic beats wrong">
+The output of that rule is that some drafts are bland. I accept bland. The
+alternative to a bland email is not a brilliant one, it is a specific one that
+is sometimes false, and the false ones cost more than the bland ones ever earn.
+</Note>
 
-If you build something like this, three things carry over regardless of
-industry.
+### The unstructured signal is often just missing
 
-**Write the profile before writing the prompt.** Most of the quality lives in
-how precisely you can describe a good customer, including the anti-profile.
-That document is the asset. The code around it is comparatively easy.
+The job-posting angle works beautifully when there is a job posting. Plenty of
+good-fit companies are not hiring this month, and for those the tool has little
+more to work with than the firmographics I already said were not enough.
 
-**Require the reasoning as a first-class output.** Not for interpretability
-theatre. Because it is the only way you will catch the model being confidently
-wrong, and it is what turns a score into something a salesperson can open an
-email with.
+I have not solved this. What I do instead is mark those accounts as
+low-confidence rather than low-fit, which are genuinely different things and
+which a single score collapses into one. Low-fit means I looked and it is not a
+match; low-confidence means I could not see enough to say. They belong in
+different queues — the second one is a research task, not a rejection.
 
-**Never let the outreach draft exceed the evidence.** Constrain it structurally
-so it cannot reference facts that were not supplied. Prompting it to be
-accurate is not the same as making it unable to invent.
+| Failure mode | What it looked like | What actually fixed it | What is still true |
+| --- | --- | --- | --- |
+| Agreeableness | Scores clustered 70–90 | Anti-profile + required disqualifying field | Still skews generous; read the reason, not the number |
+| Hallucinated context | Confident, invented company descriptions | Drafts restricted to passed-in evidence | Thin accounts produce bland drafts |
+| Missing signal | Nothing to read but firmographics | Split low-confidence from low-fit | Unsolved; those accounts need a human |
 
-If you want the architecture for a version pointed at your own ICP, the
-[Scope it live](/#scope) tool will produce one, or read
-[what a fixed-price pilot includes](/blog/what-a-3000-dollar-ai-pilot-actually-buys)
-if you would rather know the commercial shape first.
+## What it is worth
+
+The published numbers for the current version: run #2,417, 312 accounts scored
+in 41 seconds, reply rate 11.4%.
+
+The reply rate is the only one of those that means anything, and I want to be
+careful about what it means. It is my reply rate, on my list, in my category,
+written in my voice, on a list I curated the rubric for over months. It is not a
+benchmark and it will not transfer. Anyone quoting a reply-rate number at you
+as a product claim is quoting a number produced under conditions you do not
+share.
+
+What does transfer is the shape of the thing:
+
+- Use the structured data vendor for what it is good at — building the list —
+  and nothing else.
+- Score against a written definition, including an explicit definition of who
+  to reject.
+- Require the model to state its evidence, and make that evidence the only
+  thing downstream generation may use.
+- Separate "not a fit" from "could not tell".
+- Keep a human on the send. Nothing in the ANTA pipeline sends unreviewed, and
+  the day I automate that away is the day this stops being something I would
+  defend in public.
+
+## Would I build it again
+
+Yes, and I would build it in the same order: rubric first, scoring second,
+drafting third, sending last. The temptation is to build the pipeline first
+because the pipeline is the fun part, and then discover that the rubric — the
+part that is just writing — is what decides whether any of it works.
+
+If you are considering this for your own pipeline, the honest test is whether
+you can write two pages describing who your good-fit customer is and who your
+anti-customer is, with reasons, without using the words "growing", "innovative"
+or "forward-thinking". If you can, this system will work for you. If you
+cannot, no scoring tool will help, because there is nothing to score against
+yet.

@@ -24,7 +24,7 @@ const LINKS = [
   { href: "/work", label: "Work", index: "01" },
   { href: "/build", label: "Build", index: "02" },
   { href: "/about", label: "About", index: "05" },
-  { href: "/blog", label: "Notes", index: "06" },
+  { href: "/blog", label: "Briefs", index: "06" },
 ];
 
 export function Nav() {

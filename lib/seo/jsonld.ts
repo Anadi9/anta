@@ -325,9 +325,9 @@ export function blogIndexJsonLd(
     "@context": "https://schema.org",
     "@type": "Blog",
     "@id": `${SITE.url}/blog#blog`,
-    name: `${SITE.name} — Notes`,
+    name: `${SITE.name} — Briefs`,
     description:
-      "Working notes on building custom AI systems: pricing, architecture, cost control, and teardowns of systems actually in production.",
+      "Working briefs on building custom AI systems: pricing, architecture, cost control, and teardowns of systems actually in production.",
     url: `${SITE.url}/blog`,
     publisher: { "@id": `${SITE.url}/#organization` },
     author: { "@id": `${SITE.url}/#founder` },

@@ -47,7 +47,7 @@ export const dynamic = "force-static";
  * title and the whole file flattens into one undifferentiated list of
  * headings. Demoting nests each post's sections underneath it, which is what
  * a retrieval system chunking this file by heading needs in order to keep a
- * section attached to the note it came from.
+ * section attached to the brief it came from.
  */
 function mdxToText(raw: string): string {
   return raw
@@ -80,7 +80,7 @@ export function GET() {
       "",
       `Canonical site: ${SITE.url}`,
       `Index version of this file: ${abs("/llms.txt")}`,
-      "Generated from the site's own source at build time. Every page and every published note is reproduced below in full.",
+      "Generated from the site's own source at build time. Every page and every published brief is reproduced below in full.",
       "",
       "## Positioning",
       "",
@@ -119,9 +119,9 @@ export function GET() {
   );
 
   const noteIndex = [
-    "## Notes",
+    "## Briefs",
     "",
-    "Each note answers one buyer question. Full text follows in the next section.",
+    "Each brief answers one buyer question. Full text follows in the next section.",
     "",
     ...posts.map(
       (post) =>

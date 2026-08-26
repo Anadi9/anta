@@ -9,9 +9,9 @@ import { blogIndexJsonLd, breadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { SITE } from "@/lib/seo/site";
 
 export const metadata: Metadata = {
-  title: "Notes",
+  title: "Briefs",
   description:
-    "Working notes on building custom AI systems for growth-stage teams: what a fixed-price pilot actually includes, when to buy the SaaS instead, how LLM lead scoring fails, and what to ask a studio before signing.",
+    "Working briefs on building custom AI systems for growth-stage teams: what a fixed-price pilot actually includes, when to buy the SaaS instead, how LLM lead scoring fails, and what to ask a studio before signing.",
   alternates: { canonical: "/blog" },
 };
 
@@ -44,7 +44,7 @@ export default function Blog() {
       <JsonLd
         data={breadcrumbJsonLd([
           { name: "Home", url: SITE.url },
-          { name: "Notes", url: `${SITE.url}/blog` },
+          { name: "Briefs", url: `${SITE.url}/blog` },
         ])}
       />
       <BlogHero liveCount={posts.length} scheduledCount={scheduled} />
